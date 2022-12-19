@@ -1,0 +1,124 @@
+00001  0000             ;SET PROGRAM LOCATION TO 4096
+00002  0001             ; 10 SYS (4096)
+00003  0001             *=$0801
+00004  0801             
+00005  0801  0E 08 0A              BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $34, $30, $39, $36, $29, $00, $00, $00
+00006  0810             
+00007  0810             ;ENTRY ADDRESS
+00008  0810             *=$1000
+00009  1000             
+00010  1000             ;****************************************
+00011  1000             ;*              CONSTANTS               *
+00012  1000             ;****************************************
+00013  1000             BLACK      = $00
+00014  1000             SPACE_CHAR = $20
+00015  1000             BORDER_COLOUR_LOCATION = $D020
+00016  1000             BACKGROUND_COLOUR_LOCATION = $D021
+00017  1000             VRAM_START_ADDRESS = $0400
+00018  1000             VRAM_END_ADDRESS = $07FF
+00019  1000             
+00020  1000             
+00021  1000             
+00022  1000             ;****************************************
+00023  1000             ;*                MACROS                *
+00024  1000             ;****************************************
+00025  1000             DEFM       CLEAR_SCREEN
+00026  1000                        JSR $E544 ;BUILT IN C64 METHOD FOR CLEARNING SCREEN
+00027  1000             ENDM
+00028  1000             
+00029  1000             
+00030  1000             DEFM       SET_BACKGROUND_COLOUR
+00031  1000                        LDA /1
+00032  1000                        
+00033  1000                        ; BORDER COLOUR ADDRESS
+00034  1000                        STA BORDER_COLOUR_LOCATION
+00035  1000                        
+00036  1000                        ; BORDER COLOUR ADDRESS
+00037  1000                        STA BACKGROUND_COLOUR_LOCATION
+00038  1000             
+00039  1000             ENDM
+00040  1000             
+00041  1000             
+00042  1000             DEFM       PRINT
+00043  1000                        LDX #0
+00044  1000             @LOOP
+00045  1000                        
+00046  1000                        LDA /1,X
+00047  1000                        BEQ @DONE
+00048  1000                        STA /2,X
+00049  1000                        INX
+00050  1000                        JMP @LOOP
+00051  1000             @DONE
+00052  1000             ENDM
+00053  1000             
+00054  1000             
+00055  1000             ;****************************************
+00056  1000             ;*            PROGRAM ENTRY             *
+00057  1000             ;****************************************
+00058  1000             MAIN
+00059  1000             
+00060  1000             
+00061  1000  A9 00                 LDA #BLACK
+00062  1002                        
+00063  1002  8D 20 D0              STA BORDER_COLOUR_LOCATION
+00064  1005                        
+00065  1005  8D 21 D0              STA BACKGROUND_COLOUR_LOCATION
+00066  1008             
+00067  1008             
+00068  1008             
+00069  1008             
+00070  1008             
+00071  1008  20 44 E5              JSR $E544
+00072  100B             
+00073  100B             
+00074  100B  A2 00                 LDX #0
+00075  100D             @LOOP
+00076  100D                        
+00077  100D  BD 1C 10              LDA WELCOME_MESSAGE,X
+00078  1010  F0 07                 BEQ @DONE
+00079  1012  9D 05 04              STA VRAM_START_ADDRESS+5,X
+00080  1015  E8                    INX
+00081  1016  4C 0D 10              JMP @LOOP
+00082  1019             @DONE
+00083  1019             
+00084  1019             @GAME_LOOP 
+00085  1019                        ;GAME CODE WILL LIVE HERE
+00086  1019  4C 19 10              JMP @GAME_LOOP
+00087  101C             
+00088  101C             
+00089  101C             
+00090  101C             ;****************************************
+00091  101C             ;*               MESSAGES               *
+00092  101C             ;****************************************
+00093  101C  17 05 0C   WELCOME_MESSAGE TEXT 'WELCOME TO HORIZON SHIFT 64!'
+00094  1038  00                    BYTE 0 ; NULL TERMINATE
+00095  1039             
+
+******* 4 Label(s) *******
+~~~done{00002} = $1019 
+~~~loop{00002} = $100D 
+main = $1000 
+welcome_message = $101C 
+
+******* 3 Unused label(s) *******
+@game_loop
+~~~done{00002}
+~~~loop{00002}
+main
+
+******* 7 Variable(s) *******
+BACKGROUND_COLOUR_LOCATION  = $D021
+BLACK  = $0000
+BORDER_COLOUR_LOCATION  = $D020
+SPACE_CHAR  = $0020
+tgt_c64  = $0001
+VRAM_END_ADDRESS  = $07FF
+VRAM_START_ADDRESS  = $0400
+******* 5 Unused variables(s) *******
+BACKGROUND_COLOUR_LOCATION
+BORDER_COLOUR_LOCATION
+SPACE_CHAR
+tgt_c64
+VRAM_END_ADDRESS
+VRAM_START_ADDRESS
+

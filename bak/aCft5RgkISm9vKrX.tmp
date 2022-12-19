@@ -1,0 +1,9 @@
+##{0:0:0:Main.prg}E:\C64\Test\NewProject\Main.asm
+
+;Set program location to 4096
+*=$1000
+
+Main
+        jmp Main
+        
+

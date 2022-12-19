@@ -1,0 +1,54 @@
+00001  0000             ;SET PROGRAM LOCATION TO 4096
+00002  0001             ; 10 SYS (4096)
+00003  0001             *=$0801
+00004  0801             
+00005  0801  0E 08 0A              BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $34, $30, $39, $36, $29, $00, $00, $00
+00006  0810             
+00007  0810             ;ENTRY ADDRESS
+00008  0810             *=$1000
+00009  1000             
+00010  1000             ;PROGRAM ENTRY
+00011  1000             MAIN
+00012  1000             
+00013  1000                        ; JUMP TO SUBROUTINE WRITE STRING
+00014  1000  20 15 10              JSR WRITE_STRING
+00015  1003                        ; RETURN
+00016  1003  60                    RTS
+00017  1004             
+00018  1004             ;THE MY_STRING VARIABLE
+00019  1004  14 08 09   MY_STRING  TEXT 'THIS IS A STRING'
+00020  1014  00                    BYTE 0
+00021  1015             
+00022  1015             ;WRITE STRING SUBROUTINE
+00023  1015             WRITE_STRING 
+00024  1015  A2 00                 LDX #0
+00025  1017             
+00026  1017             ;LOOP OVER CHAR ARRAY AND PRINT TO SCREEN
+00027  1017             LOOP
+00028  1017  BD 04 10              LDA MY_STRING,X
+00029  101A                        ;IF CURRENT CHAR IS NULL JUMP TO DONE
+00030  101A  F0 07                 BEQ DONE
+00031  101C                        ;0400 IS THE ADDRESS OF THE TOP LEFT OF SCREEN
+00032  101C  9D 00 04              STA $0400,X
+00033  101F  E8                    INX
+00034  1020  4C 17 10              JMP LOOP
+00035  1023             DONE
+00036  1023  60                    RTS
+00037  1024                        
+00038  1024             
+
+******* 5 Label(s) *******
+done = $1023 
+loop = $1017 
+main = $1000 
+my_string = $1004 
+Write_string = $1015 
+
+******* 1 Unused label(s) *******
+main
+
+******* 1 Variable(s) *******
+tgt_c64  = $0001
+******* 1 Unused variables(s) *******
+tgt_c64
+
