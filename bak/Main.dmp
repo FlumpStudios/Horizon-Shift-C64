@@ -7,48 +7,133 @@
 00007  0810             ;ENTRY ADDRESS
 00008  0810             *=$1000
 00009  1000             
-00010  1000             ;PROGRAM ENTRY
-00011  1000             MAIN
-00012  1000             
-00013  1000                        ; JUMP TO SUBROUTINE WRITE STRING
-00014  1000  20 15 10              JSR WRITE_STRING
-00015  1003                        ; RETURN
-00016  1003  60                    RTS
-00017  1004             
-00018  1004             ;THE MY_STRING VARIABLE
-00019  1004  14 08 09   MY_STRING  TEXT 'THIS IS A STRING'
-00020  1014  00                    BYTE 0
-00021  1015             
-00022  1015             ;WRITE STRING SUBROUTINE
-00023  1015             WRITE_STRING 
-00024  1015  A2 00                 LDX #0
-00025  1017             
-00026  1017             ;LOOP OVER CHAR ARRAY AND PRINT TO SCREEN
-00027  1017             LOOP
-00028  1017  BD 04 10              LDA MY_STRING,X
-00029  101A                        ;IF CURRENT CHAR IS NULL JUMP TO DONE
-00030  101A  F0 07                 BEQ DONE
-00031  101C                        ;0400 IS THE ADDRESS OF THE TOP LEFT OF SCREEN
-00032  101C  9D 00 04              STA $0400,X
-00033  101F  E8                    INX
-00034  1020  4C 17 10              JMP LOOP
-00035  1023             DONE
-00036  1023  60                    RTS
-00037  1024                        
-00038  1024             
+00010  1000             ;****************************************
+00011  1000             ;*              CONSTANTS               *
+00012  1000             ;****************************************
+00013  1000             BLACK      = $00
+00014  1000             SPACE_CHAR = $20
+00015  1000             BORDER_COLOUR_LOCATION = $D020
+00016  1000             BACKGROUND_COLOUR_LOCATION = $D021
+00017  1000             VRAM_START_ADDRESS = $0400
+00018  1000             VRAM_END_ADDRESS = $07FF
+00019  1000             
+00020  1000             ;****************************************
+00021  1000             ;*                MACROS                *
+00022  1000             ;****************************************
+00023  1000             DEFM       CLEAR_SCREEN
+00024  1000                        JSR $E544 ;BUILT IN C64 METHOD FOR CLEARNING SCREEN
+00025  1000             ENDM
+00026  1000             
+00027  1000             
+00028  1000             DEFM       SET_BACKGROUND_COLOUR
+00029  1000                        LDA /1
+00030  1000                        
+00031  1000                        ; BORDER COLOUR ADDRESS
+00032  1000                        STA BORDER_COLOUR_LOCATION
+00033  1000                        
+00034  1000                        ; BORDER COLOUR ADDRESS
+00035  1000                        STA BACKGROUND_COLOUR_LOCATION
+00036  1000             
+00037  1000             ENDM
+00038  1000             
+00039  1000             
+00040  1000             DEFM       PRINT
+00041  1000                        LDX #0
+00042  1000             @LOOP
+00043  1000                        
+00044  1000                        LDA /1,X
+00045  1000                        BEQ @DONE
+00046  1000                        STA /2,X
+00047  1000                        INX
+00048  1000                        JMP @LOOP
+00049  1000             @DONE
+00050  1000             ENDM
+00051  1000             
+00052  1000             ;****************************************
+00053  1000             ;*            PROGRAM ENTRY             *
+00054  1000             ;****************************************
+00055  1000             MAIN
+00056  1000             
+00057  1000             
+00058  1000  A9 00                 LDA #BLACK
+00059  1002                        
+00060  1002  8D 20 D0              STA BORDER_COLOUR_LOCATION
+00061  1005                        
+00062  1005  8D 21 D0              STA BACKGROUND_COLOUR_LOCATION
+00063  1008             
+00064  1008             
+00065  1008             
+00066  1008             
+00067  1008             
+00068  1008  20 44 E5              JSR $E544
+00069  100B             
+00070  100B             
+00071  100B  A2 00                 LDX #0
+00072  100D             @LOOP
+00073  100D                        
+00074  100D  BD 2A 10              LDA WELCOME_MESSAGE,X
+00075  1010  F0 07                 BEQ @DONE
+00076  1012  9D 05 04              STA VRAM_START_ADDRESS+5,X
+00077  1015  E8                    INX
+00078  1016  4C 0D 10              JMP @LOOP
+00079  1019             @DONE
+00080  1019             
+00081  1019             
+00082  1019  A2 00                 LDX #0
+00083  101B             @LOOP
+00084  101B                        
+00085  101B  BD 47 10              LDA DIE_MESSAGE,X
+00086  101E  F0 07                 BEQ @DONE
+00087  1020  9D 84 04              STA VRAM_START_ADDRESS+132,X
+00088  1023  E8                    INX
+00089  1024  4C 1B 10              JMP @LOOP
+00090  1027             @DONE
+00091  1027             @GAME_LOOP 
+00092  1027                        ;GAME CODE WILL LIVE HERE
+00093  1027  4C 27 10              JMP @GAME_LOOP
+00094  102A             
+00095  102A             
+00096  102A             
+00097  102A             ;****************************************
+00098  102A             ;*               MESSAGES               *
+00099  102A             ;****************************************
+00100  102A  17 05 0C   WELCOME_MESSAGE TEXT 'WELCOME TO HORIZON SHIFT 64!'
+00101  1046  00                    BYTE 0 ; NULL TERMINATE
+00102  1047             
+00103  1047  10 12 05   DIE_MESSAGE TEXT 'PREPARE TO DIE'
+00104  1055  00                    BYTE 0 ; NULL TERMINATE
+00105  1056             
 
-******* 5 Label(s) *******
-done = $1023 
-loop = $1017 
+******* 7 Label(s) *******
+~~~done{00002} = $1019 
+~~~done{00003} = $1027 
+~~~loop{00002} = $100D 
+~~~loop{00003} = $101B 
+die_message = $1047 
 main = $1000 
-my_string = $1004 
-Write_string = $1015 
+welcome_message = $102A 
 
-******* 1 Unused label(s) *******
+******* 5 Unused label(s) *******
+@game_loop
+~~~done{00002}
+~~~done{00003}
+~~~loop{00002}
+~~~loop{00003}
 main
 
-******* 1 Variable(s) *******
+******* 7 Variable(s) *******
+BACKGROUND_COLOUR_LOCATION  = $D021
+BLACK  = $0000
+BORDER_COLOUR_LOCATION  = $D020
+SPACE_CHAR  = $0020
 tgt_c64  = $0001
-******* 1 Unused variables(s) *******
+VRAM_END_ADDRESS  = $07FF
+VRAM_START_ADDRESS  = $0400
+******* 5 Unused variables(s) *******
+BACKGROUND_COLOUR_LOCATION
+BORDER_COLOUR_LOCATION
+SPACE_CHAR
 tgt_c64
+VRAM_END_ADDRESS
+VRAM_START_ADDRESS
 

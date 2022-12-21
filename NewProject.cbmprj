@@ -13,11 +13,11 @@
     <BuildToPrgFile>True</BuildToPrgFile>
     <d64Name />
     <Comments />
-    <Author />
-    <Email />
+    <Author>Paul Marrable</Author>
+    <Email>paul.marrable@flumpstudios.co.uk</Email>
     <AutoLaunchName>newproject.prg</AutoLaunchName>
     <NoSingleFileBuild>False</NoSingleFileBuild>
-    <CreatedWithVersion>CBM prg Studio 4.0.0</CreatedWithVersion>
+    <CreatedWithVersion />
     <HasGitRepo>True</HasGitRepo>
     <GitIgnoreList />
     <UsingKickAssembler>False</UsingKickAssembler>
@@ -48,7 +48,7 @@
         <FileName>Main.asm</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
-    <PaddingByte>0</PaddingByte>
+    <PaddingByte>234</PaddingByte>
     <!--Screen designer settings-->
     <AssyBinaryFileLocation />
     <AssyExportList />
@@ -62,8 +62,8 @@
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
-            <Bookmarks>54,</Bookmarks>
-            <Topmost>True</Topmost>
+            <Bookmarks>0,</Bookmarks>
+            <Topmost>False</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
     </SourceFiles>

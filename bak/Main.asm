@@ -7,31 +7,67 @@
 ;Entry address
 *=$1000
 
-;program entry
-main
+;****************************************
+;*              Constants               *
+;****************************************
+BLACK = $00
+SPACE_CHAR = $20
+BORDER_COLOUR_LOCATION = $d020
+BACKGROUND_COLOUR_LOCATION = $d021
+VRAM_START_ADDRESS = $0400
+VRAM_END_ADDRESS = $07FF
 
-        ; Jump to subroutine Write string
-        jsr Write_string
-        ; return
-        rts
+;****************************************
+;*                Macros                *
+;****************************************
+defm CLEAR_SCREEN        
+        jsr $e544 ;built in C64 method for clearning screen
+endm
 
-;The my_string variable
-my_string       text 'this is a string'
-                byte 0
 
-;Write string subroutine
-Write_string
-        ldx #0
-
-;Loop over char array and print to screen
-loop
-       lda my_string,x
-       ;If current char is null jump to done
-        beq done
-       ;0400 is the address of the top left of screen
-        sta $0400,x
-       inx
-       jmp loop        
-done
-       rts
+defm SET_BACKGROUND_COLOUR
+        lda /1
         
+        ; border colour address        
+        sta BORDER_COLOUR_LOCATION
+        
+        ; border colour address
+        sta BACKGROUND_COLOUR_LOCATION        
+
+endm
+
+
+defm    PRINT
+        ldx #0
+@loop
+       
+        lda /1,x
+        beq @done       
+        sta /2,x
+        inx
+        jmp @loop 
+@done
+endm
+
+;****************************************
+;*            PROGRAM ENTRY             * 
+;****************************************
+main
+        SET_BACKGROUND_COLOUR #BLACK        
+        CLEAR_SCREEN
+        PRINT welcome_message, VRAM_START_ADDRESS + 5
+        PRINT die_message, VRAM_START_ADDRESS + 132
+@game_loop
+        ;game code will live here
+        jmp @game_loop
+
+
+
+;****************************************
+;*               MESSAGES               * 
+;****************************************
+welcome_message         text 'WELCOME TO HORIZON SHIFT 64!'
+                        byte 0 ; null terminate
+
+die_message             text 'Prepare to die'
+                        byte 0 ; null terminate
