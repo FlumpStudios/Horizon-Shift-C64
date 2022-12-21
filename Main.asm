@@ -13,7 +13,9 @@ VRAM_START_ADDRESS = $0400
 SCORE_LABEL_POSITION = $0400 + 41
 VRAM_END_ADDRESS = $0800
 
-; PLKAYE
+
+
+; PLAYER
 
 
 PLAYER_X_ADDRESS_LOW = $d000  
@@ -168,22 +170,48 @@ load_game
         sta $d015
         
         print score_label, SCORE_LABEL_POSITION
-@gameplay_loop
+@gameplay_loop       
+
         
         ; GAMEPLAY CODE GOES HERE#
         lda $d012 ;load the value of screen raster here
         cmp #$ff
-        bne @gameplay_loop 
-        
-        ldx PLAYER_X_ADDRESS_LOW
-        inx 
-        stx PLAYER_X_ADDRESS_LOW
+        bne @gameplay_loop
+        jsr game_logic; Run the actual game!
 
-        inc $d021
         jmp @gameplay_loop
 
-        ;''jmp @gameplay_loop
-        rts 
+        rts
+
+flash_screen
+        inc $d021 ; flash_screen
+        rts
+
+move_right
+        inc PLAYER_X_ADDRESS_LOW
+        rts
+
+move_left
+        dec PLAYER_X_ADDRESS_LOW
+        rts
+
+game_logic
+        JSR $FFE4 ;Check keyboard       
+        CMP #$5A  ;z      
+        beq move_left
+        CMP #$58 ;x
+        beq move_right
+        jmp game_logic
+
+
+
+
+
+
+
+;******************************************
+;*    SPRITES AND BACKGROUND ERAW DATA    *     
+;******************************************
 
 
 ; Sprite bitmaps 1 x 64 bytes
