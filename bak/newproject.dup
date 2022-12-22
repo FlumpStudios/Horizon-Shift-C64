@@ -1,0 +1,34 @@
+;labels
+al $080D .main
+al $0810 .@wait_menu_for_keypress_loop
+al $0818 .render_menu
+al $0827 .~~~read_char_loop{00003}
+al $0833 .~~~done{00003}
+al $0835 .~~~read_char_loop{00004}
+al $0841 .~~~done{00004}
+al $0843 .~~~read_char_loop{00005}
+al $084F .~~~done{00005}
+al $0850 .load_game
+al $08DA .~~~read_char_loop{00007}
+al $08E6 .~~~done{00007}
+al $08E6 .@gameplay_loop
+al $08F4 .set_player_to_bottom
+al $08FB .~~~read_byte_loop{00008}
+al $0909 .~~~done{00008}
+al $090A .set_player_to_top
+al $0911 .~~~read_byte_loop{00009}
+al $091F .~~~done{00009}
+al $0920 .flash_screen
+al $0924 .input_left_check
+al $0934 .input_right_check
+al $0944 .input_up_check
+al $0951 .input_down_check
+al $095E .input_fire_check
+al $096B .complete_joy_check
+al $096C .inverted_player_sprite
+al $09AC .player_sprite
+al $2FD0 .score_label
+al $2FD7 .welcome_message
+al $2FF4 .die_message
+al $3003 .press_to_continue
+
