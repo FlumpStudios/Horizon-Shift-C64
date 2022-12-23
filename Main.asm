@@ -25,18 +25,21 @@ render_menu
         rts
 
 load_game
-        jsr render_playfield
+        jsr render_playfield       
         
         ; positioning sprites
+        ;PLAYER SPRITE
         lda #172
         sta PLAYER_X_ADDRESS_LOW
 
         lda #127
         sta PLAYER_Y_ADDRESS
 
-        ; X coordinate high bits
-        lda #$00
-        sta PLAYER_X_ADDRESS_HIGH
+        ;BULLET SPRITE
+        lda #$91        
+        sta $d002        
+        lda #$64
+        sta $d003       
 
         ; expand sprites
         lda #$00
@@ -51,12 +54,15 @@ load_game
         ; set sprite pointers
         lda #$28 ;load the literal value of 40 in to the accumulator
         sta $07F8 ; store the value of 40 in memory location $07F8 (2040) (Default area for sprite pointers (8 bytes).)
+        lda #$29
+        sta $07F9
 
         ; turn on sprites
-        lda #%0000001 ;This is a bit mask for the sprites to turn on
+        lda #%0000011 ;This is a bit mask for the sprites to turn on
         sta $d015
-
+        
         LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00
+        LOAD_SPRITE_INTO_MEMORY bullet_sprite, $0A40
 
         jmp gameplay_loop
 
@@ -70,10 +76,38 @@ gameplay_loop
         bne gameplay_loop
         ;-----------------
         
+        clc
+        IF_LESS_THAN BULLET_Y_ADDRESS,#50,@set_bullet_location_to_player
+        IF_MORE_THAN BULLET_Y_ADDRESS,#250,@set_bullet_location_to_player
+        jmp @handle_flip_shot
+
+@set_bullet_location_to_player
+        lda PLAYER_Y_ADDRESS
+        sta BULLET_Y_ADDRESS        
+
+        lda PLAYER_X_ADDRESS_LOW
+        sta BULLET_X_ADDRESS_LOW
+        
+
+@handle_flip_shot        
+        IF_EQUEL PLAYER_FLIPPED_LOCATION, #PLAYER_FACING_DOWN, @fire_down
+        
+        lda BULLET_Y_ADDRESS      
+        sbc #BULLET_MOVE_SPEED
+        sta BULLET_Y_ADDRESS
+        jmp @fire_direction_complete
+
+@fire_down
+
+        lda BULLET_Y_ADDRESS      
+        adc #BULLET_MOVE_SPEED
+        sta BULLET_Y_ADDRESS
+        jmp @fire_direction_complete
+
+
+@fire_direction_complete
 
         ; GAME PLAY CODE GOES HERE!
-
-
         jmp check_joystick_input ;check_joystick_input jumps back to gameplay loop
 
 
@@ -84,23 +118,26 @@ check_joystick_input
 input_left_check
         lda #$04
         bit $DC01
-   
-        bne input_right_check
-        lda PLAYER_X_ADDRESS_LOW       
+        clc
+        bne input_right_check ; If left not active move to the next check
+        
+        IF_LESS_THAN PLAYER_X_ADDRESS_LOW, #PLAYER_MIN_X, input_right_check ;Bounds check
+
         sbc #PLAYER_MOVE_SPEED
         sta PLAYER_X_ADDRESS_LOW
         
         jmp input_right_check       
   
 input_right_check
-        lda #$08                
+        lda #$08
         bit $DC01               
-        bne input_up_check
+        bne input_up_check ;If right not active, move to the next check
 
-        lda PLAYER_X_ADDRESS_LOW       
+        IF_MORE_THAN PLAYER_X_ADDRESS_LOW, #PLAYER_MAX_X, input_up_check ;Bounds check
+
+        lda PLAYER_X_ADDRESS_LOW
         adc #PLAYER_MOVE_SPEED
         sta PLAYER_X_ADDRESS_LOW        
-
         jmp input_up_check
   
 input_up_check
@@ -110,8 +147,10 @@ input_up_check
         
         lda #127
         sta PLAYER_Y_ADDRESS
-        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00       
-
+        
+        lda #PLAYER_FACING_UP        
+        sta PLAYER_FLIPPED_LOCATION
+        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00 ;Flip sprite
 
         jmp input_down_check    
  
@@ -122,7 +161,11 @@ input_down_check
         
         lda #145
         sta PLAYER_Y_ADDRESS
-        LOAD_SPRITE_INTO_MEMORY inverted_player_sprite, $0A00        
+
+        lda #PLAYER_FACING_DOWN
+        sta PLAYER_FLIPPED_LOCATION  
+
+        LOAD_SPRITE_INTO_MEMORY inverted_player_sprite, $0A00 ;Flip sprite
 
         jmp input_fire_check
  
@@ -176,10 +219,9 @@ render_playfield
         inx
         cpx #$04
         bne *-24
-        print score_label, SCORE_LABEL_POSITION
         rts
 
 
-Incasm  "SpriteData.asm"
 Incasm  "PlayfieldData.asm"
 Incasm  "Text.asm"
+Incasm  "SpriteData.asm"

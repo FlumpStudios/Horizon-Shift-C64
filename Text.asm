@@ -11,3 +11,6 @@ die_message             text 'Prepare to die'
 
 press_to_continue       text 'Press any button to play'
                         byte 0
+
+base_score              text '0000'
+                        byte 0
