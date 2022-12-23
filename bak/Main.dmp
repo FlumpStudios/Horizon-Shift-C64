@@ -1,45 +1,57 @@
 
-******* 29 Label(s) *******
+******* 34 Label(s) *******
 ~~~done{00003} = $085B 
 ~~~done{00004} = $086A 
 ~~~done{00005} = $0879 
-~~~done{00008} = $0921 
-~~~done{00009} = $0948 
-~~~read_byte_loop{00008} = $0913 
-~~~read_byte_loop{00009} = $093A 
+~~~done{00006} = $08BF 
+~~~done{00007} = $08CF 
+~~~done{00014} = $0977 
+~~~done{00015} = $099A 
+~~~read_byte_loop{00006} = $08B1 
+~~~read_byte_loop{00007} = $08C1 
+~~~read_byte_loop{00014} = $0969 
+~~~read_byte_loop{00015} = $098C 
 ~~~read_char_loop{00003} = $084F 
 ~~~read_char_loop{00004} = $085E 
 ~~~read_char_loop{00005} = $086D 
 base_score = $301C 
-check_joystick_input = $08D2 
-complete_joy_check = $0958 
+bullet_sprite = $30A1 
+check_joystick_input = $0924 
+complete_joy_check = $09B5 
 die_message = $2FF4 
-gameplay_loop = $08B2 
-input_down_check = $0928 
-input_fire_check = $094B 
-input_left_check = $08D5 
-input_right_check = $08EC 
-input_up_check = $0905 
-inverted_player_sprite = $0994 
+gameplay_loop = $08D2 
+input_down_check = $097A 
+input_fire_check = $099D 
+input_left_check = $0927 
+input_right_check = $093E 
+input_up_check = $0957 
+inverted_player_sprite = $3021 
 load_game = $087A 
 main = $0842 
-player_sprite = $09D4 
+player_sprite = $3061 
 press_to_continue = $3003 
 render_menu = $084C 
-render_playfield = $095B 
+render_playfield = $09B8 
 score_label = $2FD0 
 welcome_message = $2FD7 
 
-******* 13 Unused label(s) *******
+******* 17 Unused label(s) *******
+@fire_direction_complete
 @fire_down
+@handle_flip_shot
+@set_bullet_location_to_player
 @wait_menu_for_keypress_loop
 ~~~done{00003}
 ~~~done{00004}
 ~~~done{00005}
-~~~done{00008}
-~~~done{00009}
-~~~read_byte_loop{00008}
-~~~read_byte_loop{00009}
+~~~done{00006}
+~~~done{00007}
+~~~done{00014}
+~~~done{00015}
+~~~read_byte_loop{00006}
+~~~read_byte_loop{00007}
+~~~read_byte_loop{00014}
+~~~read_byte_loop{00015}
 ~~~read_char_loop{00003}
 ~~~read_char_loop{00004}
 ~~~read_char_loop{00005}
@@ -47,13 +59,16 @@ base_score
 main
 score_label
 
-******* 22 Variable(s) *******
+******* 26 Variable(s) *******
 BACKGROUND_COLOUR_LOCATION  = $D021
 BLACK  = $0000
 BORDER_COLOUR_LOCATION  = $D020
+BULLET_CAN_FIRE_LOCATION  = $0001
+BULLET_IS_FIRING_LOCATION  = $0002
 BULLET_MOVE_SPEED  = $0008
 BULLET_X_ADDRESS_LOW  = $D002
 BULLET_Y_ADDRESS  = $D003
+FALSE  = $0000
 HIGH_MEMORY_END_LOCATION  = $FFFF
 HIGH_MEMORY_START_LOCATION  = $C000
 PLAYER_FACING_DOWN  = $0001
@@ -66,14 +81,14 @@ PLAYER_X_ADDRESS_LOW  = $D000
 PLAYER_Y_ADDRESS  = $D001
 SPACE_CHAR  = $0020
 tgt_c64  = $0001
+TRUE  = $0001
 VRAM_END_ADDRESS  = $0800
 VRAM_START_ADDRESS  = $0400
 ZERO_PAGE_END_LOCATION  = $00FF
 ZERO_PAGE_START_LOCATION  = $0000
-******* 9 Unused variables(s) *******
+******* 5 Unused variables(s) *******
 BACKGROUND_COLOUR_LOCATION
 BORDER_COLOUR_LOCATION
-BULLET_X_ADDRESS_LOW
 HIGH_MEMORY_END_LOCATION
 HIGH_MEMORY_START_LOCATION
 SPACE_CHAR

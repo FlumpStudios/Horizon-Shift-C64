@@ -36,9 +36,9 @@ load_game
         sta PLAYER_Y_ADDRESS
 
         ;BULLET SPRITE
-        lda #$91        
+        lda #172        
         sta $d002        
-        lda #$64
+        lda #127
         sta $d003       
 
         ; expand sprites
@@ -60,6 +60,9 @@ load_game
         ; turn on sprites
         lda #%0000011 ;This is a bit mask for the sprites to turn on
         sta $d015
+        
+        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00
+        LOAD_SPRITE_INTO_MEMORY bullet_sprite, $0A40
 
         jmp gameplay_loop
 
@@ -72,23 +75,47 @@ gameplay_loop
         cmp #$ff
         bne gameplay_loop
         ;-----------------
-
-                
         
+        clc
+        IF_LESS_THAN BULLET_Y_ADDRESS,#50,@set_bullet_location_to_player
+        IF_MORE_THAN BULLET_Y_ADDRESS,#250,@set_bullet_location_to_player
+        jmp @handle_flip_shot
 
-        lda BULLET_Y_ADDRESS
+@set_bullet_location_to_player
+        lda PLAYER_Y_ADDRESS
+        sta BULLET_Y_ADDRESS        
+
+        ; Set the bullet position to the player
+        lda PLAYER_X_ADDRESS_LOW
+        sta BULLET_X_ADDRESS_LOW
+        
+        ; Allow the bullet to fire        
+        lda #TRUE
+        sta BULLET_CAN_FIRE_LOCATION
+        
+        ; turn off firing
+        lda #FALSE
+        sta BULLET_IS_FIRING_LOCATION     
+
+@handle_flip_shot
+        IF_NOT_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, @fire_direction_complete
+
+        IF_EQUEL PLAYER_FLIPPED_LOCATION, #PLAYER_FACING_DOWN, @fire_down
+        
+        lda BULLET_Y_ADDRESS      
         sbc #BULLET_MOVE_SPEED
         sta BULLET_Y_ADDRESS
-        jmp check_joystick_input
+        jmp @fire_direction_complete
 
 @fire_down
-        lda BULLET_Y_ADDRESS
+
+        lda BULLET_Y_ADDRESS      
         adc #BULLET_MOVE_SPEED
         sta BULLET_Y_ADDRESS
-        jmp check_joystick_input
+        jmp @fire_direction_complete
         
-        
-        ;TODO: Check if flipped
+
+@fire_direction_complete
 
         ; GAME PLAY CODE GOES HERE!
         jmp check_joystick_input ;check_joystick_input jumps back to gameplay loop
@@ -130,10 +157,10 @@ input_up_check
         
         lda #127
         sta PLAYER_Y_ADDRESS
-        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00
         
         lda #PLAYER_FACING_UP        
         sta PLAYER_FLIPPED_LOCATION
+        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00 ;Flip sprite
 
         jmp input_down_check    
  
@@ -147,7 +174,8 @@ input_down_check
 
         lda #PLAYER_FACING_DOWN
         sta PLAYER_FLIPPED_LOCATION  
-        LOAD_SPRITE_INTO_MEMORY inverted_player_sprite, $0A00        
+
+        LOAD_SPRITE_INTO_MEMORY inverted_player_sprite, $0A00 ;Flip sprite
 
         jmp input_fire_check
  
@@ -155,9 +183,15 @@ input_fire_check
         lda #$10                
         bit $DC01  
         bne complete_joy_check                
+        
+        IF_EQUEL BULLET_CAN_FIRE_LOCATION, #FALSE, complete_joy_check
 
-        inc $d021 ; flash_screen
+        lda #TRUE
+        sta BULLET_IS_FIRING_LOCATION
 
+        lda #FALSE
+        sta BULLET_CAN_FIRE_LOCATION
+        
         jmp complete_joy_check
 
 complete_joy_check
@@ -204,6 +238,6 @@ render_playfield
         rts
 
 
-Incasm  "SpriteData.asm"
 Incasm  "PlayfieldData.asm"
 Incasm  "Text.asm"
+Incasm  "SpriteData.asm"

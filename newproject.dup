@@ -14,20 +14,22 @@ al $08BF .~~~done{00006}
 al $08C1 .~~~read_byte_loop{00007}
 al $08CF .~~~done{00007}
 al $08D2 .gameplay_loop
-al $08EB .@fire_down
-al $08F6 .@fire_direction_complete
-al $08F9 .check_joystick_input
-al $08FC .input_left_check
-al $0913 .input_right_check
-al $092C .input_up_check
-al $093E .~~~read_byte_loop{00011}
-al $094C .~~~done{00011}
-al $094F .input_down_check
-al $0961 .~~~read_byte_loop{00012}
-al $096F .~~~done{00012}
-al $0972 .input_fire_check
-al $097F .complete_joy_check
-al $0982 .render_playfield
+al $08EB .@set_bullet_as_not_firing
+al $08F2 .@handle_flip_shot
+al $0909 .@fire_down
+al $0914 .@fire_direction_complete
+al $0917 .check_joystick_input
+al $091A .input_left_check
+al $0931 .input_right_check
+al $094A .input_up_check
+al $095C .~~~read_byte_loop{00014}
+al $096A .~~~done{00014}
+al $096D .input_down_check
+al $097F .~~~read_byte_loop{00015}
+al $098D .~~~done{00015}
+al $0990 .input_fire_check
+al $09B3 .complete_joy_check
+al $09B6 .render_playfield
 al $2FD0 .score_label
 al $2FD7 .welcome_message
 al $2FF4 .die_message
@@ -36,4 +38,6 @@ al $301C .base_score
 al $3021 .inverted_player_sprite
 al $3061 .player_sprite
 al $30A1 .bullet_sprite
+;breakpoints
+break $2325
 
