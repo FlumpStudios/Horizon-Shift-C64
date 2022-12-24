@@ -17,7 +17,7 @@
 base_score = $301C 
 bullet_sprite = $30A1 
 check_joystick_input = $091B 
-complete_joy_check = $09B7 
+complete_joy_check = $09C2 
 die_message = $2FF4 
 gameplay_loop = $08D6 
 input_down_check = $0971 
@@ -31,15 +31,17 @@ main = $0842
 player_sprite = $3061 
 press_to_continue = $3003 
 render_menu = $084C 
-render_playfield = $09BA 
+render_playfield = $09C5 
 score_label = $2FD0 
 welcome_message = $2FD7 
 
 ******* 17 Unused label(s) *******
+@exit_direcion_check
 @fire_direction_complete
 @fire_down
 @handle_flip_shot
 @set_bullet_as_not_firing
+@set_to_down_location
 @wait_menu_for_keypress_loop
 ~~~done{00003}
 ~~~done{00004}
@@ -86,7 +88,7 @@ VRAM_END_ADDRESS  = $0800
 VRAM_START_ADDRESS  = $0400
 ZERO_PAGE_END_LOCATION  = $00FF
 ZERO_PAGE_START_LOCATION  = $0000
-******* 5 Unused variables(s) *******
+******* 3 Unused variables(s) *******
 BACKGROUND_COLOUR_LOCATION
 BORDER_COLOUR_LOCATION
 HIGH_MEMORY_END_LOCATION

@@ -25,7 +25,10 @@ render_menu
         rts
 
 load_game
-        jsr render_playfield       
+        jsr render_playfield
+         
+        lda #FALSE
+        sta BULLET_IS_FIRING_LOCATION   
         
         ; positioning sprites
         ;PLAYER SPRITE
@@ -38,8 +41,8 @@ load_game
         ;BULLET SPRITE
         lda #172        
         sta $d002        
-        lda #127
-        sta $d003       
+        lda #0
+        sta BULLET_Y_ADDRESS       
 
         ; expand sprites
         lda #$00
@@ -63,6 +66,8 @@ load_game
         
         LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00
         LOAD_SPRITE_INTO_MEMORY bullet_sprite, $0A40
+        
+
 
         jmp gameplay_loop
 
@@ -77,30 +82,21 @@ gameplay_loop
         ;-----------------
         
         clc
-        IF_LESS_THAN BULLET_Y_ADDRESS,#50,@set_bullet_location_to_player
-        IF_MORE_THAN BULLET_Y_ADDRESS,#250,@set_bullet_location_to_player
+        ; If bullet out of bounds enable bullet for shooting
+        IF_LESS_THAN BULLET_Y_ADDRESS,#40,@set_bullet_as_not_firing
+        IF_MORE_THAN BULLET_Y_ADDRESS,#250,@set_bullet_as_not_firing
         jmp @handle_flip_shot
 
-@set_bullet_location_to_player
-        lda PLAYER_Y_ADDRESS
-        sta BULLET_Y_ADDRESS        
-
-        ; Set the bullet position to the player
-        lda PLAYER_X_ADDRESS_LOW
-        sta BULLET_X_ADDRESS_LOW
-        
-        ; Allow the bullet to fire        
-        lda #TRUE
-        sta BULLET_CAN_FIRE_LOCATION
-        
-        ; turn off firing
+@set_bullet_as_not_firing                
+        ; turn off actual
         lda #FALSE
-        sta BULLET_IS_FIRING_LOCATION     
+        sta BULLET_IS_FIRING_LOCATION 
+        jmp @fire_direction_complete
 
 @handle_flip_shot
-        IF_NOT_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, @fire_direction_complete
-
-        IF_EQUEL PLAYER_FLIPPED_LOCATION, #PLAYER_FACING_DOWN, @fire_down
+        IF_EQUEL BULLET_IS_FIRING_LOCATION, #FALSE, @fire_direction_complete
+        
+        IF_EQUEL BULLET_DIRECTION_LOCATION, #DOWN, @fire_down
         
         lda BULLET_Y_ADDRESS      
         sbc #BULLET_MOVE_SPEED
@@ -158,7 +154,7 @@ input_up_check
         lda #127
         sta PLAYER_Y_ADDRESS
         
-        lda #PLAYER_FACING_UP        
+        lda #UP        
         sta PLAYER_FLIPPED_LOCATION
         LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00 ;Flip sprite
 
@@ -172,7 +168,7 @@ input_down_check
         lda #145
         sta PLAYER_Y_ADDRESS
 
-        lda #PLAYER_FACING_DOWN
+        lda #DOWN
         sta PLAYER_FLIPPED_LOCATION  
 
         LOAD_SPRITE_INTO_MEMORY inverted_player_sprite, $0A00 ;Flip sprite
@@ -184,13 +180,22 @@ input_fire_check
         bit $DC01  
         bne complete_joy_check                
         
-        IF_EQUEL BULLET_CAN_FIRE_LOCATION, #FALSE, complete_joy_check
+        ;IF bullet is already firing skip
+        IF_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, complete_joy_check
+        
+        ; Move bullet to location of player
+        lda #145 ;middle of screen
+        sta BULLET_Y_ADDRESS        
+
+        lda PLAYER_X_ADDRESS_LOW
+        sta BULLET_X_ADDRESS_LOW
+
+        lda PLAYER_FLIPPED_LOCATION
+        sta BULLET_DIRECTION_LOCATION
 
         lda #TRUE
         sta BULLET_IS_FIRING_LOCATION
-
-        lda #FALSE
-        sta BULLET_CAN_FIRE_LOCATION
+        
         
         jmp complete_joy_check
 
