@@ -1,3 +1,7 @@
+        ;---------------------------------
+        ;    Sprite and screen setup
+        ;---------------------------------
+        
         ; set to 25 line text mode and turn on the screen
         lda #$1B
         sta $D011
@@ -112,7 +116,7 @@
         sta $d01b
 
         ; set sprite pointers
-        ; Player_up        
+        ; Player_up
         lda #$28
         sta PLAYER_ADDRESS
         
@@ -122,7 +126,7 @@
 
         ; Enemy_Robot
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
-        sta ENEMY_1_SPRITE_ADDRESS       
+        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS       
       
         ; turn on sprites
         lda #$7F

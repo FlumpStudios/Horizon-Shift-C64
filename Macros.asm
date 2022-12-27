@@ -14,7 +14,7 @@ endm
 ;         SET BACKGROUND COLOUR            
 ;----------------------------------------
 defm SET_BACKGROUND_COLOUR ;(New background colour)
-        lda /1        
+        lda /1        defm SET_BACKGROUND_COLOUR ;(New background colour)
         
         ; border colour address
         sta BACKGROUND_COLOUR_LOCATION        
@@ -37,7 +37,15 @@ endm
 ;-----------------------------------------
 
 
-defm MULTIPLY
+
+;-----------------------------
+;            MATHS
+;-----------------------------
+
+
+
+
+defm MULTIPLY; (1st number, 2nd number)
         ldx #0
         lda #0
 @multiply_loop
@@ -48,22 +56,28 @@ defm MULTIPLY
 endm
 
 
-
-
 defm IS_DIVISIBLE        
-        LDY #0
-        LDA /1
-        LDX /2
-@DIV_LOOP
-        CMP /2
-        BCS @NEXT
-        DEX
-        BNE @DIV_LOOP
-        LDA #0
-        JMP @DONE
-@NEXT
-        LDA #1
-@DONE
+    lda /1
+    and /2
+    beq divisible
+    jmp not_divisible
+    
+divisible
+    jmp /3
+not_divisible
+
+endm
+
+defm IS_NOT_DIVISIBLE        
+    lda /1
+    and /2
+    beq not_divisible
+    jmp divisible
+    
+divisible
+    jmp /3
+not_divisible
+
 endm
         
 
@@ -102,6 +116,7 @@ endm
 
 ; These comparisons are just for unsigned values 
 defm IF_LESS_THAN; (value, value to compare to, location to jump to if true)
+        clc
         lda /1
         cmp /2
         bcc /3 ;If carry flag is clear after comparison then branch
@@ -109,6 +124,7 @@ endm
 
 
 defm IF_MORE_THAN ;(value, value to compare to, location to jump to if true)
+        clc
         lda /1
         cmp /2
         bcs /3 ;If carry flag has been set after comparison then branch

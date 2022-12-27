@@ -5,89 +5,13 @@
 *=$0801
         BYTE $0B, $08, $0A, $00, $9E, $32, $30, $36, $31, $00, $00, $00
 
-*=$080d
-Incasm  "Init.asm"
-
-
 ;---------------
-;ENTRY POINT
+c
 ;---------------
-main
-       jsr render_menu
-@wait_menu_for_keypress_loop
-        
-        lda $c6
-        beq @wait_menu_for_keypress_loop                
-        jsr load_game ;load the game if a key is pressed
-
-render_menu
-        
-        PRINT welcome_message, VRAM_START_ADDRESS + 5
-        PRINT die_message, VRAM_START_ADDRESS + 132
-        PRINT press_to_continue,  VRAM_START_ADDRESS + 567
-        rts
-
-load_game
-        jsr render_playfield
-         
-        lda #FALSE
-        sta BULLET_IS_FIRING_LOCATION   
-
-        lda #0
-        sta TIMER_ADDRESS
-        
-        ; positioning spritess
-        ;PLAYER SPRITE
-        lda #172
-        sta PLAYER_X_ADDRESS_LOW
-        
-
-        lda #127
-        sta PLAYER_Y_ADDRESS
-        
-        ; Bullet
-        lda #$00
-        sta $d002       ; #1. sprite X low byte
-        lda #$3C
-        sta $d003       ; #1. sprite Y
-        
-        ; Enemey 1
-        lda #$96
-        sta $d004       ; #2. sprite X low byte
-        lda #70
-
-
-
-        sta $d005       ; #2. sprite Y     
-
-        ; expand sprites
-        lda #$00
-        sta $d01d
-        lda #$00
-        sta $d017
-
-        ; set screen-sprite priority flags
-        lda #$0000000
-        sta $d01b
-
-        ; set sprite pointers
-        lda #$28 ;load the literal value of 40 in to the accumulator
-        sta $07F8 ; store the value of 40 in memory location $07F8 (2040) (Default area for sprite pointers (8 bytes).)
-        lda #$29
-        sta $07F9
-        lda #$2A
-        sta $07FA
-
-        ; turn on sprites
-        lda #%0000111 ;This is a bit mask for the sprites to turn on
-        sta $d015
-        
-        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00
-        LOAD_SPRITE_INTO_MEMORY bullet_sprite, $0A00 + 64
-        LOAD_SPRITE_INTO_MEMORY robot_enemy_sprite,$0A00 + 128
-
-        jmp gameplay_loop
-
+*=$080d         
+Incasm  "Constants.asm"
+Incasm  "Macros.asm"
+Incasm "Init.asm"   
 
 gameplay_loop       
         ;-----------------
@@ -97,181 +21,20 @@ gameplay_loop
         cmp #$ff
         bne gameplay_loop
         ;-----------------
-           
-        inc TIMER_ADDRESS
-        
-        PRINT_DEBUG TIMER_ADDRESS
-        ; If bullet out of bounds enable bullet for shooting
-        IF_LESS_THAN BULLET_Y_ADDRESS,#40,@set_bullet_as_not_firing
-        ; OR
-        IF_MORE_THAN BULLET_Y_ADDRESS,#250,@set_bullet_as_not_firing
-        ; ELSE
-        jmp @handle_flip_shot
 
-@set_bullet_as_not_firing                
-        ; turn off actual
-        lda #FALSE
-        sta BULLET_IS_FIRING_LOCATION 
-        jmp @fire_direction_complete
-
-@handle_flip_shot
-        IF_EQUEL BULLET_IS_FIRING_LOCATION, #FALSE, @fire_direction_complete
-        ; else if
-        IF_EQUEL BULLET_DIRECTION_LOCATION, #DOWN, @fire_down
-        
-        lda BULLET_Y_ADDRESS      
-        sbc #BULLET_MOVE_SPEED
-        sta BULLET_Y_ADDRESS
-        jmp @fire_direction_complete
-
-@fire_down
-
-        lda BULLET_Y_ADDRESS      
-        adc #BULLET_MOVE_SPEED
-        sta BULLET_Y_ADDRESS
-        jmp @fire_direction_complete
-        
-
-@fire_direction_complete
-
-        ; GAME PLAY CODE GOES HERE!
-        jmp check_joystick_input ;check_joystick_input jumps back to gameplay loop
-
-
-
-check_joystick_input
-        jmp input_left_check        
-
-input_left_check
-        lda #$04
-        bit $DC01
-        bne input_right_check ; If left not active move to the next check
-        
-        IF_LESS_THAN PLAYER_X_ADDRESS_LOW, #PLAYER_MIN_X, input_right_check ;Bounds check
-
-        sbc #PLAYER_MOVE_SPEED
-        sta PLAYER_X_ADDRESS_LOW
-        
-        jmp input_right_check       
-  
-input_right_check
-        lda #$08
-        bit $DC01               
-        bne input_up_check ;If right not active, move to the next check
-
-        IF_MORE_THAN PLAYER_X_ADDRESS_LOW, #PLAYER_MAX_X, input_up_check ;Bounds check
-
-        lda PLAYER_X_ADDRESS_LOW
-        adc #PLAYER_MOVE_SPEED
-        sta PLAYER_X_ADDRESS_LOW        
-        jmp input_up_check
-  
-input_up_check
-        lda #$01                
-        bit $DC01               
-        bne input_down_check    
-        
-        lda #127
-        sta PLAYER_Y_ADDRESS
-        
-        lda #UP        
-        sta PLAYER_FLIPPED_LOCATION
-        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00 ;Flip sprite
-
-        jmp input_down_check    
- 
-input_down_check
-        lda #$02               
-        bit $DC01               
-        bne input_fire_check       
-        
-        lda #145
-        sta PLAYER_Y_ADDRESS
-
-        lda #DOWN
-        sta PLAYER_FLIPPED_LOCATION  
-
-        LOAD_SPRITE_INTO_MEMORY inverted_player_sprite, $0A00 ;Flip sprite
-
-        jmp input_fire_check
- 
-input_fire_check
-        lda #$10                
-        bit $DC01  
-        bne complete_joy_check                
-        
-        ;If bullet is already firing don't fire
-        IF_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, complete_joy_check        
-        
-        IF_EQUEL PLAYER_FLIPPED_LOCATION, #TRUE, @set_to_down_location
-        
-        lda #133 ;If facing up place shot just above player       
-        jmp @exit_direcion_check
-
-@set_to_down_location
-        lda #159 ;If facing down place shot just below player
-        
-        
-@exit_direcion_check
-        sta BULLET_Y_ADDRESS        
-
-        ; Set the bullet x location to the player
-        lda PLAYER_X_ADDRESS_LOW
-        sta BULLET_X_ADDRESS_LOW
-
-        lda PLAYER_FLIPPED_LOCATION
-        sta BULLET_DIRECTION_LOCATION
-
-        lda #TRUE
-        sta BULLET_IS_FIRING_LOCATION
-        
-        
-        jmp complete_joy_check
-
-complete_joy_check
+        IF_LESS_THAN TIMER_ADDRESS, #6, @skip_timer_reset
+        lda #0
+        sta TIMER_ADDRESS
         jmp gameplay_loop
 
+@skip_timer_reset
+        inc TIMER_ADDRESS
+        IF_NOT_EQUEL TIMER_ADDRESS, #6, handle_player_input
+        jsr update_enemies
+        jsr handle_player_input
+        jmp gameplay_loop
 
-render_playfield
-        lda #$00
-        sta $fb
-        sta $fd
-        sta $f7
-
-        lda #$28
-        sta $fc
-
-        lda #$04
-        sta $fe
-
-        lda #$e8
-        sta $f9
-        lda #$2b
-        sta $fa
-
-        lda #$d8
-        sta $f8
-
-        ldx #$00
-        ldy #$00
-        lda ($fb),y
-        sta ($fd),y
-        lda ($f9),y
-        sta ($f7),y
-        iny
-        bne *-9
-
-        inc $fc
-        inc $fe
-        inc $fa
-        inc $f8
-
-        inx
-        cpx #$04
-        bne *-24
-        rts
-
-
-Incasm  "PlayfieldData.asm"
+Incasm "Enemies.asm"
+Incasm "Controls.asm"
+Incasm  "data.asm"
 Incasm  "Text.asm"
-Incasm  "SpriteData.asm"
