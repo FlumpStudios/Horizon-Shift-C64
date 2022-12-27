@@ -1,5 +1,6 @@
 Incasm  "Constants.asm"
 Incasm  "Macros.asm"
+Incasm  "Math.asm"
                 
         CLEAR_SCREEN
         SET_BACKGROUND_COLOUR #BLACK
@@ -28,7 +29,9 @@ Incasm  "Macros.asm"
         sta $d027
         lda #$0D
         sta $d028
+        lda #$06
+        sta $d029
 
         ; set multicolor flags
-        lda #$01
+        lda #%00000101
         sta $d01c

@@ -25,7 +25,6 @@ endm
 
 
 
-
 ;----------------------------------------
 ;          SET BORDER COLOUR            
 ;----------------------------------------
@@ -38,7 +37,17 @@ endm
 ;-----------------------------------------
 
 
-
+; Need to test this :)
+defm MULTIPLY
+        ldx #0
+        lda #0
+@multiply_loop
+        adc /1
+        inx
+        cpx /2
+        bne @multiply_loop
+endm
+        
 
 
 ;----------------------------------------
@@ -93,7 +102,6 @@ endm
 ;    PRINT NULL TERMINATING STRING            
 ;----------------------------------------
 defm    PRINT ;(String value, display location)
-        clc
         ldx #0
 @read_char_loop       
         lda /1,x
@@ -104,3 +112,43 @@ defm    PRINT ;(String value, display location)
 @done
 endm
 ;----------------------------------------
+
+
+
+
+
+;----------------------------------------
+;              DEBUG PRINTING
+;----------------------------------------
+
+
+defm    PRINT_DEBUG        
+        lda #WHITE
+        sta $0286      ; set text color
+        jsr $E566      ; reset cursor
+
+        
+        lda #0 ; High byte
+        ldx /1 ; Low byte
+
+
+        jsr $BDCD       ; print number
+
+        endm
+
+;===============================================================================
+
+defm    PRINT_DEBUG_16
+                        ; /1 = 1st Number High Byte Pointer
+                        ; /2 = 1st Number Low Byte Pointer
+        
+        lda #White
+        sta $0286       ; set text color
+        lda #$20        ; space
+        jsr $E566      ; reset cursor
+        lda /1
+        ldx /2
+        jsr $BDCD       ; print number
+
+        endm
+

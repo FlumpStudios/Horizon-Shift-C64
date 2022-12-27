@@ -7,68 +7,24 @@
 *=$0801
         BYTE $0B, $08, $0A, $00, $9E, $32, $30, $36, $31, $00, $00, $00
 
-Incasm  "Init.asm"
+Incasm  "Constants.asm"
+Incasm  "Macros.asm"
 
 ;---------------
 ;ENTRY POINT
 ;---------------
-main
-       jsr render_menu
-@wait_menu_for_keypress_loop
-        
-        lda $c6
-        beq @wait_menu_for_keypress_loop                
-        jsr load_game ;load the game if a key is pressed
-
-render_menu
-        PRINT welcome_message, VRAM_START_ADDRESS + 5
-        PRINT die_message, VRAM_START_ADDRESS + 132
-        PRINT press_to_continue,  VRAM_START_ADDRESS + 567
-        rts
-
+*=$080d         
 load_game
-        jsr render_playfield
-         
         lda #FALSE
         sta BULLET_IS_FIRING_LOCATION   
-        
-        ; positioning sprites
-        ;PLAYER SPRITE
-        lda #172
-        sta PLAYER_X_ADDRESS_LOW
 
-        lda #127
-        sta PLAYER_Y_ADDRESS
-
-        ;BULLET SPRITE
-        lda #172        
-        sta $d002        
         lda #0
-        sta BULLET_Y_ADDRESS       
+        sta TIMER_ADDRESS
 
-        ; expand sprites
-        lda #$00
-        sta $d01d
-        lda #$00
-        sta $d017
+        lda #ROBOT_ENEMY_F1_SPRITE_VALUE
+        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS 
 
-        ; set screen-sprite priority flags
-        lda #$0000000
-        sta $d01b
-
-        ; set sprite pointers
-        lda #$28 ;load the literal value of 40 in to the accumulator
-        sta $07F8 ; store the value of 40 in memory location $07F8 (2040) (Default area for sprite pointers (8 bytes).)
-        lda #$29
-        sta $07F9
-
-        ; turn on sprites
-        lda #%0000011 ;This is a bit mask for the sprites to turn on
-        sta $d015
-        
-        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00
-        LOAD_SPRITE_INTO_MEMORY bullet_sprite, $0A40
-
+Incasm "Init.asm"        
         jmp gameplay_loop
 
 
@@ -80,8 +36,17 @@ gameplay_loop
         cmp #$ff
         bne gameplay_loop
         ;-----------------
+                
+        IF_LESS_THAN TIMER_ADDRESS, #6, @skip_timer_reset
+        lda #0
+        sta TIMER_ADDRESS
+        jmp gameplay_loop        
         
-        clc
+@skip_timer_reset
+        IF_NOT_EQUEL TIMER_ADDRESS, #0, @skip_animation
+        jsr animate_robot
+
+@skip_animation        
         ; If bullet out of bounds enable bullet for shooting
         IF_LESS_THAN BULLET_Y_ADDRESS,#40,@set_bullet_as_not_firing
         ; OR
@@ -114,8 +79,7 @@ gameplay_loop
         
 
 @fire_direction_complete
-
-        ; GAME PLAY CODE GOES HERE!
+        inc TIMER_ADDRESS
         jmp check_joystick_input ;check_joystick_input jumps back to gameplay loop
 
 
@@ -126,7 +90,6 @@ check_joystick_input
 input_left_check
         lda #$04
         bit $DC01
-        clc
         bne input_right_check ; If left not active move to the next check
         
         IF_LESS_THAN PLAYER_X_ADDRESS_LOW, #PLAYER_MIN_X, input_right_check ;Bounds check
@@ -158,8 +121,9 @@ input_up_check
         
         lda #UP        
         sta PLAYER_FLIPPED_LOCATION
-        LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00 ;Flip sprite
 
+        lda #PLAYER_UP_VALUE
+        sta PLAYER_ADDRESS
         jmp input_down_check    
  
 input_down_check
@@ -167,14 +131,15 @@ input_down_check
         bit $DC01               
         bne input_fire_check       
         
-        lda #145
+        lda #152
         sta PLAYER_Y_ADDRESS
 
         lda #DOWN
         sta PLAYER_FLIPPED_LOCATION  
 
-        LOAD_SPRITE_INTO_MEMORY inverted_player_sprite, $0A00 ;Flip sprite
-
+        lda #PLAYER_DOWN_VALUE
+        sta PLAYER_ADDRESS
+        
         jmp input_fire_check
  
 input_fire_check
@@ -214,47 +179,29 @@ complete_joy_check
         jmp gameplay_loop
 
 
-render_playfield
-        lda #$00
-        sta $fb
-        sta $fd
-        sta $f7
+animate_robot                  
+@inc_frame
+        inc ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
+        lda ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
+        
+        cmp #ROBOT_ENEMY_RESET_FRAME
+        bne @update_pointer
 
-        lda #$28
-        sta $fc
+        ; Reset frame
+        lda #ROBOT_ENEMY_F1_SPRITE_VALUE
+        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS   
+        jmp @inc_frame
 
-        lda #$04
-        sta $fe
-
-        lda #$e8
-        sta $f9
-        lda #$2b
-        sta $fa
-
-        lda #$d8
-        sta $f8
-
-        ldx #$00
-        ldy #$00
-        lda ($fb),y
-        sta ($fd),y
-        lda ($f9),y
-        sta ($f7),y
-        iny
-        bne *-9
-
-        inc $fc
-        inc $fe
-        inc $fa
-        inc $f8
-
-        inx
-        cpx #$04
-        bne *-24
+@update_pointer
+        inc ENEMY_1_Y_ADDRESS ; move him down
+        lda ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
+        sta ENEMY_1_SPRITE_ADDRESS
+@done
         rts
 
+        
+        
 
-Incasm  "PlayfieldData.asm"
+Incasm  "data.asm"
 Incasm  "Text.asm"
-Incasm  "SpriteData.asm"
 

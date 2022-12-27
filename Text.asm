@@ -1,3 +1,4 @@
+
 score_label     text 'SCORE:'
                 byte 0
 

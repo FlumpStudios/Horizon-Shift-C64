@@ -5,7 +5,9 @@
 *=$0801
         BYTE $0B, $08, $0A, $00, $9E, $32, $30, $36, $31, $00, $00, $00
 
+*=$080d
 Incasm  "Init.asm"
+
 
 ;---------------
 ;ENTRY POINT
@@ -19,6 +21,7 @@ main
         jsr load_game ;load the game if a key is pressed
 
 render_menu
+        
         PRINT welcome_message, VRAM_START_ADDRESS + 5
         PRINT die_message, VRAM_START_ADDRESS + 132
         PRINT press_to_continue,  VRAM_START_ADDRESS + 567
@@ -29,20 +32,33 @@ load_game
          
         lda #FALSE
         sta BULLET_IS_FIRING_LOCATION   
+
+        lda #0
+        sta TIMER_ADDRESS
         
-        ; positioning sprites
+        ; positioning spritess
         ;PLAYER SPRITE
         lda #172
         sta PLAYER_X_ADDRESS_LOW
+        
 
         lda #127
         sta PLAYER_Y_ADDRESS
+        
+        ; Bullet
+        lda #$00
+        sta $d002       ; #1. sprite X low byte
+        lda #$3C
+        sta $d003       ; #1. sprite Y
+        
+        ; Enemey 1
+        lda #$96
+        sta $d004       ; #2. sprite X low byte
+        lda #70
 
-        ;BULLET SPRITE
-        lda #172        
-        sta $d002        
-        lda #0
-        sta BULLET_Y_ADDRESS       
+
+
+        sta $d005       ; #2. sprite Y     
 
         ; expand sprites
         lda #$00
@@ -59,15 +75,16 @@ load_game
         sta $07F8 ; store the value of 40 in memory location $07F8 (2040) (Default area for sprite pointers (8 bytes).)
         lda #$29
         sta $07F9
+        lda #$2A
+        sta $07FA
 
         ; turn on sprites
-        lda #%0000011 ;This is a bit mask for the sprites to turn on
+        lda #%0000111 ;This is a bit mask for the sprites to turn on
         sta $d015
         
         LOAD_SPRITE_INTO_MEMORY player_sprite, $0A00
-        LOAD_SPRITE_INTO_MEMORY bullet_sprite, $0A40
-        
-
+        LOAD_SPRITE_INTO_MEMORY bullet_sprite, $0A00 + 64
+        LOAD_SPRITE_INTO_MEMORY robot_enemy_sprite,$0A00 + 128
 
         jmp gameplay_loop
 
@@ -80,11 +97,15 @@ gameplay_loop
         cmp #$ff
         bne gameplay_loop
         ;-----------------
+           
+        inc TIMER_ADDRESS
         
-        clc
+        PRINT_DEBUG TIMER_ADDRESS
         ; If bullet out of bounds enable bullet for shooting
         IF_LESS_THAN BULLET_Y_ADDRESS,#40,@set_bullet_as_not_firing
+        ; OR
         IF_MORE_THAN BULLET_Y_ADDRESS,#250,@set_bullet_as_not_firing
+        ; ELSE
         jmp @handle_flip_shot
 
 @set_bullet_as_not_firing                
@@ -95,7 +116,7 @@ gameplay_loop
 
 @handle_flip_shot
         IF_EQUEL BULLET_IS_FIRING_LOCATION, #FALSE, @fire_direction_complete
-        
+        ; else if
         IF_EQUEL BULLET_DIRECTION_LOCATION, #DOWN, @fire_down
         
         lda BULLET_Y_ADDRESS      
@@ -124,7 +145,6 @@ check_joystick_input
 input_left_check
         lda #$04
         bit $DC01
-        clc
         bne input_right_check ; If left not active move to the next check
         
         IF_LESS_THAN PLAYER_X_ADDRESS_LOW, #PLAYER_MIN_X, input_right_check ;Bounds check
@@ -180,13 +200,22 @@ input_fire_check
         bit $DC01  
         bne complete_joy_check                
         
-        ;IF bullet is already firing skip
-        IF_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, complete_joy_check
+        ;If bullet is already firing don't fire
+        IF_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, complete_joy_check        
         
-        ; Move bullet to location of player
-        lda #145 ;middle of screen
+        IF_EQUEL PLAYER_FLIPPED_LOCATION, #TRUE, @set_to_down_location
+        
+        lda #133 ;If facing up place shot just above player       
+        jmp @exit_direcion_check
+
+@set_to_down_location
+        lda #159 ;If facing down place shot just below player
+        
+        
+@exit_direcion_check
         sta BULLET_Y_ADDRESS        
 
+        ; Set the bullet x location to the player
         lda PLAYER_X_ADDRESS_LOW
         sta BULLET_X_ADDRESS_LOW
 

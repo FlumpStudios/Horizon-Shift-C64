@@ -1,10 +1,3 @@
-Incasm  "Constants.asm"
-Incasm  "Macros.asm"
-                
-        CLEAR_SCREEN
-        SET_BACKGROUND_COLOUR #BLACK
-        SET_BORDER_COLOUR #BLACK   
-
         ; set to 25 line text mode and turn on the screen
         lda #$1B
         sta $D011
@@ -17,6 +10,52 @@ Incasm  "Macros.asm"
         lda #$18
         sta $D018
 
+        ; set border color
+        lda #$01
+        sta $D020
+        
+        ; set background color
+        lda #$00
+        sta $D021
+
+        ; draw screen
+        lda #$00
+        sta $fb
+        sta $fd
+        sta $f7
+
+        lda #$28
+        sta $fc
+
+        lda #$04
+        sta $fe
+
+        lda #$e8
+        sta $f9
+        lda #$2b
+        sta $fa
+
+        lda #$d8
+        sta $f8
+
+        ldx #$00
+        ldy #$00
+        lda ($fb),y
+        sta ($fd),y
+        lda ($f9),y
+        sta ($f7),y
+        iny
+        bne *-9
+
+        inc $fc
+        inc $fe
+        inc $fa
+        inc $f8
+
+        inx
+        cpx #$04
+        bne *-24
+
         ; set sprite multicolors
         lda #$08
         sta $d025
@@ -24,11 +63,67 @@ Incasm  "Macros.asm"
         sta $d026
 
         ; colorize sprites
-        lda #$07
+        lda #$0A
         sta $d027
-        lda #$0D
+        lda #$0A
         sta $d028
+        lda #$0A
+        sta $d029
+        lda #$06
+        sta $d02A
+        lda #$06
+        sta $d02B
+        lda #$06
+        sta $d02C
+        lda #$06
+        sta $d02D
+
+        ; positioning sprites
+        lda #$91        ; Player_up_X
+        sta $d000       
+        lda #$7F        ; Player_up_Y
+        sta $d001               
+        lda #$91        ; Player_bullet_X
+        sta $d004       
+        lda #$0A        ; Player_bullet_Y
+        sta $d005       
+        lda #$25        ; Enemy_Robot_F1_X
+        sta ENEMY_1_X_ADDRESS       
+        lda #$32        ; Enemy_Robot_F1_Y
+        sta ENEMY_1_Y_ADDRESS      
+         
+
+        ; X coordinate high bits
+        lda #$00
+        sta $d010
+
+        ; expand sprites
+        lda #$00
+        sta $d01d
+        lda #$00
+        sta $d017
 
         ; set multicolor flags
-        lda #$01
+        lda #$7B
         sta $d01c
+
+        ; set screen-sprite priority flags
+        lda #$00
+        sta $d01b
+
+        ; set sprite pointers
+        ; Player_up        
+        lda #$28
+        sta PLAYER_ADDRESS
+        
+        ; Player_Bullet
+        lda #PLAYER_BULLET_SPRITE_VALUE
+        sta PLAYER_BULLET_SPRITE_ADDRESS
+
+        ; Enemy_Robot
+        lda #ROBOT_ENEMY_F1_SPRITE_VALUE
+        sta ENEMY_1_SPRITE_ADDRESS       
+      
+        ; turn on sprites
+        lda #$7F
+        sta $d015
