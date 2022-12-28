@@ -8,9 +8,9 @@
 ;---------------
 c
 ;---------------
-*=$080d         
 Incasm  "Constants.asm"
 Incasm  "Macros.asm"
+*=$080d         
 Incasm "Init.asm"   
 
 gameplay_loop       
@@ -22,15 +22,16 @@ gameplay_loop
         bne gameplay_loop
         ;-----------------
 
-        IF_LESS_THAN TIMER_ADDRESS, #6, @skip_timer_reset
+        IF_LESS_THAN ANIMATION_TIMER_ADDRESS, #6, @skip_timer_reset
         lda #0
-        sta TIMER_ADDRESS
+        sta ANIMATION_TIMER_ADDRESS
         jmp gameplay_loop
 
 @skip_timer_reset
-        inc TIMER_ADDRESS
-        IF_NOT_EQUEL TIMER_ADDRESS, #6, handle_player_input
+        inc ANIMATION_TIMER_ADDRESS
+        IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #6, @skip_enemy_update
         jsr update_enemies
+@skip_enemy_update
         jsr handle_player_input
         jmp gameplay_loop
 

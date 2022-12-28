@@ -1,16 +1,17 @@
 
-******* 9 Label(s) *******
+******* 10 Label(s) *******
 base_score = $301C 
-check_joystick_input = $0964 
+c = $080D 
+check_joystick_input = $0957 
 die_message = $2FF4 
-gameplay_loop = $08E3 
-handle_player_input = $0928 
+gameplay_loop = $08D6 
+handle_player_input = $091B 
 press_to_continue = $3003 
 score_label = $2FD0 
-update_enemies = $0909 
+update_enemies = $08FC 
 welcome_message = $2FD7 
 
-******* 6 Unused label(s) *******
+******* 7 Unused label(s) *******
 @animate_robot
 @complete_joy_check
 @done
@@ -25,9 +26,11 @@ welcome_message = $2FD7
 @input_up_check
 @set_bullet_as_not_firing
 @set_to_down_location
+@skip_enemy_update
 @skip_timer_reset
 @update_pointer
 base_score
+c
 check_joystick_input
 die_message
 press_to_continue
@@ -35,6 +38,7 @@ score_label
 welcome_message
 
 ******* 43 Variable(s) *******
+ANIMATION_TIMER_ADDRESS  = $00FD
 BACKGROUND_COLOUR_LOCATION  = $D021
 BLACK  = $0000
 BORDER_COLOUR_LOCATION  = $D020
@@ -61,7 +65,7 @@ PLAYER_MOVE_SPEED  = $0004
 PLAYER_UP_VALUE  = $0028
 PLAYER_X_ADDRESS_LOW  = $D000
 PLAYER_Y_ADDRESS  = $D001
-ROBOT_ENEMY_CURRENT_FRAME_ADDRESS  = $C000
+ROBOT_ENEMY_CURRENT_FRAME_ADDRESS  = $07FB
 ROBOT_ENEMY_F1_SPRITE_VALUE  = $002B
 ROBOT_ENEMY_F2_SPRITE_VALUE  = $002C
 ROBOT_ENEMY_F3_SPRITE_VALUE  = $002D
@@ -70,7 +74,6 @@ ROBOT_ENEMY_RESET_FRAME  = $002F
 SPACE_CHAR  = $0020
 TEMP  = $00FE
 tgt_c64  = $0001
-TIMER_ADDRESS  = $00FD
 TRUE  = $0001
 UP  = $0000
 VRAM_END_ADDRESS  = $0800
@@ -78,7 +81,7 @@ VRAM_START_ADDRESS  = $0400
 WHITE  = $0001
 ZERO_PAGE_END_LOCATION  = $00FF
 ZERO_PAGE_START_LOCATION  = $0000
-******* 0 Unused variables(s) *******
+******* -1 Unused variables(s) *******
 BACKGROUND_COLOUR_LOCATION
 BLACK
 BORDER_COLOUR_LOCATION

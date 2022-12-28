@@ -1,14 +1,15 @@
 
-******* 10 Label(s) *******
+******* 11 Label(s) *******
 base_score = $301C 
 c = $080D 
-check_joystick_input = $0957 
+check_joystick_input = $0926 
 die_message = $2FF4 
-gameplay_loop = $08D6 
-handle_player_input = $091B 
+gameplay_loop = $0810 
+handle_player_input = $08EA 
 press_to_continue = $3003 
+run_game_initiation = $0820 
 score_label = $2FD0 
-update_enemies = $08FC 
+update_enemies = $09B6 
 welcome_message = $2FD7 
 
 ******* 7 Unused label(s) *******
@@ -24,6 +25,7 @@ welcome_message = $2FD7
 @input_left_check
 @input_right_check
 @input_up_check
+@move_robot
 @set_bullet_as_not_firing
 @set_to_down_location
 @skip_enemy_update
@@ -37,7 +39,8 @@ press_to_continue
 score_label
 welcome_message
 
-******* 43 Variable(s) *******
+******* 44 Variable(s) *******
+ANIMATION_SPEED  = $0006
 ANIMATION_TIMER_ADDRESS  = $00FD
 BACKGROUND_COLOUR_LOCATION  = $D021
 BLACK  = $0000
@@ -81,9 +84,8 @@ VRAM_START_ADDRESS  = $0400
 WHITE  = $0001
 ZERO_PAGE_END_LOCATION  = $00FF
 ZERO_PAGE_START_LOCATION  = $0000
-******* -1 Unused variables(s) *******
+******* -3 Unused variables(s) *******
 BACKGROUND_COLOUR_LOCATION
-BLACK
 BORDER_COLOUR_LOCATION
 HIGH_MEMORY_END_LOCATION
 HIGH_MEMORY_START_LOCATION

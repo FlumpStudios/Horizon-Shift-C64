@@ -121,5 +121,4 @@ check_joystick_input
         sta BULLET_IS_FIRING_LOCATION    
     
 @complete_joy_check
-        jmp gameplay_loop
         rts

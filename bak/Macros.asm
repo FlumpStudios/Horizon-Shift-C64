@@ -56,14 +56,28 @@ defm MULTIPLY; (1st number, 2nd number)
 endm
 
 
-defm IS_DIVISIBLE 
-        ldx #0
-        lda #0
-@multiply_loop
-        adc /1
-        inx
-        cpx /2
-        bne @multiply_loop
+defm IS_DIVISIBLE        
+    lda /1
+    and /2
+    beq divisible
+    jmp not_divisible
+    
+divisible
+    jmp /3
+not_divisible
+
+endm
+
+defm IS_NOT_DIVISIBLE        
+    lda /1
+    and /2
+    beq not_divisible
+    jmp divisible
+    
+divisible
+    jmp /3
+not_divisible
+
 endm
         
 

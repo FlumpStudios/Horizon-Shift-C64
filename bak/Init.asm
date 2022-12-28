@@ -1,17 +1,3 @@
-
-        ;---------------------------------
-        ;    Initiate memory location
-        ;---------------------------------
-        lda #FALSE
-        sta BULLET_IS_FIRING_LOCATION   
-
-        lda #0
-        sta TIMER_ADDRESS
-
-        lda #ROBOT_ENEMY_F1_SPRITE_VALUE
-        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS 
-
-        
         ;---------------------------------
         ;    Sprite and screen setup
         ;---------------------------------
@@ -130,7 +116,7 @@
         sta $d01b
 
         ; set sprite pointers
-        ; Player_up        
+        ; Player_up
         lda #$28
         sta PLAYER_ADDRESS
         
@@ -140,7 +126,7 @@
 
         ; Enemy_Robot
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
-        sta ENEMY_1_SPRITE_ADDRESS       
+        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS       
       
         ; turn on sprites
         lda #$7F

@@ -100,11 +100,11 @@ check_joystick_input
         
         IF_EQUEL PLAYER_FLIPPED_LOCATION, #TRUE, @set_to_down_location
         
-        lda #133 ;If facing up place shot just above player       
+        lda #123 ;If facing up place shot just above player       
         jmp @exit_direcion_check
 
 @set_to_down_location
-        lda #159 ;If facing down place shot just below player
+        lda #154 ;If facing down place shot just below player
         
         
 @exit_direcion_check
