@@ -27,7 +27,6 @@ update_enemies
         ; Reset frame
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
         sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS   
-        jmp @animate_robot
 
 @update_pointer
         lda ROBOT_ENEMY_CURRENT_FRAME_ADDRESS

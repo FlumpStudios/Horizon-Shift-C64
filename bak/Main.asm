@@ -10,32 +10,18 @@ c
 ;---------------
 Incasm  "Constants.asm"
 Incasm  "Macros.asm"
-*=$080d         
-Incasm "Init.asm"   
+*=$080d      
+        jsr run_game_initiation 
 
-gameplay_loop       
-        ;-----------------
-        ;Raster line check
-        ;-----------------
-        lda $d012
-        cmp #$ff
-        bne gameplay_loop
-        ;-----------------
-
-        IF_LESS_THAN ANIMATION_TIMER_ADDRESS, #6, @skip_timer_reset
-        lda #0
-        sta ANIMATION_TIMER_ADDRESS
-        jmp gameplay_loop
-
-@skip_timer_reset
-        inc ANIMATION_TIMER_ADDRESS
-        IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #6, @skip_enemy_update
-        jsr update_enemies
-@skip_enemy_update
+gameplay_loop               
+        IF_NOT_EQUEL $d012, #$ff, gameplay_loop ; Raster line check
+        
         jsr handle_player_input
-        jmp gameplay_loop
+        jsr update_enemies
+        jmp gameplay_loop ; restart game loop
 
-Incasm "Enemies.asm"
+Incasm "Init.asm"
 Incasm "Controls.asm"
-Incasm  "data.asm"
-Incasm  "Text.asm"
+Incasm "Enemies.asm"
+Incasm "data.asm"
+Incasm "Text.asm"

@@ -2,6 +2,7 @@
         ;    Sprite and screen setup
         ;---------------------------------
         
+run_game_initiation
         ; set to 25 line text mode and turn on the screen
         lda #$1B
         sta $D011
@@ -15,7 +16,7 @@
         sta $D018
 
         ; set border color
-        lda #$01
+        lda #BLACK
         sta $D020
         
         ; set background color
@@ -131,3 +132,5 @@
         ; turn on sprites
         lda #$7F
         sta $d015
+
+        rts

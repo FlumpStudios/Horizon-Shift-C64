@@ -8,8 +8,6 @@ endm
 
 
 
-
-
 ;----------------------------------------
 ;         SET BACKGROUND COLOUR            
 ;----------------------------------------
@@ -42,9 +40,6 @@ endm
 ;            MATHS
 ;-----------------------------
 
-
-
-
 defm MULTIPLY; (1st number, 2nd number)
         ldx #0
         lda #0
@@ -56,7 +51,7 @@ defm MULTIPLY; (1st number, 2nd number)
 endm
 
 
-defm IS_DIVISIBLE        
+defm IS_DIVISIBLE_POW_2        
     lda /1
     and /2
     beq divisible
@@ -156,15 +151,13 @@ endm
 ;----------------------------------------
 
 
-defm    PRINT_DEBUG        
+defm    PRINT_DEBUG ;(low byte)      
         lda #WHITE
-        sta $0286      ; set text color
-        jsr $E566      ; reset cursor
-
+        sta $0286      
+        jsr $E566      
         
         lda #0 ; High byte
         ldx /1 ; Low byte
-
 
         jsr $BDCD       ; print number
 
@@ -172,9 +165,7 @@ defm    PRINT_DEBUG
 
 ;===============================================================================
 
-defm    PRINT_DEBUG_16
-                        ; /1 = 1st Number High Byte Pointer
-                        ; /2 = 1st Number Low Byte Pointer
+defm    PRINT_DEBUG_16 ; (high byte, low byte)                      
         
         lda #White
         sta $0286       ; set text color
