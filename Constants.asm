@@ -1,7 +1,20 @@
+Black           = 0
+White           = 1
+Red             = 2
+Cyan            = 3 
+Purple          = 4
+Green           = 5
+Blue            = 6
+Yellow          = 7
+Orange          = 8
+Brown           = 9
+LightRed        = 10
+DarkGray        = 11
+MediumGray      = 12
+LightGreen      = 13
+LightBlue       = 14
+LightGray       = 15
 
-; Colors
-WHITE = $01
-BLACK = $00
 
 BORDER_COLOUR_LOCATION = $d020
 BACKGROUND_COLOUR_LOCATION = $d021
@@ -69,6 +82,7 @@ ENEMY1_HIT = ZERO_PAGE_START_LOCATION + 4
 GAMEPLAY_TIMER_ADDRESS = ZERO_PAGE_START_LOCATION + 5
 ANIMATION_TIMER_ADDRESS = ZERO_PAGE_START_LOCATION + 6
 PLAYER_IN_DEATH_STATE = ZERO_PAGE_START_LOCATION + 7
+MENU_FLASH = ZERO_PAGE_START_LOCATION + 8
 
 
 ; 16 it addressses
@@ -79,5 +93,4 @@ SCORE_ADDRESS_HIGH = HIGH_MEMORY_START_LOCATION + 1
 LIVES_ADDRESS_LOW = HIGH_MEMORY_START_LOCATION + 2
 
 DEATH_TIMER_LOW = HIGH_MEMORY_START_LOCATION + 4
-
 

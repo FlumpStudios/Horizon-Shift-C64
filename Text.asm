@@ -15,3 +15,9 @@ press_to_continue       text 'Press any button to play'
 
 base_score              text '0000'
                         byte 0
+
+clear                   text '                                     '
+                        byte 0
+
+copyright               text 'Written by Paul Marrable'
+                        byte 0

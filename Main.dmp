@@ -1,31 +1,43 @@
 
-******* 24 Label(s) *******
-~~~done{00003} = $1029 
-~~~done{00004} = $1037 
+******* 36 Label(s) *******
 ~~~done{00005} = $1045 
-~~~read_char_loop{00003} = $101D 
-~~~read_char_loop{00004} = $102B 
+~~~done{00006} = $1053 
+~~~done{00007} = $1061 
+~~~done{00011} = $108D 
+~~~done{00012} = $109E 
 ~~~read_char_loop{00005} = $1039 
+~~~read_char_loop{00006} = $1047 
+~~~read_char_loop{00007} = $1055 
+~~~read_char_loop{00011} = $1081 
+~~~read_char_loop{00012} = $1092 
 4 = $0801 
 base_score = $301D 
-check_joystick_input = $1276 
-collision_sprite_1 = $10AB 
-death = $1069 
+check_joystick_input = $12D1 
+clear = $3022 
+clear_print_press = $1090 
+collision_sprite_1 = $1106 
+copyright = $3048 
+death = $10C4 
 die_message = $2FF5 
-gameplay_loop = $104F 
-handle_player_input = $123A 
-initiate_game = $104C 
+gameplay_loop = $10AA 
+handle_player_input = $1295 
+initiate_game = $10A7 
 main = $100C 
 press_to_continue = $3004 
-random = $112B 
-reset_background_border_colour = $114C 
-reset_sprites = $1306 
-run_game_initiation = $1157 
+print_key_press = $107F 
+random = $1186 
+reset_background_border_colour = $11A7 
+reset_sprites = $1361 
+run_game_initiation = $11B2 
 score_label = $2FD1 
-update_enemies = $131C 
+update_colour = $10A1 
+update_enemies = $1377 
+W = $1078 
+wait_for_keypress = $1023 
 welcome_message = $2FD8 
+x = $1075 
 
-******* 10 Unused label(s) *******
+******* 14 Unused label(s) *******
 @animate_robot
 @complete_joy_check
 @complete_update
@@ -52,28 +64,35 @@ welcome_message = $2FD8
 @skip_enemy_update
 @skip_reset
 @update_pointer
-@wait_for_keypress
-~~~done{00003}
-~~~done{00004}
 ~~~done{00005}
-~~~read_char_loop{00003}
-~~~read_char_loop{00004}
+~~~done{00006}
+~~~done{00007}
+~~~done{00011}
+~~~done{00012}
 ~~~read_char_loop{00005}
+~~~read_char_loop{00006}
+~~~read_char_loop{00007}
+~~~read_char_loop{00011}
+~~~read_char_loop{00012}
 4
 base_score
 check_joystick_input
 score_label
 
-******* 51 Variable(s) *******
+******* 66 Variable(s) *******
 ANIMATION_TIMER_ADDRESS  = $0008
 BACKGROUND_COLOUR_LOCATION  = $D021
-BLACK  = $0000
+Black  = $0000
+Blue  = $0006
 BORDER_COLOUR_LOCATION  = $D020
+Brown  = $0009
 BULLET_DIRECTION_LOCATION  = $00FC
 BULLET_IS_FIRING_LOCATION  = $00FB
 BULLET_MOVE_SPEED  = $0004
 BULLET_X_ADDRESS_LOW  = $D004
 BULLET_Y_ADDRESS  = $D005
+Cyan  = $0003
+DarkGray  = $000B
 DEATH_TIMER_LOW  = $C004
 DOWN  = $0001
 ENEMY_1_SPRITE_ADDRESS  = $07FB
@@ -84,9 +103,17 @@ EXPLOSION_F1_SPRITE_VALUE  = $002F
 EXPLOSION_RESET_FRAME  = $0032
 FALSE  = $0000
 GAMEPLAY_TIMER_ADDRESS  = $0007
+Green  = $0005
 HIGH_MEMORY_END_LOCATION  = $FFFF
 HIGH_MEMORY_START_LOCATION  = $C000
+LightBlue  = $000E
+LightGray  = $000F
+LightGreen  = $000D
+LightRed  = $000A
 LIVES_ADDRESS_LOW  = $C002
+MediumGray  = $000C
+MENU_FLASH  = $000A
+Orange  = $0008
 PLAYER_ADDRESS  = $07F8
 PLAYER_BULLET_SPRITE_ADDRESS  = $07FA
 PLAYER_BULLET_SPRITE_VALUE  = $002A
@@ -99,6 +126,8 @@ PLAYER_MOVE_SPEED  = $0003
 PLAYER_UP_VALUE  = $0028
 PLAYER_X_ADDRESS_LOW  = $D000
 PLAYER_Y_ADDRESS  = $D001
+Purple  = $0004
+Red  = $0002
 ROBOT_ENEMY_CURRENT_FRAME_ADDRESS  = $07FB
 ROBOT_ENEMY_F1_SPRITE_VALUE  = $002B
 ROBOT_ENEMY_RESET_FRAME  = $002F
@@ -113,19 +142,35 @@ TRUE  = $0001
 UP  = $0000
 VRAM_END_ADDRESS  = $0800
 VRAM_START_ADDRESS  = $0400
-WHITE  = $0001
+White  = $0001
+Yellow  = $0007
 ZERO_PAGE_END_LOCATION  = $00FF
 ZERO_PAGE_START_LOCATION  = $0002
-******* -16 Unused variables(s) *******
-GAMEPLAY_TIMER_ADDRESS
+******* 0 Unused variables(s) *******
+Black
+Blue
+Brown
+Cyan
+DarkGray
+Green
 HIGH_MEMORY_END_LOCATION
 HIGH_MEMORY_START_LOCATION
+LightBlue
+LightGray
+LightGreen
+LightRed
+MediumGray
+MENU_FLASH
+Orange
+Purple
+Red
 SPACE_CHAR
 TEMP3
 tgt_c64
 VRAM_END_ADDRESS
 VRAM_START_ADDRESS
-WHITE
+White
+Yellow
 ZERO_PAGE_END_LOCATION
 ZERO_PAGE_START_LOCATION
 

@@ -138,8 +138,7 @@ run_game_initiation
         TURN_ON_ALL_SPRITES
 
         ; Set printable text colour to white
-        lda #White      
-        sta $0286              
+        SET_TEXT_COLOUR #white
         
         ; Set initial lives to 3
         lda #3

@@ -15,20 +15,59 @@ Incasm  "Constants.asm"
 Incasm  "Macros.asm"
 
 main
+        SET_TEXT_COLOUR #white
         TURN_OFF_ALL_SPRITES
         CLEAR_KEYBOARD_BUFFER
         CLEAR_SCREEN
+        inc $0286
         jsr reset_background_border_colour
+
+        
+
+wait_for_keypress
+        
+        inc $0286 ; Increase frame outside of loop for random cols 
+        IF_NOT_EQUEL $d012, #$ff, wait_for_keypress ; Raster line check       
+
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        
+        
+        
         PRINT welcome_message, VRAM_START_ADDRESS + 5
         PRINT die_message, VRAM_START_ADDRESS + 132
-        PRINT press_to_continue,  VRAM_START_ADDRESS + 567
+        PRINT copyright, VRAM_END_ADDRESS -57
+
+        ; TODO: Do this properly :)
 
 
-@wait_for_keypress
+        IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #128, update_colour
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #127, print_key_press
+        IF_MORE_THAN GAMEPLAY_TIMER_ADDRESS, #127, clear_print_press
 
+x       
+        jmp wait_for_keypress
+
+W
         lda $c6
-        beq @wait_for_keypress        
+        beq x        
         jmp initiate_game ;load the game if a key is pressed
+
+print_key_press
+        PRINT press_to_continue,  VRAM_START_ADDRESS + 567        
+        jmp w
+
+clear_print_press
+        PRINT clear, VRAM_START_ADDRESS + 567
+        jmp w
+
+update_colour
+        
+        CLEAR_SCREEN
+        jmp w
 
 
 initiate_game
@@ -71,8 +110,6 @@ death
 
 @end_game
         jmp main
-        
-        
 
 
 collision_sprite_1      
@@ -157,14 +194,9 @@ reset_background_border_colour
         sta $D021
         rts
 
-
-
-
-
 Incasm "Init.asm"
 Incasm "Controls.asm"
 Incasm "Enemies.asm"
 Incasm "data.asm"
 Incasm "Text.asm"
-
 
