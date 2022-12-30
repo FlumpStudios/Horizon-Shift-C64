@@ -152,28 +152,29 @@ endm
 
 
 defm    PRINT_DEBUG ;(low byte)      
-        lda #WHITE
-        sta $0286      
-        jsr $E566      
+                        ; /1 = X Position Absolute
+                        ; /2 = Y Position Absolute
+                        ; /3 = 1st Number Low Byte Pointer
         
-        lda #0 ; High byte
-        ldx /1 ; Low byte
+        ldx /2         ; Select row 
+        ldy /1         ; Select column 
+        jsr $E50C      ; Set cursor 
 
+        lda #0
+        ldx /3
         jsr $BDCD       ; print number
-
         endm
 
 ;===============================================================================
 
 defm    PRINT_DEBUG_16 ; (high byte, low byte)                      
-        
-        lda #White
-        sta $0286       ; set text color
-        lda #$20        ; space
         jsr $E566      ; reset cursor
-        lda /1
-        ldx /2
-        jsr $BDCD       ; print number
+        ldx #/2         ; Select row 
+        ldy #/1         ; Select column 
+        jsr $E50C       ; Set cursor 
 
+        lda /3
+        ldx /4
+        jsr $BDCD       ; print number
         endm
 

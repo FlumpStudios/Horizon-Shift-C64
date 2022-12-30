@@ -70,16 +70,22 @@ run_game_initiation
         ; colorize sprites
         lda #$0A
         sta $d027
+
         lda #$0A
         sta $d028
+
         lda #$0A
         sta $d029
+
         lda #$06
         sta $d02A
+
         lda #$06
         sta $d02B
+
         lda #$06
         sta $d02C
+
         lda #$06
         sta $d02D
 
@@ -132,5 +138,3 @@ run_game_initiation
         ; turn on sprites
         lda #$7F
         sta $d015
-
-        rts

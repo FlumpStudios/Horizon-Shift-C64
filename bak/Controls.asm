@@ -1,7 +1,7 @@
 
 handle_player_input        
         ; If bullet out of bounds enable bullet for shooting
-        IF_LESS_THAN BULLET_Y_ADDRESS,#40,@set_bullet_as_not_firing
+        IF_LESS_THAN BULLET_Y_ADDRESS,#30,@set_bullet_as_not_firing
         ; OR
         IF_MORE_THAN BULLET_Y_ADDRESS,#250,@set_bullet_as_not_firing
         ; ELSE
@@ -122,3 +122,4 @@ check_joystick_input
     
 @complete_joy_check
         rts
+

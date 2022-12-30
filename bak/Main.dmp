@@ -1,21 +1,23 @@
 
-******* 11 Label(s) *******
+******* 12 Label(s) *******
+4 = $0801 
 base_score = $301C 
-c = $080D 
-check_joystick_input = $0926 
+check_joystick_input = $1165 
+collision_sprite_1 = $1022 
 die_message = $2FF4 
-gameplay_loop = $0810 
-handle_player_input = $08EA 
+gameplay_loop = $100F 
+handle_player_input = $1129 
 press_to_continue = $3003 
-run_game_initiation = $0820 
+run_game_initiation = $1060 
 score_label = $2FD0 
-update_enemies = $09B6 
+update_enemies = $11F5 
 welcome_message = $2FD7 
 
 ******* 7 Unused label(s) *******
 @animate_robot
 @complete_joy_check
 @done
+@done_check
 @exit_direcion_check
 @fire_direction_complete
 @fire_down
@@ -28,33 +30,37 @@ welcome_message = $2FD7
 @move_robot
 @set_bullet_as_not_firing
 @set_to_down_location
+@skip_death_animations
 @skip_enemy_update
-@skip_timer_reset
+@skip_reset
 @update_pointer
+4
 base_score
-c
 check_joystick_input
 die_message
 press_to_continue
 score_label
 welcome_message
 
-******* 44 Variable(s) *******
-ANIMATION_SPEED  = $0006
-ANIMATION_TIMER_ADDRESS  = $00FD
+******* 46 Variable(s) *******
+ANIMATION_TIMER_ADDRESS  = $0008
 BACKGROUND_COLOUR_LOCATION  = $D021
 BLACK  = $0000
 BORDER_COLOUR_LOCATION  = $D020
 BULLET_DIRECTION_LOCATION  = $00FC
 BULLET_IS_FIRING_LOCATION  = $00FB
-BULLET_MOVE_SPEED  = $0008
+BULLET_MOVE_SPEED  = $0004
 BULLET_X_ADDRESS_LOW  = $D004
 BULLET_Y_ADDRESS  = $D005
 DOWN  = $0001
 ENEMY_1_SPRITE_ADDRESS  = $07FB
 ENEMY_1_X_ADDRESS  = $D006
 ENEMY_1_Y_ADDRESS  = $D007
+ENEMY1_HIT  = $0006
+EXPLOSION_F1_SPRITE_VALUE  = $0030
+EXPLOSION_RESET_FRAME  = $0032
 FALSE  = $0000
+GAMEPLAY_TIMER_ADDRESS  = $0007
 HIGH_MEMORY_END_LOCATION  = $FFFF
 HIGH_MEMORY_START_LOCATION  = $C000
 PLAYER_ADDRESS  = $07F8
@@ -64,18 +70,17 @@ PLAYER_DOWN_VALUE  = $0029
 PLAYER_FLIPPED_LOCATION  = $0002
 PLAYER_MAX_X  = $00FA
 PLAYER_MIN_X  = $001E
-PLAYER_MOVE_SPEED  = $0004
+PLAYER_MOVE_SPEED  = $0003
 PLAYER_UP_VALUE  = $0028
 PLAYER_X_ADDRESS_LOW  = $D000
 PLAYER_Y_ADDRESS  = $D001
 ROBOT_ENEMY_CURRENT_FRAME_ADDRESS  = $07FB
 ROBOT_ENEMY_F1_SPRITE_VALUE  = $002B
-ROBOT_ENEMY_F2_SPRITE_VALUE  = $002C
-ROBOT_ENEMY_F3_SPRITE_VALUE  = $002D
-ROBOT_ENEMY_F4_SPRITE_VALUE  = $002E
 ROBOT_ENEMY_RESET_FRAME  = $002F
 SPACE_CHAR  = $0020
-TEMP  = $00FE
+TEMP1  = $0003
+TEMP2  = $0004
+TEMP3  = $0005
 tgt_c64  = $0001
 TRUE  = $0001
 UP  = $0000
@@ -83,17 +88,16 @@ VRAM_END_ADDRESS  = $0800
 VRAM_START_ADDRESS  = $0400
 WHITE  = $0001
 ZERO_PAGE_END_LOCATION  = $00FF
-ZERO_PAGE_START_LOCATION  = $0000
-******* -3 Unused variables(s) *******
+ZERO_PAGE_START_LOCATION  = $0002
+******* -6 Unused variables(s) *******
 BACKGROUND_COLOUR_LOCATION
 BORDER_COLOUR_LOCATION
+EXPLOSION_RESET_FRAME
+GAMEPLAY_TIMER_ADDRESS
 HIGH_MEMORY_END_LOCATION
 HIGH_MEMORY_START_LOCATION
-ROBOT_ENEMY_F2_SPRITE_VALUE
-ROBOT_ENEMY_F3_SPRITE_VALUE
-ROBOT_ENEMY_F4_SPRITE_VALUE
 SPACE_CHAR
-TEMP
+TEMP3
 tgt_c64
 VRAM_END_ADDRESS
 VRAM_START_ADDRESS
