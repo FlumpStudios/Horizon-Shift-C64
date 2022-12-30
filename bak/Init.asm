@@ -4,24 +4,24 @@
         
 run_game_initiation
         ; set to 25 line text mode and turn on the screen
-        lda #$1B
-        sta $D011
+        ;lda #$1B
+        ;sta $D011
 
         ; disable SHIFT-Commodore
-        lda #$80
-        sta $0291
+        ;lda #$80
+        ;sta $0291
 
         ; set screen memory ($0400) and charset bitmap offset ($2000)
         lda #$18
         sta $D018
 
         ; set border color
-        lda #BLACK
-        sta $D020
+        ;lda #BLACK
+        ;sta $D020
         
         ; set background color
-        lda #$00
-        sta $D021
+        ;lda #$00
+        ;sta $D021
 
         ; draw screen
         lda #$00
@@ -98,9 +98,9 @@ run_game_initiation
         sta $d004       
         lda #$0A        ; Player_bullet_Y
         sta $d005       
-        lda #$25        ; Enemy_Robot_F1_X
+        lda #150        ; Enemy_Robot_F1_X
         sta ENEMY_1_X_ADDRESS       
-        lda #$32        ; Enemy_Robot_F1_Y
+        lda #50        ; Enemy_Robot_F1_Y
         sta ENEMY_1_Y_ADDRESS      
          
 
@@ -138,3 +138,18 @@ run_game_initiation
         ; turn on sprites
         lda #$7F
         sta $d015
+
+        lda #White      
+        sta $0286      
+        
+        
+        ; Set initial lives to 3
+        lda #3
+        sta LIVES_ADDRESS_LOW
+
+        lda #FALSE
+        sta PLAYER_IN_DEATH_STATE
+
+        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_LOW, SCORE_ADDRESS_LOW 
+        PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW     
+        

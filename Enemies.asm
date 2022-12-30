@@ -1,4 +1,19 @@
 
+reset_sprites
+        jsr random
+        sta ENEMY_1_X_ADDRESS
+        AND #$01 ; If result of random is even set enemy to top of screen, else bottom
+        BEQ @set_enemy_to_top
+
+        lda #25
+        sta ENEMY_1_Y_ADDRESS
+        rts
+
+@set_enemy_to_top
+        lda #250
+        sta ENEMY_1_Y_ADDRESS
+        rts
+
 update_enemies 
 
         
@@ -36,20 +51,8 @@ update_enemies
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
         sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
         
-        jsr random
-        sta ENEMY_1_X_ADDRESS
-        AND #$01 ; If result of random is even set enemy to top of screen, else bottom
-        BEQ @set_enemy_to_top
-
-
-        lda #25
-        sta ENEMY_1_Y_ADDRESS
-        jmp @done
-
-@set_enemy_to_top
-        lda #250
-        sta ENEMY_1_Y_ADDRESS
-        jmp @done
+      jsr reset_sprites
+      jmp @done
         
         
 @skip_death_animations        
@@ -69,6 +72,8 @@ update_enemies
 @move_enemy
         IF_MORE_THAN ENEMY_1_Y_ADDRESS, #151, @move_up ; If on bottom half of screen, move up        
         IF_LESS_THAN ENEMY_1_Y_ADDRESS, #129, @move_down ; If on top half of screen, move down
+        lda #TRUE
+        sta PLAYER_IN_DEATH_STATE
         jmp @update_pointer
 
 @move_down        
@@ -77,5 +82,5 @@ update_enemies
 @move_up
         dec ENEMY_1_Y_ADDRESS
         rts
-
+        
 @done

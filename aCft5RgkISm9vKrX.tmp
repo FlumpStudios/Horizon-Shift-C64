@@ -14,11 +14,9 @@
 Incasm  "Constants.asm"
 Incasm  "Macros.asm"
 
-        
-
 main
-        lda #250
-        sta SCORE_ADDRESS
+        TURN_OFF_ALL_SPRITES
+        CLEAR_KEYBOARD_BUFFER
         CLEAR_SCREEN
         jsr reset_background_border_colour
         PRINT welcome_message, VRAM_START_ADDRESS + 5
@@ -40,10 +38,41 @@ initiate_game
 gameplay_loop               
         IF_NOT_EQUEL $d012, #$ff, gameplay_loop ; Raster line check        
         
+        clc
+        IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, death
+        
         jsr handle_player_input
         jsr update_enemies
         jsr collision_sprite_1
         jmp gameplay_loop
+
+death        
+        IF_MORE_THAN DEATH_TIMER_LOW, #175, @reset_death
+        inc DEATH_TIMER_LOW
+
+        inc BORDER_COLOUR_LOCATION
+        dec BACKGROUND_COLOUR_LOCATION
+        jmp gameplay_loop
+@reset_death
+        lda #0
+        sta DEATH_TIMER_LOW
+
+        lda #FALSE
+        sta PLAYER_IN_DEATH_STATE
+        
+        IF_EQUEL LIVES_ADDRESS_LOW, #0, @end_game
+        
+        dec LIVES_ADDRESS_LOW
+        
+        PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW
+        jsr reset_sprites
+        jsr reset_background_border_colour
+        jmp gameplay_loop
+
+@end_game
+        jmp main
+        
+        
 
 
 collision_sprite_1      
@@ -92,17 +121,18 @@ collision_sprite_1
         sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
  
         clc
-        lda SCORE_ADDRESS 
+        lda SCORE_ADDRESS_LOW 
         adc #1
-        sta SCORE_ADDRESS
-        lda SCORE_ADDRESS + 1
+        sta SCORE_ADDRESS_LOW
+        lda SCORE_ADDRESS_HIGH
         adc #$00
-        sta SCORE_ADDRESS + 1
-        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS + 1, SCORE_ADDRESS
+        sta SCORE_ADDRESS_HIGH
+        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW
                 
 
 @done_check
         rts
+
 
 random
         lda #$FF  ; maximum frequency value
@@ -115,7 +145,6 @@ random
         IF_LESS_THAN TEMP1, #30, random
         IF_MORE_THAN TEMP1, #230, random
         rts
-
 
 
 reset_background_border_colour

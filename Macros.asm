@@ -20,6 +20,24 @@ defm SET_BACKGROUND_COLOUR ;(New background colour)
 endm
 ;-----------------------------------------
 
+defm CLEAR_KEYBOARD_BUFFER
+        LDA #$00
+        STA $C6
+endm
+
+
+
+defm TURN_ON_ALL_SPRITES
+        lda #%111111
+        sta $d015
+endm
+
+
+defm TURN_OFF_ALL_SPRITES
+        lda #%00000000
+        sta $d015
+endm
+
 
 
 

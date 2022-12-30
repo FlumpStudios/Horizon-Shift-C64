@@ -109,10 +109,10 @@ run_game_initiation
         sta $d010
 
         ; expand sprites
-        lda #$00
-        sta $d01d
-        lda #$00
-        sta $d017
+        ;lda #$00
+        ;sta $d01d
+        ;lda #$00
+        ;sta $d017
 
         ; set multicolor flags
         lda #$7B
@@ -135,13 +135,25 @@ run_game_initiation
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
         sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS       
       
-        ; turn on sprites
-        lda #$7F
-        sta $d015
+        TURN_ON_ALL_SPRITES
 
+        ; Set printable text colour to white
         lda #White      
-        sta $0286      
+        sta $0286              
         
-        ;PRINT_DEBUG #31,#2,SCORE_ADDRESS 
+        ; Set initial lives to 3
+        lda #3
+        sta LIVES_ADDRESS_LOW
 
-        jsr random
+        ; Set initial score
+        lda #0
+        sta SCORE_ADDRESS_LOW   
+        sta SCORE_ADDRESS_HIGH
+
+
+        lda #FALSE
+        sta PLAYER_IN_DEATH_STATE
+
+        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW 
+        PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW     
+        

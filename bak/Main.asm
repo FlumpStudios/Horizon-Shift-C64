@@ -8,22 +8,66 @@
         BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $34, $30, $39, $36, $29, $00, $00, $00
 
 *=$100C
+        
 Incasm  "Constants.asm"
 Incasm  "Macros.asm"
+
         
-        jsr run_game_initiation 
+
+main
+        CLEAR_SCREEN
+        jsr reset_background_border_colour
+        PRINT welcome_message, VRAM_START_ADDRESS + 5
+        PRINT die_message, VRAM_START_ADDRESS + 132
+        PRINT press_to_continue,  VRAM_START_ADDRESS + 567
+
+
+@wait_for_keypress
+
+        lda $c6
+        beq @wait_for_keypress        
+        jmp initiate_game ;load the game if a key is pressed
+
+
+initiate_game
+        jsr run_game_initiation
+
 
 gameplay_loop               
         IF_NOT_EQUEL $d012, #$ff, gameplay_loop ; Raster line check        
         
+        clc
+        IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, death
+        
         jsr handle_player_input
         jsr update_enemies
         jsr collision_sprite_1
+        jmp gameplay_loop
 
-        jmp gameplay_loop ; restart game loop
+death        
+        IF_MORE_THAN DEATH_TIMER_LOW, #200, @reset_death
+        inc DEATH_TIMER_LOW
+
+        inc BORDER_COLOUR_LOCATION
+        dec BACKGROUND_COLOUR_LOCATION
+        jmp gameplay_loop
+@reset_death
+        lda #0
+        sta DEATH_TIMER_LOW
+
+        lda #FALSE
+        sta PLAYER_IN_DEATH_STATE
+        dec LIVES_ADDRESS_LOW
+
+        PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW
+        jsr reset_sprites
+        jsr reset_background_border_colour
+        jmp gameplay_loop
+        
 
 
 collision_sprite_1      
+        IF_EQUEL ENEMY1_HIT, #TRUE, @done_check
         ; Check if bullet is overlapping on the left
         lda BULLET_X_ADDRESS_LOW ; load bullet position
         adc #15 ; Takes you to the end of the bullet
@@ -44,20 +88,69 @@ collision_sprite_1
         sta TEMP1
         lda BULLET_Y_ADDRESS
         sta TEMP2
-        IF_MORE_THAN TEMP2, TEMP1, @done_check
-                
+        IF_MORE_THAN TEMP2, TEMP1, @done_check        
+
+        lda ENEMY_1_Y_ADDRESS
+        sbc #12
+        
+        sta TEMP1
+        lda BULLET_Y_ADDRESS
+        sta TEMP2
+        
+        IF_LESS_THAN TEMP2, TEMP1, @done_check                 
+        
+        lda #TRUE
+        sta ENEMY1_HIT
+        
         ; Move the bullet off screen so the reset code can run
         lda #1
         sta BULLET_Y_ADDRESS
 
-        ; Set the enemy hit to true
-        lda #TRUE
-        sta ENEMY1_HIT        
+        
+        ; set robot frame to explosion
+        lda #EXPLOSION_F1_SPRITE_VALUE
+        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
+ 
+        clc
+        lda SCORE_ADDRESS_LOW 
+        adc #1
+        sta SCORE_ADDRESS_LOW
+        lda SCORE_ADDRESS_HIGH
+        adc #$00
+        sta SCORE_ADDRESS_HIGH
+        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW
                 
 
 @done_check
         rts
+
+
+random
+        lda #$FF  ; maximum frequency value
+        sta $D40E ; voice 3 frequency low byte
+        sta $D40F ; voice 3 frequency high byte
+        lda #$80  ; noise waveform, gate bit off
+        sta $D412 ; voice 3 control register
+        lda $D41B
+        sta TEMP1 
+        IF_LESS_THAN TEMP1, #30, random
+        IF_MORE_THAN TEMP1, #230, random
+        rts
+
+
+reset_background_border_colour
+        ; set border color
+        lda #BLACK
+        sta $D020
         
+        ; set background color
+        lda #BLACK
+        sta $D021
+        rts
+
+
+
+
 
 Incasm "Init.asm"
 Incasm "Controls.asm"
