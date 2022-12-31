@@ -16,15 +16,15 @@
 ~~~read_char_loop{00007} = $1055 
 ~~~read_char_loop{00011} = $1081 
 ~~~read_char_loop{00012} = $1092 
-~~~skip_death_animations{00042} = $14A2 
-~~~skip_death_animations{00043} = $14CF 
-~~~update_pointer{00042} = $14AE 
-~~~update_pointer{00043} = $14D9 
+~~~skip_death_animations{00045} = $14EB 
+~~~skip_death_animations{00046} = $1518 
+~~~update_pointer{00045} = $14F7 
+~~~update_pointer{00046} = $1522 
 4 = $0801 
-animate_muncher = $14B5 
-animate_robot = $1485 
+animate_muncher = $14FE 
+animate_robot = $14CE 
 base_score = $301D 
-check_joystick_input = $1357 
+check_joystick_input = $1364 
 clear = $3022 
 clear_print_press = $1090 
 collision_sprite_1 = $1106 
@@ -32,22 +32,22 @@ copyright = $3048
 death = $10C4 
 die_message = $2FF5 
 gameplay_loop = $10AA 
-handle_player_input = $131B 
+handle_player_input = $1328 
 initiate_game = $10A7 
 main = $100C 
-move_enemy = $143D 
-move_enemy2 = $1461 
+move_enemy = $144A 
+move_enemy2 = $1471 
 press_to_continue = $3004 
 print_key_press = $107F 
 random = $11F7 
-reset_all_enemies = $13E7 
+reset_all_enemies = $13F4 
 reset_background_border_colour = $1218 
-reset_enemy_1_sprites = $13EE 
-reset_enemy_2_sprites = $1404 
+reset_enemy_1_sprites = $13FB 
+reset_enemy_2_sprites = $1411 
 run_game_initiation = $1223 
 score_label = $2FD1 
 update_colour = $10A1 
-update_enemies = $141A 
+update_enemies = $1427 
 W = $1078 
 wait_for_keypress = $1023 
 welcome_message = $2FD8 
@@ -56,13 +56,15 @@ x = $1075
 ******* 24 Unused label(s) *******
 @complete_joy_check
 @complete_update
+@done
 @end_game
 @exit_direcion_check
 @exit_direction_check
-@exit_direction_check
+@exit_vert_direction_check
 @fire_direction_complete
 @fire_down
 @handle_flip_shot
+@hori_check
 @input_down_check
 @input_fire_check
 @input_left_check
@@ -70,9 +72,13 @@ x = $1075
 @input_up_check
 @move_down
 @move_down
+@move_left
+@move_right
 @move_up
 @move_up
 @reset_death
+@set_bounced_false
+@set_bounced_true
 @set_bullet_as_not_firing
 @set_enemy_to_top
 @set_enemy_to_top
@@ -94,16 +100,16 @@ x = $1075
 ~~~read_char_loop{00007}
 ~~~read_char_loop{00011}
 ~~~read_char_loop{00012}
-~~~skip_death_animations{00042}
-~~~skip_death_animations{00043}
-~~~update_pointer{00042}
-~~~update_pointer{00043}
+~~~skip_death_animations{00045}
+~~~skip_death_animations{00046}
+~~~update_pointer{00045}
+~~~update_pointer{00046}
 4
 base_score
 check_joystick_input
 score_label
 
-******* 73 Variable(s) *******
+******* 76 Variable(s) *******
 ANIMATION_TIMER_ADDRESS  = $0009
 BACKGROUND_COLOUR_LOCATION  = $D021
 Black  = $0000
@@ -141,9 +147,12 @@ LightRed  = $000A
 LIVES_ADDRESS_LOW  = $C002
 MediumGray  = $000C
 MENU_FLASH  = $000B
+MUNCHER_1_HAS_BOUNCED_ADDRESS  = $0011
 MUNCHER_ENEMY_CURRENT_FRAME_ADDRESS  = $0032
 MUNCHER_ENEMY_F1_SPRITE_VALUE  = $0032
 MUNCHER_ENEMY_RESET_FRAME  = $0036
+MUNCHER_X_SPEED_ADDRESS  = $000E
+MUNCHER_Y_SPEED_ADDRESS  = $000F
 Orange  = $0008
 PLAYER_ADDRESS  = $07F8
 PLAYER_BULLET_SPRITE_ADDRESS  = $07FA
@@ -151,7 +160,7 @@ PLAYER_BULLET_SPRITE_VALUE  = $002A
 PLAYER_DOWN_VALUE  = $0029
 PLAYER_FLIPPED_LOCATION  = $0002
 PLAYER_IN_DEATH_STATE  = $000A
-PLAYER_MAX_X  = $00FA
+PLAYER_MAX_X  = $00EA
 PLAYER_MIN_X  = $001E
 PLAYER_MOVE_SPEED  = $0003
 PLAYER_UP_VALUE  = $0028
@@ -177,7 +186,7 @@ White  = $0001
 Yellow  = $0007
 ZERO_PAGE_END_LOCATION  = $00FF
 ZERO_PAGE_START_LOCATION  = $0002
-******* 5 Unused variables(s) *******
+******* -1 Unused variables(s) *******
 Black
 Blue
 Brown

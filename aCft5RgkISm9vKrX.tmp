@@ -21,7 +21,6 @@ main
         CLEAR_SCREEN
         inc $0286
         jsr reset_background_border_colour
-
         
 
 wait_for_keypress
@@ -114,9 +113,6 @@ collision_sprite_1
         
         PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW
         rts
-
-
-
 
 random
         lda #$FF  ; maximum frequency value

@@ -19,7 +19,6 @@ main
         CLEAR_SCREEN
         inc $0286
         jsr reset_background_border_colour
-
         
 
 wait_for_keypress
