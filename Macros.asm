@@ -204,3 +204,148 @@ defm    PRINT_DEBUG_16 ; (high byte, low byte)
         jsr $BDCD       ; print number
         endm
 
+
+
+
+;=========================
+; SPRITE ANIMATION
+;=========================
+defm ANIMATE_ENEMY 
+
+; 1/ CURRENT FRAME ADDRESS
+; 2/ ENEMY HIT
+; 3/ FIRST FRAME SPRITE VALUE
+; 4/ RESET LABEL
+; 5/ RESET FRAME
+; 6/ POINTER
+
+        inc /1 
+
+        ; Check if enemy hit
+        lda /2
+        cmp #true
+        bne @skip_death_animations
+        
+        lda /1
+        cmp #EXPLOSION_RESET_FRAME
+        bne @update_pointer
+        
+        lda #FALSE
+        sta /2
+        lda /3
+        sta /1
+        
+        jsr /4
+        rts
+        
+        
+@skip_death_animations        
+        lda /1        
+        cmp /5
+        bne @update_pointer
+
+        ; Reset frame
+        lda /3
+        sta /1           
+
+@update_pointer
+        lda /1
+        sta /6
+endm
+
+
+; =======================
+;       COLLISION
+; =======================
+
+defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAME )
+        lda /1
+        cmp #TRUE
+        beq @has_not_collided
+
+        ; Check if bullet is overlapping on the left
+        lda BULLET_X_ADDRESS_LOW ; load bullet position
+        adc #15 ; Takes you to the end of the bullet
+        sta TEMP1
+
+        ; temp less than x address
+        clc
+        lda TEMP1
+        cmp /2
+        bcc @has_not_collided
+
+        ; Check if bullet is overlapping on the right
+        sbc #6
+        sta TEMP1
+        lda /2
+        adc #24
+        sta TEMP2
+
+        
+        ; If temp 1 is more than temp2 
+        clc
+        lda TEMP1
+        cmp TEMP2
+        bcs @has_not_collided
+        
+        ; Check if enemy has hit on the bottom of the enemy
+        lda /2 + 1
+        adc #12
+        sta TEMP1
+        lda BULLET_Y_ADDRESS
+        sta TEMP2
+        
+        ; If temp 2 is more than temp 1 
+        clc
+        lda TEMP2
+        cmp TEMP1
+        bcs @has_not_collided
+      
+
+        lda /2 + 1
+        sbc #12
+        
+        sta TEMP1
+        lda BULLET_Y_ADDRESS
+        sta TEMP2
+        
+
+        clc
+        lda TEMP2
+        cmp TEMP1
+        bcc @has_not_collided
+
+@has_collided
+        lda #TRUE
+        sta /1
+        
+        ; Move the bullet off screen so the reset code can run
+        lda #1
+        sta BULLET_Y_ADDRESS
+        
+        ; set robot frame to explosion
+        lda #EXPLOSION_F1_SPRITE_VALUE
+        sta /3
+ 
+
+        clc
+        lda SCORE_ADDRESS_LOW 
+        adc #1
+        sta SCORE_ADDRESS_LOW
+        lda SCORE_ADDRESS_HIGH
+        adc #$00
+        sta SCORE_ADDRESS_HIGH
+        jmp @done_check
+
+@has_not_collided
+
+
+@done_check
+          
+endm
+
+
+
+
+
+

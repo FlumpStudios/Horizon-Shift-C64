@@ -102,6 +102,11 @@ run_game_initiation
         sta ENEMY_1_X_ADDRESS       
         lda #50        ; Enemy_Robot_F1_Y
         sta ENEMY_1_Y_ADDRESS      
+
+        lda #100        ; Enemy_Robot_F1_X
+        sta ENEMY_2_X_ADDRESS       
+        lda #75        ; Enemy_Robot_F1_Y
+        sta ENEMY_2_Y_ADDRESS      
          
 
         ; X coordinate high bits
@@ -109,10 +114,10 @@ run_game_initiation
         sta $d010
 
         ; expand sprites
-        lda #$00
-        sta $d01d
-        lda #$00
-        sta $d017
+        ;lda #$00
+        ;sta $d01d
+        ;lda #$00
+        ;sta $d017
 
         ; set multicolor flags
         lda #$7B
@@ -131,25 +136,34 @@ run_game_initiation
         lda #PLAYER_BULLET_SPRITE_VALUE
         sta PLAYER_BULLET_SPRITE_ADDRESS
 
-        ; Enemy_Robot
+        ; Enemy frames
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
         sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS       
-      
-        ; turn on sprites
-        lda #$7F
-        sta $d015
-
-        lda #White      
-        sta $0286      
         
+        lda #MUNCHER_ENEMY_F1_SPRITE_VALUE
+        sta MUNCHER_ENEMY_CURRENT_FRAME_ADDRESS               
+        sta ENEMY_2_SPRITE_ADDRESS
+      
+        TURN_ON_ALL_SPRITES
+
+        ; Set printable text colour to white
+        SET_TEXT_COLOUR #white
         
         ; Set initial lives to 3
         lda #3
         sta LIVES_ADDRESS_LOW
 
-        lda #FALSE
-        sta PLAYER_IN_DEATH_STATE
+        ; Set initial score
+        lda #0
+        sta SCORE_ADDRESS_LOW   
+        sta SCORE_ADDRESS_HIGH
 
-        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_LOW, SCORE_ADDRESS_LOW 
+
+        lda #FALSE
+        sta PLAYER_IN_DEATH_STATE        
+        sta BULLET_IS_FIRING_LOCATION
+        sta PLAYER_FLIPPED_LOCATION
+
+        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW 
         PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW     
         

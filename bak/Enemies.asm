@@ -1,5 +1,11 @@
+;=========================
+;      reset code
+;=========================
+reset_all_enemies
+        jsr reset_enemy_1_sprites
+        rts
 
-reset_sprites
+reset_enemy_1_sprites
         jsr random
         sta ENEMY_1_X_ADDRESS
         AND #$01 ; If result of random is even set enemy to top of screen, else bottom
@@ -14,73 +20,96 @@ reset_sprites
         sta ENEMY_1_Y_ADDRESS
         rts
 
-update_enemies 
 
-        
-        
+reset_enemy_2_sprites
+        jsr random
+        sta ENEMY_2_X_ADDRESS
+        AND #$01 ; If result of random is even set enemy to top of screen, else bottom
+        BEQ @set_enemy_to_top
+
+        lda #25
+        sta ENEMY_2_Y_ADDRESS
+        rts
+
+@set_enemy_to_top
+        lda #250
+        sta ENEMY_2_Y_ADDRESS
+        rts
+
+
+
+;===================================
+;     Move and animate all sprites
+;===================================
+update_enemies        
         inc ANIMATION_TIMER_ADDRESS
         IF_LESS_THAN ANIMATION_TIMER_ADDRESS, #5, @skip_reset
         lda #0
-        sta ANIMATION_TIMER_ADDRESS        
+        sta ANIMATION_TIMER_ADDRESS
 
 @skip_reset
-        IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #1, @skip_enemy_update
-        jmp @animate_robot 
+        IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #1, @skip_enemy_update 
+        jsr animate_robot 
+        jsr animate_muncher
+        jsr move_enemy
+        jsr move_enemy2
+        jmp @complete_update
 
 @skip_enemy_update
         IF_EQUEL ENEMY1_HIT, #TRUE, @complete_update
-        jmp @move_enemy
-        
+
 @complete_update
         rts
 
-; =========================
-;        ANIMATION
-; =========================
-@animate_robot
-        inc ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
-        IF_NOT_EQUEL ENEMY1_HIT, #TRUE, @skip_death_animations
-        
-        ; TODO: Increment through explosion
-        lda ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
-        cmp #EXPLOSION_RESET_FRAME
-        bne @update_pointer
-        
-        lda #FALSE
-        sta ENEMY1_HIT
-        lda #ROBOT_ENEMY_F1_SPRITE_VALUE
-        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
-        
-      jsr reset_sprites
-      jmp @done
-        
-        
-@skip_death_animations        
-        lda ROBOT_ENEMY_CURRENT_FRAME_ADDRESS        
-        cmp #ROBOT_ENEMY_RESET_FRAME
-        bne @update_pointer
 
-        ; Reset frame
-        lda #ROBOT_ENEMY_F1_SPRITE_VALUE
-        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS        
-
-@update_pointer
-        lda ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
-        sta ENEMY_1_SPRITE_ADDRESS
-        jmp @done
-
-@move_enemy
+;=========================
+;       Enemy motion
+;=========================
+move_enemy
         IF_MORE_THAN ENEMY_1_Y_ADDRESS, #151, @move_up ; If on bottom half of screen, move up        
         IF_LESS_THAN ENEMY_1_Y_ADDRESS, #129, @move_down ; If on top half of screen, move down
         lda #TRUE
         sta PLAYER_IN_DEATH_STATE
-        jmp @update_pointer
+        jmp @exit_direction_check
 
 @move_down        
-        inc ENEMY_1_Y_ADDRESS
-        jmp @update_pointer
+        inc ENEMY_1_Y_ADDRESS    
+        jmp @exit_direction_check
+            
 @move_up
         dec ENEMY_1_Y_ADDRESS
-        rts
+        jmp @exit_direction_check
         
-@done
+@exit_direction_check
+        rts
+
+move_enemy2
+        IF_MORE_THAN ENEMY_2_Y_ADDRESS, #151, @move_up ; If on bottom half of screen, move up        
+        IF_LESS_THAN ENEMY_2_Y_ADDRESS, #129, @move_down ; If on top half of screen, move down
+        lda #TRUE
+        sta PLAYER_IN_DEATH_STATE
+        jmp @exit_direction_check
+
+@move_down       
+        inc ENEMY_2_Y_ADDRESS    
+        jmp @exit_direction_check
+            
+@move_up
+        dec ENEMY_2_Y_ADDRESS
+        jmp @exit_direction_check
+        
+@exit_direction_check
+        rts
+ 
+
+
+; =========================
+;      Enemy Animation
+; =========================      
+animate_robot
+        ANIMATE_ENEMY ROBOT_ENEMY_CURRENT_FRAME_ADDRESS, ENEMY1_HIT, #ROBOT_ENEMY_F1_SPRITE_VALUE, reset_enemy_1_sprites, #ROBOT_ENEMY_RESET_FRAME,ENEMY_1_SPRITE_ADDRESS     
+        rts   
+
+animate_muncher
+        ANIMATE_ENEMY MUNCHER_ENEMY_CURRENT_FRAME_ADDRESS, ENEMY2_HIT, #MUNCHER_ENEMY_F1_SPRITE_VALUE, reset_enemy_2_sprites, #MUNCHER_ENEMY_RESET_FRAME,ENEMY_2_SPRITE_ADDRESS     
+        rts        

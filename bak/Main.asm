@@ -12,21 +12,56 @@
 Incasm  "Constants.asm"
 Incasm  "Macros.asm"
 
+main
+        SET_TEXT_COLOUR #white
+        TURN_OFF_ALL_SPRITES
+        CLEAR_KEYBOARD_BUFFER
+        CLEAR_SCREEN
+        inc $0286
+        jsr reset_background_border_colour
+
         
 
-main
-        CLEAR_SCREEN
-        jsr reset_background_border_colour
+wait_for_keypress
+        
+        inc $0286 ; Increase frame outside of loop for random cols 
+        IF_NOT_EQUEL $d012, #$ff, wait_for_keypress ; Raster line check       
+
+        ; TODO: Do this properly :)
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        
         PRINT welcome_message, VRAM_START_ADDRESS + 5
         PRINT die_message, VRAM_START_ADDRESS + 132
-        PRINT press_to_continue,  VRAM_START_ADDRESS + 567
+        PRINT copyright, VRAM_END_ADDRESS -57
 
+        IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #128, update_colour
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #127, print_key_press
+        IF_MORE_THAN GAMEPLAY_TIMER_ADDRESS, #127, clear_print_press
 
-@wait_for_keypress
+x       
+        jmp wait_for_keypress
 
+W
         lda $c6
-        beq @wait_for_keypress        
+        beq x        
         jmp initiate_game ;load the game if a key is pressed
+
+print_key_press
+        PRINT press_to_continue,  VRAM_START_ADDRESS + 567        
+        jmp w
+
+clear_print_press
+        PRINT clear, VRAM_START_ADDRESS + 567
+        jmp w
+
+update_colour
+        
+        CLEAR_SCREEN
+        jmp w
 
 
 initiate_game
@@ -45,7 +80,7 @@ gameplay_loop
         jmp gameplay_loop
 
 death        
-        IF_MORE_THAN DEATH_TIMER_LOW, #200, @reset_death
+        IF_MORE_THAN DEATH_TIMER_LOW, #175, @reset_death
         inc DEATH_TIMER_LOW
 
         inc BORDER_COLOUR_LOCATION
@@ -57,72 +92,27 @@ death
 
         lda #FALSE
         sta PLAYER_IN_DEATH_STATE
+        
+        IF_EQUEL LIVES_ADDRESS_LOW, #0, @end_game
+        
         dec LIVES_ADDRESS_LOW
-
+        
         PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW
-        jsr reset_sprites
+        jsr reset_all_enemies
         jsr reset_background_border_colour
         jmp gameplay_loop
-        
 
+@end_game
+        jmp main
 
-collision_sprite_1      
-        IF_EQUEL ENEMY1_HIT, #TRUE, @done_check
-        ; Check if bullet is overlapping on the left
-        lda BULLET_X_ADDRESS_LOW ; load bullet position
-        adc #15 ; Takes you to the end of the bullet
-        sta TEMP1
-        IF_LESS_THAN TEMP1, ENEMY_1_X_ADDRESS, @done_check        
-
-        ; Check if bullet is overlapping on the right
-        sbc #6
-        sta TEMP1
-        lda ENEMY_1_X_ADDRESS
-        adc #24
-        sta TEMP2
-        IF_MORE_THAN TEMP1 , TEMP2, @done_check
-        
-        ; Check if enemy has hit on the bottom of the enemy
-        lda ENEMY_1_Y_ADDRESS
-        adc #12
-        sta TEMP1
-        lda BULLET_Y_ADDRESS
-        sta TEMP2
-        IF_MORE_THAN TEMP2, TEMP1, @done_check        
-
-        lda ENEMY_1_Y_ADDRESS
-        sbc #12
-        
-        sta TEMP1
-        lda BULLET_Y_ADDRESS
-        sta TEMP2
-        
-        IF_LESS_THAN TEMP2, TEMP1, @done_check                 
-        
-        lda #TRUE
-        sta ENEMY1_HIT
-        
-        ; Move the bullet off screen so the reset code can run
-        lda #1
-        sta BULLET_Y_ADDRESS
-
-        
-        ; set robot frame to explosion
-        lda #EXPLOSION_F1_SPRITE_VALUE
-        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
- 
-        clc
-        lda SCORE_ADDRESS_LOW 
-        adc #1
-        sta SCORE_ADDRESS_LOW
-        lda SCORE_ADDRESS_HIGH
-        adc #$00
-        sta SCORE_ADDRESS_HIGH
+collision_sprite_1
+        CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY1_HIT,ENEMY_1_X_ADDRESS
         PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW
-                
-
-@done_check
         rts
+        
+     
+
+
 
 
 random
@@ -148,13 +138,8 @@ reset_background_border_colour
         sta $D021
         rts
 
-
-
-
-
 Incasm "Init.asm"
 Incasm "Controls.asm"
 Incasm "Enemies.asm"
 Incasm "data.asm"
 Incasm "Text.asm"
-
