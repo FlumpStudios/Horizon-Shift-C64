@@ -32,6 +32,9 @@ wait_for_keypress
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        
+        inc GAMEPLAY_TIMER_ADDRESS
         
         PRINT welcome_message, VRAM_START_ADDRESS + 5
         PRINT die_message, VRAM_START_ADDRESS + 132
@@ -74,8 +77,13 @@ gameplay_loop
         IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, death
         
         jsr handle_player_input
-        jsr update_enemies
-        jsr collision_sprite_1
+        jsr update_enemies        
+
+        ; Skip bullet collison check if not firing
+        IF_NOT_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, gameplay_loop
+        
+        jsr check_bullet_collision
+
         jmp gameplay_loop
 
 death        
@@ -104,7 +112,7 @@ death
 @end_game
         jmp main
 
-collision_sprite_1
+check_bullet_collision
         CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY1_HIT, ENEMY_1_X_ADDRESS, ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
         
         CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY2_HIT, ENEMY_2_X_ADDRESS, MUNCHER_ENEMY_CURRENT_FRAME_ADDRESS

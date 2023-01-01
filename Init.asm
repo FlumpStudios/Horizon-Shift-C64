@@ -158,18 +158,14 @@ run_game_initiation
         sta SCORE_ADDRESS_LOW   
         sta SCORE_ADDRESS_HIGH
 
-        lda #5
-        sta MUNCHER_X_SPEED_ADDRESS
-        
         lda #1
+        sta MUNCHER_X_SPEED_ADDRESS        
         sta MUNCHER_Y_SPEED_ADDRESS
 
         lda #FALSE
         sta PLAYER_IN_DEATH_STATE        
         sta BULLET_IS_FIRING_LOCATION
         sta PLAYER_FLIPPED_LOCATION
-        
-        ;lda #FALSE
         sta MUNCHER_1_HAS_BOUNCED_ADDRESS
 
         jsr reset_all_enemies
