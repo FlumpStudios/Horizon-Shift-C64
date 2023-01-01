@@ -315,29 +315,45 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         cmp TEMP1
         bcc @has_not_collided
 
-@has_collided
-        lda #TRUE
+        jmp @has_collided  
+
+@has_not_collided
+        jmp @done_check
+        
+
+@has_collided        
+        ldx #TRUE ; Response
+        lda #TRUE        
         sta /1
         
+        lda #FALSE
+        sta BULLET_IS_FIRING_LOCATION 
+
         ; Move the bullet off screen so the reset code can run
-        lda #1
+        ; Don't move it past 250, otherwise the chain will reset
+        lda #249
         sta BULLET_Y_ADDRESS
         
         ; set robot frame to explosion
         lda #EXPLOSION_F1_SPRITE_VALUE
         sta /3
  
+        clc
+        lda CHAIN_ADDRESS_LOW 
+        adc #1
+        sta CHAIN_ADDRESS_LOW
+        lda CHAIN_ADDRESS_HIGH
+        adc #$00
+        sta CHAIN_ADDRESS_HIGH
 
         clc
         lda SCORE_ADDRESS_LOW 
-        adc #1
+        adc CHAIN_ADDRESS_LOW
         sta SCORE_ADDRESS_LOW
         lda SCORE_ADDRESS_HIGH
         adc #$00
-        sta SCORE_ADDRESS_HIGH
+        sta SCORE_ADDRESS_HIGH        
         jmp @done_check
-
-@has_not_collided
 
 
 @done_check

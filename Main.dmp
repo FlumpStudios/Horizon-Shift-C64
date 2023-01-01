@@ -1,60 +1,61 @@
 
 ******* 53 Label(s) *******
-~~~done_check{00020} = $117F 
-~~~done_check{00021} = $11ED 
-~~~done{00005} = $1049 
-~~~done{00006} = $1057 
-~~~done{00007} = $1065 
-~~~done{00011} = $1091 
-~~~done{00012} = $10A2 
-~~~has_collided{00020} = $115D 
-~~~has_collided{00021} = $11CC 
-~~~has_not_collided{00020} = $117F 
-~~~has_not_collided{00021} = $11ED 
-~~~read_char_loop{00005} = $103D 
-~~~read_char_loop{00006} = $104B 
-~~~read_char_loop{00007} = $1059 
-~~~read_char_loop{00011} = $1085 
-~~~read_char_loop{00012} = $1096 
-~~~skip_death_animations{00049} = $1519 
-~~~skip_death_animations{00050} = $1546 
-~~~update_pointer{00049} = $1525 
-~~~update_pointer{00050} = $1550 
+~~~done_check{00024} = $11D9 
+~~~done_check{00025} = $1265 
+~~~done{00005} = $1051 
+~~~done{00006} = $105F 
+~~~done{00007} = $106D 
+~~~done{00011} = $1099 
+~~~done{00012} = $10AA 
+~~~has_collided{00024} = $119F 
+~~~has_collided{00025} = $122C 
+~~~has_not_collided{00024} = $119C 
+~~~has_not_collided{00025} = $1229 
+~~~read_char_loop{00005} = $1045 
+~~~read_char_loop{00006} = $1053 
+~~~read_char_loop{00007} = $1061 
+~~~read_char_loop{00011} = $108D 
+~~~read_char_loop{00012} = $109E 
+~~~skip_death_animations{00058} = $15EE 
+~~~skip_death_animations{00059} = $161B 
+~~~update_pointer{00058} = $15FA 
+~~~update_pointer{00059} = $1625 
 4 = $0801 
-animate_muncher = $152C 
-animate_robot = $14FC 
-base_score = $301D 
-check_bullet_collision = $1110 
-check_joystick_input = $136C 
-clear = $3022 
-clear_print_press = $1094 
-copyright = $3048 
-death = $10CE 
-die_message = $2FF5 
-gameplay_loop = $10AE 
-handle_player_input = $1330 
-initiate_game = $10AB 
-main = $100C 
-move_enemy = $145B 
-move_enemy2_hori = $14BC 
-move_enemy2_vert = $1488 
-press_to_continue = $3004 
-print_key_press = $1083 
-random = $1201 
-reset_all_enemies = $13FC 
-reset_background_border_colour = $1222 
-reset_enemy_1_sprites = $1403 
-reset_enemy_2_sprites = $1419 
-run_game_initiation = $122D 
-score_label = $2FD1 
-update_colour = $10A5 
-update_enemies = $142F 
-W = $107C 
-wait_for_keypress = $1023 
-welcome_message = $2FD8 
-x = $1079 
+animate_muncher = $1601 
+animate_robot = $15D1 
+base_score = $301C 
+check_bullet_collision = $114C 
+check_joystick_input = $1441 
+clear = $3021 
+clear_print_press = $109C 
+copyright = $3047 
+death = $10D6 
+die_message = $2FF4 
+gameplay_loop = $10B6 
+handle_player_input = $13E7 
+initiate_game = $10B3 
+main = $1014 
+move_enemy = $1530 
+move_enemy2_hori = $1591 
+move_enemy2_vert = $155D 
+press_to_continue = $3003 
+print_key_press = $108B 
+random = $128F 
+reset_all_enemies = $14D1 
+reset_background_border_colour = $12B0 
+reset_enemy_1_sprites = $14D8 
+reset_enemy_2_sprites = $14EE 
+run_game_initiation = $12BB 
+score_label = $2FD0 
+update_colour = $10AD 
+update_enemies = $1504 
+W = $1084 
+wait_for_keypress = $102B 
+welcome_message = $2FD7 
+x = $1081 
 
 ******* 24 Unused label(s) *******
+@check_high
 @complete_joy_check
 @complete_update
 @done
@@ -78,6 +79,7 @@ x = $1079
 @move_right
 @move_up
 @move_up
+@reset_chain
 @reset_death
 @set_bounced_false
 @set_bounced_true
@@ -87,32 +89,34 @@ x = $1079
 @set_to_down_location
 @single_frame_skip
 @skip_no_frame
-~~~done_check{00020}
-~~~done_check{00021}
+@update_display
+@update_hi_score
+~~~done_check{00024}
+~~~done_check{00025}
 ~~~done{00005}
 ~~~done{00006}
 ~~~done{00007}
 ~~~done{00011}
 ~~~done{00012}
-~~~has_collided{00020}
-~~~has_collided{00021}
-~~~has_not_collided{00020}
-~~~has_not_collided{00021}
+~~~has_collided{00024}
+~~~has_collided{00025}
+~~~has_not_collided{00024}
+~~~has_not_collided{00025}
 ~~~read_char_loop{00005}
 ~~~read_char_loop{00006}
 ~~~read_char_loop{00007}
 ~~~read_char_loop{00011}
 ~~~read_char_loop{00012}
-~~~skip_death_animations{00049}
-~~~skip_death_animations{00050}
-~~~update_pointer{00049}
-~~~update_pointer{00050}
+~~~skip_death_animations{00058}
+~~~skip_death_animations{00059}
+~~~update_pointer{00058}
+~~~update_pointer{00059}
 4
 base_score
 check_joystick_input
 score_label
 
-******* 76 Variable(s) *******
+******* 80 Variable(s) *******
 ANIMATION_TIMER_ADDRESS  = $0009
 BACKGROUND_COLOUR_LOCATION  = $D021
 Black  = $0000
@@ -124,6 +128,8 @@ BULLET_IS_FIRING_LOCATION  = $00FB
 BULLET_MOVE_SPEED  = $0004
 BULLET_X_ADDRESS_LOW  = $D004
 BULLET_Y_ADDRESS  = $D005
+CHAIN_ADDRESS_HIGH  = $C007
+CHAIN_ADDRESS_LOW  = $C008
 Cyan  = $0003
 DarkGray  = $000B
 DEATH_TIMER_LOW  = $C004
@@ -141,6 +147,8 @@ EXPLOSION_RESET_FRAME  = $0032
 FALSE  = $0000
 GAMEPLAY_TIMER_ADDRESS  = $0008
 Green  = $0005
+HI_SCORE_ADDRESS_HIGH  = $C005
+HI_SCORE_ADDRESS_LOW  = $C006
 HIGH_MEMORY_END_LOCATION  = $FFFF
 HIGH_MEMORY_START_LOCATION  = $C000
 LightBlue  = $000E
@@ -189,7 +197,7 @@ White  = $0001
 Yellow  = $0007
 ZERO_PAGE_END_LOCATION  = $00FF
 ZERO_PAGE_START_LOCATION  = $0002
-******* -3 Unused variables(s) *******
+******* -7 Unused variables(s) *******
 Black
 Blue
 Brown
