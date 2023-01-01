@@ -12,14 +12,17 @@
 Incasm  "Constants.asm"
 Incasm  "Macros.asm"
 
-main
+        lda #0
+        sta HI_SCORE_ADDRESS_LOW
+        sta HI_SCORE_ADDRESS_HIGH
+
+main    
         SET_TEXT_COLOUR #white
         TURN_OFF_ALL_SPRITES
         CLEAR_KEYBOARD_BUFFER
         CLEAR_SCREEN
         inc $0286
         jsr reset_background_border_colour
-
         
 
 wait_for_keypress
@@ -32,6 +35,9 @@ wait_for_keypress
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS
+        
         inc GAMEPLAY_TIMER_ADDRESS
         
         PRINT welcome_message, VRAM_START_ADDRESS + 5
@@ -69,14 +75,19 @@ initiate_game
 
 
 gameplay_loop               
-        IF_NOT_EQUEL $d012, #$ff, gameplay_loop ; Raster line check        
+        IF_NOT_EQUEL $d012, #$ff, gameplay_loop ; Raster line check
         
         clc
         IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, death
         
         jsr handle_player_input
-        jsr update_enemies
-        jsr collision_sprite_1
+        jsr update_enemies        
+
+        ; Skip bullet collison check if not firing
+        IF_NOT_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, gameplay_loop
+        
+        jsr check_bullet_collision
+
         jmp gameplay_loop
 
 death        
@@ -103,17 +114,36 @@ death
         jmp gameplay_loop
 
 @end_game
+        IF_NOT_EQUEL SCORE_ADDRESS_HIGH, #0, @check_high ; If high is 0, don't bother checking it       
+        IF_MORE_THAN SCORE_ADDRESS_LOW, HI_SCORE_ADDRESS_LOW, @update_hi_score
+        jmp main        
+
+@check_high
+        IF_MORE_THAN SCORE_ADDRESS_HIGH, HI_SCORE_ADDRESS_HIGH, @update_hi_score
+        IF_MORE_THAN SCORE_ADDRESS_LOW, HI_SCORE_ADDRESS_LOW, @update_hi_score
         jmp main
 
-collision_sprite_1
-        CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY1_HIT,ENEMY_1_X_ADDRESS
-        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW
-        rts
+@update_hi_score
+        lda SCORE_ADDRESS_LOW
+        sta HI_SCORE_ADDRESS_LOW
+
+        lda SCORE_ADDRESS_HIGH
+        sta HI_SCORE_ADDRESS_HIGH
+
+        jmp main
+
+check_bullet_collision
+        CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY1_HIT, ENEMY_1_X_ADDRESS, ROBOT_ENEMY_CURRENT_FRAME_ADDRESS        
+        CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY2_HIT, ENEMY_2_X_ADDRESS, MUNCHER_ENEMY_CURRENT_FRAME_ADDRESS        
         
-     
-
-
-
+        cpx #TRUE
+        beq @update_display        
+        rts
+@update_display
+        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW
+        PRINT_DEBUG #31,#5, CHAIN_ADDRESS_LOW  
+        ldx #0 ; Reset the x register
+        rts
 
 random
         lda #$FF  ; maximum frequency value

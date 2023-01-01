@@ -138,10 +138,10 @@ run_game_initiation
 
         ; Enemy frames
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
-        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS       
+        sta ENEMY_1_CURRENT_FRAME_ADDRESS       
         
         lda #MUNCHER_ENEMY_F1_SPRITE_VALUE
-        sta MUNCHER_ENEMY_CURRENT_FRAME_ADDRESS               
+        sta ENEMY_2_CURRENT_FRAME_ADDRESS               
         sta ENEMY_2_SPRITE_ADDRESS
       
         TURN_ON_ALL_SPRITES
@@ -162,19 +162,25 @@ run_game_initiation
         sta MUNCHER_X_SPEED_ADDRESS        
         sta MUNCHER_Y_SPEED_ADDRESS
         sta CHAIN_ADDRESS_LOW
+        sta ENEMY_1_VARIATION
+        sta ROBOT_Y_SPEED_ADDRESS
 
         lda #FALSE
         sta PLAYER_IN_DEATH_STATE        
         sta BULLET_IS_FIRING_LOCATION
         sta PLAYER_FLIPPED_LOCATION
         sta MUNCHER_1_HAS_BOUNCED_ADDRESS
+        
+        lda #2
+        sta ASTROID_Y_SPEED_ADDRESS
 
+        lda #1
+        sta ROBOT_X_SPEED_ADDRESS 
+        
         jsr reset_all_enemies
 
         PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW 
-        PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW 
-        
+        PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW         
         PRINT_DEBUG_16 #31,#5,CHAIN_ADDRESS_HIGH, CHAIN_ADDRESS_LOW    
-
         PRINT_DEBUG_16 #31,#12,HI_SCORE_ADDRESS_HIGH, HI_SCORE_ADDRESS_LOW
         

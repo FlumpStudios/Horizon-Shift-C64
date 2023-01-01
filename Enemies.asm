@@ -78,22 +78,66 @@ update_enemies
 ;       Enemy motion
 ;=========================
 move_enemy
-        IF_EQUEL ENEMY1_HIT, #TRUE, @done        
+        IF_NOT_EQUEL ENEMY1_HIT, #TRUE, @move
+        rts
+
+@move      
         IF_MORE_THAN ENEMY_1_Y_ADDRESS, #151, @move_up ; If on bottom half of screen, move up        
         IF_LESS_THAN ENEMY_1_Y_ADDRESS, #129, @move_down ; If on top half of screen, move down
         lda #TRUE
         sta PLAYER_IN_DEATH_STATE
-        jmp @done
+        rts
 
-@move_down        
-        inc ENEMY_1_Y_ADDRESS    
-        inc ENEMY_1_Y_ADDRESS 
-        jmp @done
-            
+@move_down
+        IF_EQUEL ENEMY_1_VARIATION, #0, @move_astroid_down
+
+        lda ENEMY_1_Y_ADDRESS
+        adc ROBOT_Y_SPEED_ADDRESS
+        sta ENEMY_1_Y_ADDRESS
+        jmp @move_hori
+
+@move_astroid_down
+        clc
+        lda ENEMY_1_Y_ADDRESS
+        adc ASTROID_Y_SPEED_ADDRESS
+        sta ENEMY_1_Y_ADDRESS
+        rts
+
+
 @move_up
-        dec ENEMY_1_Y_ADDRESS
-        jmp @done        
-@done
+        IF_EQUEL ENEMY_1_VARIATION, #0,  @move_astroid_up
+
+        lda ENEMY_1_Y_ADDRESS
+        sbc ROBOT_Y_SPEED_ADDRESS
+        sta ENEMY_1_Y_ADDRESS
+        jmp @move_hori
+
+@move_astroid_up
+        clc
+        lda ENEMY_1_Y_ADDRESS
+        sbc ASTROID_Y_SPEED_ADDRESS
+        sta ENEMY_1_Y_ADDRESS
+        rts      
+
+@move_hori
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #32,  @right        
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #64,  @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #96,  @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #128, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #160, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #192, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #224, @right
+        
+@left
+        lda ENEMY_1_X_ADDRESS
+        sbc ROBOT_X_SPEED_ADDRESS
+        sta ENEMY_1_X_ADDRESS
+        rts
+        
+@right
+        lda ENEMY_1_X_ADDRESS
+        adc ROBOT_X_SPEED_ADDRESS
+        sta ENEMY_1_X_ADDRESS
         rts
 
 
@@ -165,9 +209,14 @@ move_enemy2_hori
 ;      Enemy Animation
 ; =========================      
 animate_robot
-        ANIMATE_ENEMY ROBOT_ENEMY_CURRENT_FRAME_ADDRESS, ENEMY1_HIT, #ROBOT_ENEMY_F1_SPRITE_VALUE, reset_enemy_1_sprites, #ROBOT_ENEMY_RESET_FRAME,ENEMY_1_SPRITE_ADDRESS     
+        IF_EQUEL ENEMY_1_VARIATION, #0, set_animation_to_astroid
+        ANIMATE_ENEMY ENEMY_1_CURRENT_FRAME_ADDRESS, ENEMY1_HIT, #ROBOT_ENEMY_F1_SPRITE_VALUE, reset_enemy_1_sprites, #ROBOT_ENEMY_RESET_FRAME, ENEMY_1_SPRITE_ADDRESS
+        rts
+
+set_animation_to_astroid
+        ANIMATE_ENEMY ENEMY_1_CURRENT_FRAME_ADDRESS, ENEMY1_HIT, #ASTROID_ENEMY_F1_SPRITE_VALUE, reset_enemy_1_sprites, #ASTROID_ENEMY_RESET_FRAME, ENEMY_1_SPRITE_ADDRESS     
         rts   
 
 animate_muncher
-        ANIMATE_ENEMY MUNCHER_ENEMY_CURRENT_FRAME_ADDRESS, ENEMY2_HIT, #MUNCHER_ENEMY_F1_SPRITE_VALUE, reset_enemy_2_sprites, #MUNCHER_ENEMY_RESET_FRAME,ENEMY_2_SPRITE_ADDRESS     
+        ANIMATE_ENEMY ENEMY_2_CURRENT_FRAME_ADDRESS, ENEMY2_HIT, #MUNCHER_ENEMY_F1_SPRITE_VALUE, reset_enemy_2_sprites, #MUNCHER_ENEMY_RESET_FRAME,ENEMY_2_SPRITE_ADDRESS     
         rts        

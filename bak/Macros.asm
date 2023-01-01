@@ -235,8 +235,8 @@ defm ANIMATE_ENEMY
         lda /3
         sta /1
         
-      jsr /4
-      rts
+        jsr /4
+        rts
         
         
 @skip_death_animations        
@@ -258,16 +258,15 @@ endm
 ;       COLLISION
 ; =======================
 
-CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS)
+defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAME )
         lda /1
         cmp #TRUE
-        beq @@has_not_collided
+        beq @has_not_collided
 
         ; Check if bullet is overlapping on the left
         lda BULLET_X_ADDRESS_LOW ; load bullet position
         adc #15 ; Takes you to the end of the bullet
         sta TEMP1
-        IF_LESS_THAN TEMP1, /2, @has_not_collided  
 
         ; temp less than x address
         clc
@@ -282,7 +281,6 @@ CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS)
         adc #24
         sta TEMP2
 
-        IF_MORE_THAN TEMP1 , TEMP2, @has_not_collided
         
         ; If temp 1 is more than temp2 
         clc
@@ -317,34 +315,50 @@ CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS)
         cmp TEMP1
         bcc @has_not_collided
 
-@has_collided
-        lda #TRUE
+        jmp @has_collided  
+
+@has_not_collided
+        jmp @done_check
+        
+
+@has_collided        
+        ldx #TRUE ; Response
+        lda #TRUE        
         sta /1
         
+        lda #FALSE
+        sta BULLET_IS_FIRING_LOCATION 
+
         ; Move the bullet off screen so the reset code can run
-        lda #1
+        ; Don't move it past 250, otherwise the chain will reset
+        lda #249
         sta BULLET_Y_ADDRESS
         
         ; set robot frame to explosion
         lda #EXPLOSION_F1_SPRITE_VALUE
-        sta ROBOT_ENEMY_CURRENT_FRAME_ADDRESS
+        sta /3
  
+        clc
+        lda CHAIN_ADDRESS_LOW 
+        adc #1
+        sta CHAIN_ADDRESS_LOW
+        lda CHAIN_ADDRESS_HIGH
+        adc #$00
+        sta CHAIN_ADDRESS_HIGH
 
         clc
         lda SCORE_ADDRESS_LOW 
-        adc #1
+        adc CHAIN_ADDRESS_LOW
         sta SCORE_ADDRESS_LOW
         lda SCORE_ADDRESS_HIGH
         adc #$00
-        sta SCORE_ADDRESS_HIGH
+        sta SCORE_ADDRESS_HIGH        
         jmp @done_check
 
-@has_not_collided
-        lda #FALSE
-        sta /1
 
 @done_check
           
+endm
 
 
 
