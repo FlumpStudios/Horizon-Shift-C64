@@ -4,6 +4,7 @@
 reset_all_enemies
         jsr reset_enemy_1_sprites
         jsr reset_enemy_2_sprites
+        jsr reset_enemy_3_sprites
         rts
 
 reset_enemy_1_sprites
@@ -38,6 +39,22 @@ reset_enemy_2_sprites
         rts
 
 
+reset_enemy_3_sprites
+        jsr random
+        sta ENEMY_3_X_ADDRESS
+        AND #$01 ; If result of random is even set enemy to top of screen, else bottom
+        BEQ @set_enemy_to_top
+
+        lda #25
+        sta ENEMY_3_Y_ADDRESS
+        rts
+
+@set_enemy_to_top
+        lda #250
+        sta ENEMY_3_Y_ADDRESS
+        rts
+
+
 
 ;===================================
 ;     Move and animate all sprites
@@ -59,14 +76,16 @@ update_enemies
         bne @full_frame_skip
         jsr move_enemy2_vert
         jsr move_enemy
+        jsr move_enemy_3
         ; Run once per 2 frames
 
 
 @full_frame_skip
         IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #1, @complete_update
         ; Run once per animation frame skip        
-        jsr animate_robot 
-        jsr animate_muncher
+        jsr animate_sprite_1 
+        jsr animate_sprite_2
+        jsr animate_sprite_3
         jmp @complete_update
 
 
@@ -202,21 +221,99 @@ move_enemy2_hori
 
 @done
         rts
+
+
+;====================
+;       ENEMY 3
+;====================
+
+move_enemy_3
+        IF_NOT_EQUEL ENEMY3_HIT, #TRUE, @move
+        rts
+
+@move      
+        IF_MORE_THAN ENEMY_3_Y_ADDRESS, #151, @move_up ; If on bottom half of screen, move up        
+        IF_LESS_THAN ENEMY_3_Y_ADDRESS, #129, @move_down ; If on top half of screen, move down
+        lda #TRUE
+        sta PLAYER_IN_DEATH_STATE
+        rts
+
+@move_down
+        IF_EQUEL ENEMY_3_VARIATION, #0, @move_astroid_down
+
+        lda ENEMY_3_Y_ADDRESS
+        adc ROBOT_Y_SPEED_ADDRESS
+        sta ENEMY_3_Y_ADDRESS
+        jmp @move_hori
+
+@move_astroid_down
+        clc
+        lda ENEMY_3_Y_ADDRESS
+        adc ASTROID_Y_SPEED_ADDRESS
+        sta ENEMY_3_Y_ADDRESS
+        rts
+
+
+@move_up
+        IF_EQUEL ENEMY_3_VARIATION, #0,  @move_astroid_up
+
+        lda ENEMY_3_Y_ADDRESS
+        sbc ROBOT_Y_SPEED_ADDRESS
+        sta ENEMY_3_Y_ADDRESS
+        jmp @move_hori
+
+@move_astroid_up
+        clc
+        lda ENEMY_3_Y_ADDRESS
+        sbc ASTROID_Y_SPEED_ADDRESS
+        sta ENEMY_3_Y_ADDRESS
+        rts      
+
+@move_hori
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #32,  @right        
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #64,  @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #96,  @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #128, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #160, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #192, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #224, @right
+        
+@left
+        lda ENEMY_3_X_ADDRESS
+        sbc ROBOT_X_SPEED_ADDRESS
+        sta ENEMY_3_X_ADDRESS
+        rts
+        
+@right
+        lda ENEMY_3_X_ADDRESS
+        adc ROBOT_X_SPEED_ADDRESS
+        sta ENEMY_3_X_ADDRESS
+        rts
  
 
 
 ; =========================
 ;      Enemy Animation
 ; =========================      
-animate_robot
-        IF_EQUEL ENEMY_1_VARIATION, #0, set_animation_to_astroid
+animate_sprite_1
+        IF_EQUEL ENEMY_1_VARIATION, #0, set_sprite_1_animation_to_astroid
         ANIMATE_ENEMY ENEMY_1_CURRENT_FRAME_ADDRESS, ENEMY1_HIT, #ROBOT_ENEMY_F1_SPRITE_VALUE, reset_enemy_1_sprites, #ROBOT_ENEMY_RESET_FRAME, ENEMY_1_SPRITE_ADDRESS
         rts
 
-set_animation_to_astroid
+set_sprite_1_animation_to_astroid
         ANIMATE_ENEMY ENEMY_1_CURRENT_FRAME_ADDRESS, ENEMY1_HIT, #ASTROID_ENEMY_F1_SPRITE_VALUE, reset_enemy_1_sprites, #ASTROID_ENEMY_RESET_FRAME, ENEMY_1_SPRITE_ADDRESS     
         rts   
 
-animate_muncher
+animate_sprite_2
         ANIMATE_ENEMY ENEMY_2_CURRENT_FRAME_ADDRESS, ENEMY2_HIT, #MUNCHER_ENEMY_F1_SPRITE_VALUE, reset_enemy_2_sprites, #MUNCHER_ENEMY_RESET_FRAME,ENEMY_2_SPRITE_ADDRESS     
-        rts        
+        rts 
+
+
+animate_sprite_3
+        IF_EQUEL ENEMY_3_VARIATION, #0, set_sprite_3_animation_to_astroid
+        ANIMATE_ENEMY ENEMY_3_CURRENT_FRAME_ADDRESS, ENEMY3_HIT, #ROBOT_ENEMY_F1_SPRITE_VALUE, reset_enemy_3_sprites, #ROBOT_ENEMY_RESET_FRAME, ENEMY_3_SPRITE_ADDRESS
+        rts
+
+set_sprite_3_animation_to_astroid
+        ANIMATE_ENEMY ENEMY_3_CURRENT_FRAME_ADDRESS, ENEMY3_HIT, #ASTROID_ENEMY_F1_SPRITE_VALUE, reset_enemy_3_sprites, #ASTROID_ENEMY_RESET_FRAME, ENEMY_3_SPRITE_ADDRESS     
+        rts          

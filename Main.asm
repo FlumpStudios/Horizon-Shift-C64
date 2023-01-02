@@ -8,7 +8,8 @@
         BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $34, $30, $39, $36, $29, $00, $00, $00
 
 *=$100C
-        
+
+Incasm "Memory.asm"        
 Incasm  "Constants.asm"
 Incasm  "Macros.asm"
 
@@ -36,8 +37,7 @@ wait_for_keypress
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
-        inc GAMEPLAY_TIMER_ADDRESS
-        
+        inc GAMEPLAY_TIMER_ADDRESS        
         inc GAMEPLAY_TIMER_ADDRESS
         
         PRINT welcome_message, VRAM_START_ADDRESS + 5
@@ -105,30 +105,30 @@ death
         lda #FALSE
         sta PLAYER_IN_DEATH_STATE
         
-        IF_EQUEL LIVES_ADDRESS_LOW, #0, @end_game
+        IF_EQUEL LIVES_ADDRESS, #0, @end_game
         
-        dec LIVES_ADDRESS_LOW
+        dec LIVES_ADDRESS
         
-        PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW
+        PRINT_DEBUG #33,#23, LIVES_ADDRESS
         jsr reset_all_enemies
         jsr reset_background_border_colour
         jmp gameplay_loop
 
 @end_game
-        IF_NOT_EQUEL SCORE_ADDRESS_HIGH, #0, @check_high ; If high is 0, don't bother checking it       
-        IF_MORE_THAN SCORE_ADDRESS_LOW, HI_SCORE_ADDRESS_LOW, @update_hi_score
+        IF_NOT_EQUEL >SCORE_ADDRESS, #0, @check_high ; If high is 0, don't bother checking it       
+        IF_MORE_THAN <SCORE_ADDRESS, HI_SCORE_ADDRESS_LOW, @update_hi_score
         jmp main        
 
 @check_high
-        IF_MORE_THAN SCORE_ADDRESS_HIGH, HI_SCORE_ADDRESS_HIGH, @update_hi_score
-        IF_MORE_THAN SCORE_ADDRESS_LOW, HI_SCORE_ADDRESS_LOW, @update_hi_score
+        IF_MORE_THAN >SCORE_ADDRESS, HI_SCORE_ADDRESS_HIGH, @update_hi_score
+        IF_MORE_THAN <SCORE_ADDRESS, HI_SCORE_ADDRESS_LOW, @update_hi_score
         jmp main
 
 @update_hi_score
-        lda SCORE_ADDRESS_LOW
+        lda <SCORE_ADDRESS
         sta HI_SCORE_ADDRESS_LOW
 
-        lda SCORE_ADDRESS_HIGH
+        lda >SCORE_ADDRESS
         sta HI_SCORE_ADDRESS_HIGH
 
         jmp main
@@ -137,17 +137,34 @@ check_bullet_collision
         CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY1_HIT, ENEMY_1_X_ADDRESS, ENEMY_1_CURRENT_FRAME_ADDRESS        
 
         cpx #TRUE ;Check if collision took place. Result should still be in the x register
+        bne @check_enemy_3_collision ; Skip variation change if not been hit
+
+        jsr random ; Temp 1 and accumulator will store respose of the random function
+        IF_LESS_THAN TEMP1, #145, @setEnemy1ToVar1
+        lda #0        
+        sta ENEMY_1_VARIATION
+        jmp @check_enemy_3_collision
+
+@setEnemy1ToVar1
+        lda #1        
+        sta ENEMY_1_VARIATION
+
+
+@check_enemy_3_collision
+        CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY3_HIT, ENEMY_3_X_ADDRESS, ENEMY_3_CURRENT_FRAME_ADDRESS        
+
+        cpx #TRUE ;Check if collision took place. Result should still be in the x register
         bne @check_enemy_2_collision ; Skip variation change if not been hit
 
         jsr random ; Temp 1 and accumulator will store respose of the random function
-        IF_LESS_THAN TEMP1, #145, @setToVar1
+        IF_LESS_THAN TEMP1, #145, @setEnemy3ToVar1
         lda #0        
-        sta ENEMY_1_VARIATION
+        sta ENEMY_3_VARIATION
         jmp @check_enemy_2_collision
 
-@setToVar1
+@setEnemy3ToVar1
         lda #1        
-        sta ENEMY_1_VARIATION
+        sta ENEMY_3_VARIATION
 
 
 @check_enemy_2_collision
@@ -157,8 +174,8 @@ check_bullet_collision
         beq @update_display        
         rts
 @update_display
-        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW
-        PRINT_DEBUG #31,#5, CHAIN_ADDRESS_LOW  
+        PRINT_DEBUG_16 #31,#2,>SCORE_ADDRESS, <SCORE_ADDRESS
+        PRINT_DEBUG #31,#5, CHAIN_ADDRESS  
         ldx #0 ; Reset the x register
         rts
 

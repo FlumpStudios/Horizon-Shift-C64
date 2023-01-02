@@ -10,13 +10,13 @@ handle_player_input
 @set_bullet_as_not_firing                        
         lda #FALSE
         sta BULLET_IS_FIRING_LOCATION 
-        IF_NOT_EQUEL CHAIN_ADDRESS_LOW, #0, @reset_chain
+        IF_NOT_EQUEL CHAIN_ADDRESS, #0, @reset_chain
         jmp @fire_direction_complete
 
 @reset_chain
         lda #1
-        sta CHAIN_ADDRESS_LOW
-        PRINT_DEBUG #31,#5, CHAIN_ADDRESS_LOW
+        sta CHAIN_ADDRESS
+        PRINT_DEBUG #31,#5, CHAIN_ADDRESS
         jmp @fire_direction_complete
 
 

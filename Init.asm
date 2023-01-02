@@ -103,11 +103,16 @@ run_game_initiation
         lda #50        ; Enemy_Robot_F1_Y
         sta ENEMY_1_Y_ADDRESS      
 
-        lda #100        ; Enemy_Robot_F1_X
+        lda #100        ; Muncher
         sta ENEMY_2_X_ADDRESS       
-        lda #75        ; Enemy_Robot_F1_Y
-        sta ENEMY_2_Y_ADDRESS      
-         
+        lda #75        ; Muncher
+        sta ENEMY_2_Y_ADDRESS     
+
+        lda #100
+        sta ENEMY_3_X_ADDRESS
+        sta ENEMY_3_Y_ADDRESS
+
+        
 
         ; X coordinate high bits
         lda #$00
@@ -143,7 +148,11 @@ run_game_initiation
         lda #MUNCHER_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_2_CURRENT_FRAME_ADDRESS               
         sta ENEMY_2_SPRITE_ADDRESS
-      
+        
+        lda #ASTROID_ENEMY_F1_SPRITE_VALUE
+        sta ENEMY_3_CURRENT_FRAME_ADDRESS               
+        sta ENEMY_3_SPRITE_ADDRESS
+
         TURN_ON_ALL_SPRITES
 
         ; Set printable text colour to white
@@ -151,17 +160,18 @@ run_game_initiation
         
         ; Set initial lives to 3
         lda #2        ; Set initial lives to 3
-        sta LIVES_ADDRESS_LOW
+        sta LIVES_ADDRESS
 
         ; Set initial score
         lda #0
-        sta SCORE_ADDRESS_LOW   
-        sta SCORE_ADDRESS_HIGH
+        sta <SCORE_ADDRESS   
+        sta >SCORE_ADDRESS
+        sta ENEMY_3_VARIATION
 
         lda #1
         sta MUNCHER_X_SPEED_ADDRESS        
         sta MUNCHER_Y_SPEED_ADDRESS
-        sta CHAIN_ADDRESS_LOW
+        sta CHAIN_ADDRESS
         sta ENEMY_1_VARIATION
         sta ROBOT_Y_SPEED_ADDRESS
 
@@ -179,8 +189,8 @@ run_game_initiation
         
         jsr reset_all_enemies
 
-        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW 
-        PRINT_DEBUG #33,#23,LIVES_ADDRESS_LOW         
-        PRINT_DEBUG_16 #31,#5,CHAIN_ADDRESS_HIGH, CHAIN_ADDRESS_LOW    
+        PRINT_DEBUG_16 #31,#2,>SCORE_ADDRESS, <SCORE_ADDRESS 
+        PRINT_DEBUG #33,#23,LIVES_ADDRESS         
+        PRINT_DEBUG #31,#5, CHAIN_ADDRESS
         PRINT_DEBUG_16 #31,#12,HI_SCORE_ADDRESS_HIGH, HI_SCORE_ADDRESS_LOW
         

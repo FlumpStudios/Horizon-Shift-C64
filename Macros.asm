@@ -318,6 +318,7 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         jmp @has_collided  
 
 @has_not_collided
+        ldx #FALSE
         jmp @done_check
         
 
@@ -338,26 +339,20 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         lda #EXPLOSION_F1_SPRITE_VALUE
         sta /3
  
+        
         clc
-        lda CHAIN_ADDRESS_LOW 
-        adc #1
-        sta CHAIN_ADDRESS_LOW
-        lda CHAIN_ADDRESS_HIGH
+        lda <SCORE_ADDRESS 
+        adc CHAIN_ADDRESS
+        sta <SCORE_ADDRESS
+        lda >SCORE_ADDRESS
         adc #$00
-        sta CHAIN_ADDRESS_HIGH
-
-        clc
-        lda SCORE_ADDRESS_LOW 
-        adc CHAIN_ADDRESS_LOW
-        sta SCORE_ADDRESS_LOW
-        lda SCORE_ADDRESS_HIGH
-        adc #$00
-        sta SCORE_ADDRESS_HIGH        
+        sta >SCORE_ADDRESS        
+        inc CHAIN_ADDRESS 
         jmp @done_check
 
 
 @done_check
-          
+        
 endm
 
 
