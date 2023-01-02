@@ -1,7 +1,72 @@
         ;---------------------------------
         ;    Sprite and screen setup
         ;---------------------------------
+run_menu_init        
+        lda #$18
+        sta $D018
+
+        ; set sprite multicolors
+        lda #$08
+        sta $d025
+        lda #$06
+        sta $d026
+
+        ; colorize sprites
+        lda #$0A
+        sta $d027
+
+        lda #$0A
+        sta $d028
+
+        lda #$0A
+        sta $d029
+
+        lda #$06
+        sta $d02A
+
+        lda #$06
+        sta $d02B
+
+        lda #$06
+        sta $d02C
+
+        lda #$06
+        sta $d02D
+
+        ; positioning sprites
         
+        lda #125        ; Muncher
+        sta ENEMY_2_X_ADDRESS       
+        lda #130        ; Muncher
+        sta ENEMY_2_Y_ADDRESS     
+
+        
+
+        ; X coordinate high bits
+        lda #$00
+        sta $d010
+
+        
+        ; set multicolor flags
+        lda #$7B
+        sta $d01c
+
+        ; set screen-sprite priority flags
+        lda #$00
+        sta $d01b
+
+        
+        
+        ; Enemy frames
+        
+        lda #MUNCHER_ENEMY_F1_SPRITE_VALUE
+        sta ENEMY_2_CURRENT_FRAME_ADDRESS               
+        sta ENEMY_2_SPRITE_ADDRESS
+        
+        
+        TURN_ON_ALL_SPRITES
+        rts
+
 run_game_initiation
         ; set to 25 line text mode and turn on the screen
         ;lda #$1B
@@ -12,9 +77,7 @@ run_game_initiation
         ;sta $0291
 
         ; set screen memory ($0400) and charset bitmap offset ($2000)
-        lda #$18
-        sta $D018
-
+        
         ; set border color
         ;lda #BLACK
         ;sta $D020
@@ -153,7 +216,7 @@ run_game_initiation
         sta ENEMY_3_CURRENT_FRAME_ADDRESS               
         sta ENEMY_3_SPRITE_ADDRESS
 
-        TURN_ON_ALL_SPRITES
+        TURN_ON_INITAL_SPRITES
 
         ; Set printable text colour to white
         SET_TEXT_COLOUR #white
@@ -164,14 +227,15 @@ run_game_initiation
 
         ; Set initial score
         lda #0
-        sta <SCORE_ADDRESS   
-        sta >SCORE_ADDRESS
+        sta SCORE_ADDRESS_LOW   
+        sta SCORE_ADDRESS_HIGH
         sta ENEMY_3_VARIATION
+        sta ENEMIES_KILLED
+        sta CHAIN_ADDRESS
 
         lda #1
         sta MUNCHER_X_SPEED_ADDRESS        
         sta MUNCHER_Y_SPEED_ADDRESS
-        sta CHAIN_ADDRESS
         sta ENEMY_1_VARIATION
         sta ROBOT_Y_SPEED_ADDRESS
 
@@ -189,7 +253,7 @@ run_game_initiation
         
         jsr reset_all_enemies
 
-        PRINT_DEBUG_16 #31,#2,>SCORE_ADDRESS, <SCORE_ADDRESS 
+        PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW 
         PRINT_DEBUG #33,#23,LIVES_ADDRESS         
         PRINT_DEBUG #31,#5, CHAIN_ADDRESS
         PRINT_DEBUG_16 #31,#12,HI_SCORE_ADDRESS_HIGH, HI_SCORE_ADDRESS_LOW

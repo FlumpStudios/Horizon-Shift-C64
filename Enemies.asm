@@ -68,17 +68,43 @@ update_enemies
         sta ANIMATION_TIMER_ADDRESS
 
 @skip_no_frame ; Run once per frame
+        lda SPRITE_ENABLED_ADDRESS
+        and ENEMY_2_ENABLED_MASK
+        cmp #FALSE
+        beq @single_frame_skip
+
         jsr move_enemy2_hori
 
+        ; Run once per 2 frames
 @single_frame_skip
+        
         lda ANIMATION_TIMER_ADDRESS
         AND #1
         bne @full_frame_skip
-        jsr move_enemy2_vert
+        
+        
+        lda SPRITE_ENABLED_ADDRESS
+        and #ENEMY_1_ENABLED_MASK
+        cmp #FALSE
+        beq @call_enemy2_vert
+        
         jsr move_enemy
-        jsr move_enemy_3
-        ; Run once per 2 frames
 
+
+@call_enemy2_vert
+        lda SPRITE_ENABLED_ADDRESS
+        and #ENEMY_2_ENABLED_MASK
+        cmp #FALSE
+        beq @call_move_enemy_3
+
+        jsr move_enemy2_vert
+
+@call_move_enemy_3
+        lda SPRITE_ENABLED_ADDRESS
+        and #ENEMY_3_ENABLED_MASK
+        cmp #FALSE
+        beq @full_frame_skip
+        jsr move_enemy_3
 
 @full_frame_skip
         IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #1, @complete_update
@@ -289,7 +315,6 @@ move_enemy_3
         adc ROBOT_X_SPEED_ADDRESS
         sta ENEMY_3_X_ADDRESS
         rts
- 
 
 
 ; =========================

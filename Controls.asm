@@ -14,8 +14,9 @@ handle_player_input
         jmp @fire_direction_complete
 
 @reset_chain
-        lda #1
+        lda #0
         sta CHAIN_ADDRESS
+        CLEAR_DEBUG #31,#5
         PRINT_DEBUG #31,#5, CHAIN_ADDRESS
         jmp @fire_direction_complete
 

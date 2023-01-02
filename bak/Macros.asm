@@ -34,9 +34,14 @@ defm CLEAR_KEYBOARD_BUFFER
 endm
 
 
+defm TURN_ON_INITAL_SPRITES
+        lda #%00001111
+        sta SPRITE_ENABLED_ADDRESS
+endm
+
 
 defm TURN_ON_ALL_SPRITES
-        lda #%111111
+        lda #%11111111
         sta $d015
 endm
 
@@ -45,7 +50,6 @@ defm TURN_OFF_ALL_SPRITES
         lda #%00000000
         sta $d015
 endm
-
 
 
 
@@ -176,6 +180,15 @@ endm
 ;              DEBUG PRINTING
 ;----------------------------------------
 
+defm    CLEAR_DEBUG
+        ldx #/2         ; Select row 
+        ldy #/1         ; Select column 
+        jsr $E50C       ; Set cursor    
+        lda #$20        ; space
+        jsr $ffd2
+        jsr $ffd2
+endm
+
 
 defm    PRINT_DEBUG ;(low byte)      
                         ; /1 = X Position Absolute
@@ -189,7 +202,7 @@ defm    PRINT_DEBUG ;(low byte)
         lda #0
         ldx /3
         jsr $BDCD       ; print number
-        endm
+endm
 
 ;===============================================================================
 
@@ -202,7 +215,7 @@ defm    PRINT_DEBUG_16 ; (high byte, low byte)
         lda /3
         ldx /4
         jsr $BDCD       ; print number
-        endm
+endm
 
 
 
@@ -323,6 +336,7 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         
 
 @has_collided        
+        inc ENEMIES_KILLED
         ldx #TRUE ; Response
         lda #TRUE        
         sta /1
@@ -338,16 +352,23 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         ; set robot frame to explosion
         lda #EXPLOSION_F1_SPRITE_VALUE
         sta /3
- 
         
+        ; Skip chain increase if at max chain
+        lda CHAIN_ADDRESS
+        cmp #MAX_CHAIN
+        beq @update_score
         clc
-        lda <SCORE_ADDRESS 
+        inc CHAIN_ADDRESS
+        
+@update_score
+        clc
+        lda SCORE_ADDRESS_LOW 
         adc CHAIN_ADDRESS
-        sta <SCORE_ADDRESS
-        lda >SCORE_ADDRESS
+        sta SCORE_ADDRESS_LOW
+        lda SCORE_ADDRESS_HIGH
         adc #$00
-        sta >SCORE_ADDRESS        
-        inc CHAIN_ADDRESS 
+        sta SCORE_ADDRESS_HIGH  
+        
         jmp @done_check
 
 
