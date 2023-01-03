@@ -102,6 +102,20 @@
         BYTE $25, $55, $58, $25, $55, $58, $25, $AA, $5A, $29, $AA, $96, $29, $80, $A6, $0A, $80, $AA, $02, $80, $2A
         BYTE 0
 
+; Ufo Frame 1
+        BYTE $00, $14, $00, $00, $FF, $00, $03, $FF, $C0, $0F, $EB, $F0, $0E, $AA, $B0, $3A, $AA, $AC, $3F, $FF, $FC
+        BYTE $35, $55, $5C, $D5, $55, $57, $48, $88, $89, $48, $88, $89, $D5, $55, $57, $35, $55, $5C, $3F, $FF, $FC
+        BYTE $3A, $AA, $AC, $0E, $AA, $B0, $03, $AA, $C0, $03, $EB, $C0, $00, $FF, $00, $00, $3C, $00, $00, $00, $00
+        BYTE 0
+
+; Ufo Frame 2
+        BYTE $00, $3C, $00, $00, $FF, $00, $03, $FF, $C0, $0F, $EB, $F0, $0E, $AA, $B0, $3A, $AA, $AC, $3F, $FF, $FC
+        BYTE $35, $55, $5C, $D5, $55, $57, $62, $22, $21, $62, $22, $21, $D5, $55, $57, $35, $55, $5C, $3F, $FF, $FC
+        BYTE $3A, $AA, $AC, $0E, $AA, $B0, $03, $AA, $C0, $03, $EB, $C0, $00, $FF, $00, $00, $3C, $00, $00, $14, $00
+        BYTE 0
+
+
+
 
 ; Character bitmap definitions 2k
 ; Character bitmap definitions 2k

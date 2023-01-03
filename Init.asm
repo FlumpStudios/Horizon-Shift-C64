@@ -66,7 +66,7 @@ run_menu_init
         lda #$00
         sta $d01b
         
-        TURN_ON_ALL_SPRITES
+        TURN_ON_INTRO_SPRITES
         rts
 
 run_game_initiation
@@ -151,46 +151,62 @@ run_game_initiation
         ; Enemy frames
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_1_CURRENT_FRAME_ADDRESS       
+        sta ENEMY_1_SPRITE_ADDRESS
+        
+        sta ENEMY_3_CURRENT_FRAME_ADDRESS               
+        sta ENEMY_3_SPRITE_ADDRESS
         
         lda #MUNCHER_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_2_CURRENT_FRAME_ADDRESS               
         sta ENEMY_2_SPRITE_ADDRESS
-        
-        lda #ASTROID_ENEMY_F1_SPRITE_VALUE
-        sta ENEMY_3_CURRENT_FRAME_ADDRESS               
-        sta ENEMY_3_SPRITE_ADDRESS
 
-        TURN_ON_INITAL_SPRITES
-        SET_TEXT_COLOUR #white
-        jsr reset_all_enemies
-               
+
         ;================================
         ;       MEMORY INITIALISATION
         ;================================
-        lda #0
-        sta SCORE_ADDRESS_LOW   
-        sta SCORE_ADDRESS_HIGH
-        sta ENEMY_3_VARIATION
-        sta ENEMIES_KILLED
-        sta CHAIN_ADDRESS
-
-        lda #1
-        sta MUNCHER_X_SPEED_ADDRESS        
-        sta MUNCHER_Y_SPEED_ADDRESS
-        sta ENEMY_1_VARIATION
-        sta ROBOT_Y_SPEED_ADDRESS
-        sta ROBOT_X_SPEED_ADDRESS 
-
-        lda #2        
-        sta ASTROID_Y_SPEED_ADDRESS
-        sta LIVES_ADDRESS
-
         lda #FALSE
         sta PLAYER_IN_DEATH_STATE        
         sta BULLET_IS_FIRING_LOCATION
         sta PLAYER_FLIPPED_LOCATION
         sta MUNCHER_1_HAS_BOUNCED_ADDRESS
         
+        lda #0
+        sta SCORE_ADDRESS_LOW   
+        sta SCORE_ADDRESS_HIGH
+        sta ENEMY_3_VARIATION
+        sta ENEMIES_KILLED_LOW
+        sta ENEMIES_KILLED_HIGH                
+        sta CHAIN_ADDRESS        
+        
+
+        lda #1
+        sta MUNCHER_Y_SPEED_ADDRESS
+        sta ENEMY_1_VARIATION
+        sta ENEMY_2_VARIATION
+        sta ENEMY_3_VARIATION
+        sta ROBOT_Y_SPEED_ADDRESS
+        sta ROBOT_X_SPEED_ADDRESS 
+        sta MUNCHER_X_SPEED_ADDRESS
+        sta ASTROID_Y_SPEED_ADDRESS        
+        
+
+
+        lda #2        
+        sta LIVES_ADDRESS
+
+        lda #3
+        sta UFO_X_SPEED_ADDRESS
+        sta UFO_Y_SPEED_ADDRESS
+
+        lda #50
+        sta RANDOMISER_LOW
+
+        lda #200
+        sta RANDOMISER_HIGH
+
+        TURN_ON_INITAL_SPRITES
+        SET_TEXT_COLOUR #white
+        jsr reset_all_enemies
         
         ;================================
         ;       SETUP HUD TEXT

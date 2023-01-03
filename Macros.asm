@@ -51,6 +51,12 @@ defm TURN_OFF_ALL_SPRITES
         sta $d015
 endm
 
+defm TURN_ON_INTRO_SPRITES
+        lda #%00010000
+        sta $d015
+endm
+
+
 
 
 ;----------------------------------------
@@ -328,7 +334,15 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         
 
 @has_collided        
-        inc ENEMIES_KILLED
+        clc
+        lda ENEMIES_KILLED_LOW
+        adc #1
+        sta ENEMIES_KILLED_LOW
+
+        lda ENEMIES_KILLED_HIGH
+        adc #0
+        sta ENEMIES_KILLED_HIGH
+
         ldx #TRUE ; Response
         lda #TRUE        
         sta /1

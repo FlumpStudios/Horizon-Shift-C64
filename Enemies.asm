@@ -8,6 +8,7 @@ reset_all_enemies
         rts
 
 reset_enemy_1_sprites
+        
         jsr random
         sta ENEMY_1_X_ADDRESS
         AND #$01 ; If result of random is even set enemy to top of screen, else bottom
@@ -23,9 +24,10 @@ reset_enemy_1_sprites
         rts
 
 
-reset_enemy_2_sprites
+reset_enemy_2_sprites                
+        lda #140 ; enemy 2 are left right motion enemies so start in the middle
+        
         jsr random
-        sta ENEMY_2_X_ADDRESS
         AND #$01 ; If result of random is even set enemy to top of screen, else bottom
         BEQ @set_enemy_to_top
 
@@ -69,11 +71,11 @@ update_enemies
 
 @skip_no_frame ; Run once per frame
         lda SPRITE_ENABLED_ADDRESS
-        and ENEMY_2_ENABLED_MASK
+        and #ENEMY_2_ENABLED_MASK
         cmp #FALSE
+        jsr move_enemy2_hori
         beq @single_frame_skip
 
-        jsr move_enemy2_hori
 
         ; Run once per 2 frames
 @single_frame_skip
@@ -192,22 +194,54 @@ move_enemy
 ;====================
 
 move_enemy2_vert
-        IF_EQUEL ENEMY2_HIT, #TRUE, @done
+        IF_EQUEL ENEMY2_HIT, #TRUE, @ret
         IF_MORE_THAN ENEMY_2_Y_ADDRESS, #151, @move_up ; If on bottom half of screen, move up        
         IF_LESS_THAN ENEMY_2_Y_ADDRESS, #129, @move_down ; If on top half of screen, move down
         lda #TRUE
         sta PLAYER_IN_DEATH_STATE
         jmp @done
 
-@move_down       
+@move_down               
+        IF_NOT_EQUEL ENEMY_2_VARIATION, #0, @move_muncher_down
+
+        IF_MORE_THAN ENEMY_2_X_ADDRESS, #222, @move_ufo_down
+        IF_LESS_THAN ENEMY_2_X_ADDRESS, #42, @move_ufo_down
+        
+        IF_MORE_THAN ENEMY_2_Y_ADDRESS, #70, @ret
+        jmp @move_ufo_down
+
+
+@move_muncher_down
         lda ENEMY_2_Y_ADDRESS
         adc MUNCHER_Y_SPEED_ADDRESS
         sta ENEMY_2_Y_ADDRESS
         jmp @done
+
+@move_ufo_down
+        lda ENEMY_2_Y_ADDRESS
+        adc UFO_Y_SPEED_ADDRESS
+        sta ENEMY_2_Y_ADDRESS
+        jmp @done
             
+
+@ret ;HACK: "done" lable too far away for brance
+        jmp @done
 @move_up
+        IF_NOT_EQUEL ENEMY_2_VARIATION, #0, @move_muncher_up 
+        IF_MORE_THAN ENEMY_2_X_ADDRESS, #222, @move_ufo_up
+        IF_LESS_THAN ENEMY_2_X_ADDRESS, #42, @move_ufo_up
+        IF_LESS_THAN ENEMY_2_Y_ADDRESS, #210, @done
+        jmp @move_ufo_up
+
+@move_muncher_up    
         lda ENEMY_2_Y_ADDRESS
         sbc MUNCHER_Y_SPEED_ADDRESS
+        sta ENEMY_2_Y_ADDRESS
+        jmp @done
+
+@move_ufo_up    
+        lda ENEMY_2_Y_ADDRESS
+        sbc UFO_Y_SPEED_ADDRESS
         sta ENEMY_2_Y_ADDRESS
         jmp @done
 
@@ -233,6 +267,15 @@ move_enemy2_hori
         IF_EQUEL MUNCHER_1_HAS_BOUNCED_ADDRESS, #TRUE, @move_right
         
 @move_left
+        IF_NOT_EQUEL ENEMY_2_VARIATION, #0, @move_muncher_left 
+        lda ENEMY_2_X_ADDRESS
+        sbc UFO_X_SPEED_ADDRESS
+        sta ENEMY_2_X_ADDRESS
+        clc
+        jmp @done
+        
+
+@move_muncher_left
         lda ENEMY_2_X_ADDRESS
         sbc MUNCHER_X_SPEED_ADDRESS
         sta ENEMY_2_X_ADDRESS
@@ -240,6 +283,14 @@ move_enemy2_hori
         jmp @done
 
 @move_right
+        IF_NOT_EQUEL ENEMY_2_VARIATION, #0, @move_muncher_right 
+        lda ENEMY_2_X_ADDRESS
+        adc UFO_X_SPEED_ADDRESS
+        sta ENEMY_2_X_ADDRESS
+        clc
+        jmp @done
+
+@move_muncher_right
         lda ENEMY_2_X_ADDRESS
         adc MUNCHER_X_SPEED_ADDRESS
         sta ENEMY_2_X_ADDRESS
@@ -252,7 +303,6 @@ move_enemy2_hori
 ;====================
 ;       ENEMY 3
 ;====================
-
 move_enemy_3
         IF_NOT_EQUEL ENEMY3_HIT, #TRUE, @move
         rts
@@ -330,8 +380,12 @@ set_sprite_1_animation_to_astroid
         rts   
 
 animate_sprite_2
+        IF_EQUEL ENEMY_2_VARIATION, #0, set_sprite_2_animation_to_ufo
         ANIMATE_ENEMY ENEMY_2_CURRENT_FRAME_ADDRESS, ENEMY2_HIT, #MUNCHER_ENEMY_F1_SPRITE_VALUE, reset_enemy_2_sprites, #MUNCHER_ENEMY_RESET_FRAME,ENEMY_2_SPRITE_ADDRESS     
         rts 
+set_sprite_2_animation_to_ufo
+        ANIMATE_ENEMY ENEMY_2_CURRENT_FRAME_ADDRESS, ENEMY2_HIT, #UFO_ENEMY_F1_SPRITE_VALUE, reset_enemy_2_sprites, #UFO_ENEMY_RESET_FRAME, ENEMY_2_SPRITE_ADDRESS     
+        rts   
 
 
 animate_sprite_3
