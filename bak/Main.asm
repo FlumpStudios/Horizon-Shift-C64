@@ -1,3 +1,4 @@
+
 ; NOTES
 ; SCreen editor http://petscii.krissz.hu/
 
@@ -9,29 +10,87 @@
 
 *=$100C
 
-Incasm "Memory.asm"        
+Incasm "Memory.asm"
 Incasm "Constants.asm"
 Incasm "Macros.asm"
-
         lda #0
         sta HI_SCORE_ADDRESS_LOW
         sta HI_SCORE_ADDRESS_HIGH
 
 main    
-        SET_TEXT_COLOUR #white
         TURN_OFF_ALL_SPRITES
+        SET_TEXT_COLOUR #white
         CLEAR_KEYBOARD_BUFFER
         CLEAR_SCREEN
         inc $0286
         jsr reset_background_border_colour
         jsr run_menu_init
+
+wait_for_keypress        
+        IF_NOT_EQUEL $d012, #$ff, wait_for_keypress ; Raster line check       
+
+        inc ANIMATION_TIMER_ADDRESS
+        IF_LESS_THAN ANIMATION_TIMER_ADDRESS, #3, @skip_no_frame
+        
+        ; Reset timer
+        lda #0
+        sta ANIMATION_TIMER_ADDRESS
+
+@skip_no_frame
+        IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #1, @move_menu_sprite
+        inc $0286 
+        lda $0286
+        cmp #Black
+        beq @skip_clear_screen
+        CLEAR_SCREEN
+
+@skip_clear_screen
+        inc ENEMY_2_CURRENT_FRAME_ADDRESS
+        lda ENEMY_2_CURRENT_FRAME_ADDRESS        
+        cmp #MUNCHER_ENEMY_RESET_FRAME
+        bne @update_pointer
+
+        ; Reset frame
+        lda #MUNCHER_ENEMY_F1_SPRITE_VALUE
+        sta ENEMY_2_CURRENT_FRAME_ADDRESS
+
+@update_pointer
+        lda ENEMY_2_CURRENT_FRAME_ADDRESS
+        sta ENEMY_2_SPRITE_ADDRESS
         
 
-wait_for_keypress
-        inc $0286 ; Increase frame outside of loop for random cols 
-        IF_NOT_EQUEL $d012, #$ff, wait_for_keypress ; Raster line check       
+@move_menu_sprite
+
+        IF_MORE_THAN ENEMY_2_X_ADDRESS, #250, @set_bounced
+        IF_LESS_THAN ENEMY_2_X_ADDRESS, #70, @set_not_bounced
+        jmp @move
+        
+@set_bounced
+        lda #TRUE
+        sta MUNCHER_1_HAS_BOUNCED_ADDRESS
+        jmp @move
+
+@set_not_bounced
+        lda #FALSE
+        sta MUNCHER_1_HAS_BOUNCED_ADDRESS
+        jmp @move
+
+@move
+        IF_EQUEL MUNCHER_1_HAS_BOUNCED_ADDRESS, #TRUE, @move_left
+        jmp @move_right
+
+@move_left
+        dec ENEMY_2_X_ADDRESS
+        jmp @draw_menu
+
+@move_right
         inc ENEMY_2_X_ADDRESS
-        ; TODO: Do this properly :)
+
+        
+@draw_menu   
+        
+
+; TODO: Do this properly :)
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
@@ -65,8 +124,6 @@ clear_print_press
         jmp w
 
 update_colour
-        
-        CLEAR_SCREEN
         jmp w
 
 
@@ -82,8 +139,9 @@ gameplay_loop
         IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, death
         
         jsr handle_player_input
-        jsr update_enemies        
-
+        jsr update_enemies
+        jsr run_script
+        jsr check_player_collided_with_bullet
         ; Skip bullet collison check if not firing
         IF_NOT_EQUEL BULLET_IS_FIRING_LOCATION, #TRUE, gameplay_loop
         
@@ -133,6 +191,16 @@ death
 
         jmp main
 
+check_player_collided_with_bullet
+        IF_ENEMY_BULLET_COLLIDED_WITH_PLAYER set_player_to_death_state
+        rts
+
+set_player_to_death_state
+        lda #TRUE
+        sta PLAYER_IN_DEATH_STATE
+        rts
+
+
 check_bullet_collision
         lda #FALSE 
         sta TEMP3 ; user temp 3 to see if any collision took place
@@ -179,12 +247,28 @@ check_bullet_collision
 @check_enemy_2_collision
         CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY2_HIT, ENEMY_2_X_ADDRESS, ENEMY_2_CURRENT_FRAME_ADDRESS                
         cpx #TRUE
-        beq @update_display        
+        bne @check_any_hit 
         
-        lda TEMP3
+        lda #TRUE
+        sta TEMP3
+
+        jsr random ; Temp 1 and accumulator will store respose of the random function
+        IF_LESS_THAN TEMP1, #145, @setEnemy2ToVar1
+        lda #0        
+        sta ENEMY_2_VARIATION
+        jmp @check_any_hit
+
+        
+@setEnemy2ToVar1
+        lda #1        
+        sta ENEMY_2_VARIATION        
+
+@check_any_hit
+        lda TEMP3 ; IF nothing hit in temp 3 then exit without running update display
         cmp #TRUE
-        beq @update_display     
-        rts
+        beq @update_display 
+        jmp @exit
+        
         
 @update_display
         PRINT_DEBUG_16 #31,#2,SCORE_ADDRESS_HIGH, SCORE_ADDRESS_LOW
@@ -192,6 +276,8 @@ check_bullet_collision
         ldx #0 ; Reset the x register
         lda #FALSE
         sta TEMP3 ; Reset temp 3 that we used to see if any collisions happened
+
+@exit
         rts
 
 random
@@ -202,8 +288,8 @@ random
         sta $D412 ; voice 3 control register
         lda $D41B
         sta TEMP1 
-        IF_LESS_THAN TEMP1, #30, random
-        IF_MORE_THAN TEMP1, #230, random
+        IF_LESS_THAN TEMP1, RANDOMISER_LOW, random
+        IF_MORE_THAN TEMP1, RANDOMISER_HIGH, random
         rts
 
 
@@ -217,6 +303,7 @@ reset_background_border_colour
         sta $D021
         rts
 
+Incasm "GameScript.asm"
 Incasm "Init.asm"
 Incasm "Controls.asm"
 Incasm "Enemies.asm"

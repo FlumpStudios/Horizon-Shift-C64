@@ -1,9 +1,32 @@
 
+defm FIRE_ENEMY_BULLET
+        lda ENEMY_BULLET_IS_FIRING_ADDRESS
+        cmp #TRUE
+        beq @done
+
+        lda #TRUE
+        sta ENEMY_BULLET_IS_FIRING_ADDRESS        
+
+        ldx /1
+        ldy /2
+
+        stx ENEMY_BULLET_X 
+        sty ENEMY_BULLET_Y
+@done        
+        rts
+endm
+
+
 defm SET_TEXT_COLOUR        
         lda /1
         sta $0286   
 endm
 
+
+defm SET_PLAYER_TO_DEATH_STATE
+        lda #TRUE
+        sta PLAYER_IN_DEATH_STATE
+endm    
 
 
 ;----------------------------------------
@@ -270,6 +293,10 @@ endm
 ; =======================
 
 defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAME )
+        ldx #0 
+        stx TEMP1
+        stx TEMP2
+
         lda /1
         cmp #TRUE
         beq @has_not_collided
@@ -377,6 +404,73 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         
         jmp @done_check
 
+
+@done_check
+        
+endm
+
+
+
+defm IF_ENEMY_BULLET_COLLIDED_WITH_PLAYER ;(Label to jump to)
+        lda ENEMY_BULLET_X ; load bullet position
+        adc #6 ; Takes you to the end of the bullet
+        sta TEMP1
+
+        ; temp less than x address
+        clc
+        lda TEMP1
+        cmp PLAYER_X_ADDRESS_LOW
+        bcc @has_not_collided
+
+        ; Check if bullet is overlapping on the right
+        sbc #12
+        sta TEMP1
+        lda PLAYER_X_ADDRESS_LOW
+        sta TEMP2
+
+        
+        ; If temp 1 is more than temp2 
+        clc
+        lda TEMP1
+        cmp TEMP2
+        bcs @has_not_collided
+        
+        ; Check if enemy has hit on the bottom of the enemy
+        lda PLAYER_X_ADDRESS_LOW + 1
+        adc #5
+        sta TEMP1
+        lda ENEMY_BULLET_Y
+        sta TEMP2
+        
+        ; If temp 2 is more than temp 1 
+        clc
+        lda TEMP2
+        cmp TEMP1
+        bcs @has_not_collided
+      
+
+        lda PLAYER_X_ADDRESS_LOW + 1
+        sbc #5
+        
+        sta TEMP1
+        lda ENEMY_BULLET_Y
+        sta TEMP2
+        
+
+        clc
+        lda TEMP2
+        cmp TEMP1
+        bcc @has_not_collided
+
+        jmp @has_collided  
+
+@has_not_collided
+        ldx #FALSE
+        jmp @done_check
+        
+
+@has_collided        
+        ldx #TRUE        
 
 @done_check
         

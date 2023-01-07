@@ -135,6 +135,9 @@ run_game_initiation
         lda #100
         sta ENEMY_3_X_ADDRESS
         sta ENEMY_3_Y_ADDRESS
+        sta ENEMY_BULLET_X
+        sta ENEMY_BULLET_Y
+
 
         
 
@@ -147,12 +150,14 @@ run_game_initiation
         ; Player_Bullet
         lda #PLAYER_BULLET_SPRITE_VALUE
         sta PLAYER_BULLET_SPRITE_ADDRESS
+        sta ENEMY_BULLET_SPRITE_ADDRESS
 
         ; Enemy frames
         lda #ROBOT_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_1_CURRENT_FRAME_ADDRESS       
         sta ENEMY_1_SPRITE_ADDRESS
         
+        lda #ANDROID_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_3_CURRENT_FRAME_ADDRESS               
         sta ENEMY_3_SPRITE_ADDRESS
         
@@ -169,30 +174,30 @@ run_game_initiation
         sta BULLET_IS_FIRING_LOCATION
         sta PLAYER_FLIPPED_LOCATION
         sta MUNCHER_1_HAS_BOUNCED_ADDRESS
-        
+        sta ENEMY_BULLET_IS_FIRING_ADDRESS
+
         lda #0
         sta SCORE_ADDRESS_LOW   
         sta SCORE_ADDRESS_HIGH
-        sta ENEMY_3_VARIATION
         sta ENEMIES_KILLED_LOW
         sta ENEMIES_KILLED_HIGH                
         sta CHAIN_ADDRESS        
+        sta ENEMY_BULLET_X_SPEED_ADDRESS
         
-
         lda #1
         sta MUNCHER_Y_SPEED_ADDRESS
         sta ENEMY_1_VARIATION
         sta ENEMY_2_VARIATION
         sta ENEMY_3_VARIATION
-        sta ROBOT_Y_SPEED_ADDRESS
         sta ROBOT_X_SPEED_ADDRESS 
         sta MUNCHER_X_SPEED_ADDRESS
         sta ASTROID_Y_SPEED_ADDRESS        
+        sta ROBOT_Y_SPEED_ADDRESS
         
-
 
         lda #2        
         sta LIVES_ADDRESS
+        sta ENEMY_BULLET_Y_SPEED_ADDRESS
 
         lda #3
         sta UFO_X_SPEED_ADDRESS

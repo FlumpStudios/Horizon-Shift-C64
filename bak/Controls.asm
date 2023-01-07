@@ -32,7 +32,6 @@ handle_player_input
         jmp @fire_direction_complete
 
 @fire_down
-
         lda BULLET_Y_ADDRESS      
         adc #BULLET_MOVE_SPEED
         sta BULLET_Y_ADDRESS
