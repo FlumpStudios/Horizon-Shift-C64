@@ -5,6 +5,7 @@ reset_all_enemies
         jsr reset_enemy_1_sprites
         jsr reset_enemy_2_sprites
         jsr reset_enemy_3_sprites
+        jsr reset_enemy_4_sprites
         jsr reset_enemy_bullet
         rts
 
@@ -65,6 +66,21 @@ reset_enemy_3_sprites
         sta ENEMY_3_Y_ADDRESS
         rts
 
+reset_enemy_4_sprites
+        jsr random
+        sta ENEMY_4_X_ADDRESS
+        AND #$01 ; If result of random is even set enemy to top of screen, else bottom
+        BEQ @set_enemy_to_top
+
+        lda #25
+        sta ENEMY_4_Y_ADDRESS
+        rts
+
+@set_enemy_to_top
+        lda #250
+        sta ENEMY_4_Y_ADDRESS
+        rts
+
 
 
 
@@ -118,8 +134,15 @@ update_enemies
         lda SPRITE_ENABLED_ADDRESS
         and #ENEMY_3_ENABLED_MASK
         cmp #FALSE
-        beq @full_frame_skip
+        beq @call_move_enemy_4
         jsr move_enemy_3
+
+@call_move_enemy_4
+        lda SPRITE_ENABLED_ADDRESS
+        and #ENEMY_4_ENABLED_MASK
+        cmp #FALSE
+        beq @full_frame_skip
+        jsr move_enemy_4
 
 @full_frame_skip
         IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #1, @complete_update
@@ -127,6 +150,7 @@ update_enemies
         jsr animate_sprite_1 
         jsr animate_sprite_2
         jsr animate_sprite_3
+        jsr animate_sprite_4
         jsr fire_bullets
         jmp @complete_update
 
@@ -136,21 +160,57 @@ update_enemies
 
 
 fire_bullets
-        lda GAMEPLAY_TIMER_ADDRESS
-        and #$23    ; is divisible by 35
-        cmp #0
-        beq @cont
-        rts
-@cont
-        lda SPRITE_ENABLED_ADDRESS
+        lda SPRITE_ENABLED_ADDRESS ; Check if the sprite is enabled
         and #%01000000
-        cmp #0
-        bne @fire
-        rts
-@fire
-        FIRE_ENEMY_BULLET ENEMY_1_X_ADDRESS, ENEMY_1_Y_ADDRESS
+        beq @exit
+
+        lda GAMEPLAY_TIMER_ADDRESS
+        and #$1    ; is divisible by 2
+        beq fire_from_robot ; if divisible by 2, let the robot shoot
+        jmp fire_from_UFO ; if not, let the ufo shoot
+
 @exit
+        rts        
+
+fire_from_robot
+        lda SPRITE_ENABLED_ADDRESS ; Check if the sprite is enabled
+        and #ENEMY_1_ENABLED_MASK
+        beq return 
+        
+        lda ENEMY_1_VARIATION ; Only want robot to fire
+        cmp #1
+        bne return
+                
+        lda ENEMY1_HIT
+        cmp #TRUE
+        beq return
+
+        FIRE_ENEMY_BULLET ENEMY_1_X_ADDRESS, ENEMY_1_Y_ADDRESS        
         rts
+
+
+fire_from_UFO
+        lda SPRITE_ENABLED_ADDRESS ; Check if the sprite is enabled
+        and #ENEMY_2_ENABLED_MASK
+        beq return 
+
+        lda ENEMY_2_VARIATION ; Only want UFO to fire
+        cmp #0
+        bne return
+        
+        lda ENEMY2_HIT
+        cmp #TRUE
+        beq return        
+
+        FIRE_ENEMY_BULLET ENEMY_2_X_ADDRESS, ENEMY_2_Y_ADDRESS
+        rts
+
+
+return 
+        rts
+
+
+
 
 
 ;=========================
@@ -267,7 +327,7 @@ move_enemy2_vert
         IF_MORE_THAN ENEMY_2_X_ADDRESS, #222, @move_ufo_down
         IF_LESS_THAN ENEMY_2_X_ADDRESS, #42, @move_ufo_down
         
-        IF_MORE_THAN ENEMY_2_Y_ADDRESS, #70, @ret
+        IF_MORE_THAN ENEMY_2_Y_ADDRESS, #55, @ret
         jmp @move_ufo_down
 
 
@@ -290,7 +350,7 @@ move_enemy2_vert
         IF_NOT_EQUEL ENEMY_2_VARIATION, #0, @move_muncher_up 
         IF_MORE_THAN ENEMY_2_X_ADDRESS, #222, @move_ufo_up
         IF_LESS_THAN ENEMY_2_X_ADDRESS, #42, @move_ufo_up
-        IF_LESS_THAN ENEMY_2_Y_ADDRESS, #210, @done
+        IF_LESS_THAN ENEMY_2_Y_ADDRESS, #225, @done
         jmp @move_ufo_up
 
 @move_muncher_up    
@@ -426,6 +486,75 @@ move_enemy_3
         rts
 
 
+
+
+;====================
+;       ENEMY 4
+;====================
+move_enemy_4
+        IF_NOT_EQUEL ENEMY4_HIT, #TRUE, @move
+        rts
+
+@move      
+        IF_MORE_THAN ENEMY_4_Y_ADDRESS, #151, @move_up ; If on bottom half of screen, move up        
+        IF_LESS_THAN ENEMY_4_Y_ADDRESS, #129, @move_down ; If on top half of screen, move down
+        SET_PLAYER_TO_DEATH_STATE
+        rts
+
+@move_down
+        IF_EQUEL ENEMY_4_VARIATION, #0, @move_astroid_down
+
+        lda ENEMY_4_Y_ADDRESS
+        adc ROBOT_Y_SPEED_ADDRESS
+        sta ENEMY_4_Y_ADDRESS
+        jmp @move_hori
+
+@move_astroid_down
+        clc
+        lda ENEMY_4_Y_ADDRESS
+        adc ASTROID_Y_SPEED_ADDRESS
+        sta ENEMY_4_Y_ADDRESS
+        rts
+
+
+@move_up
+        IF_EQUEL ENEMY_4_VARIATION, #0,  @move_astroid_up
+        
+        lda ENEMY_4_Y_ADDRESS
+        sbc ROBOT_Y_SPEED_ADDRESS
+        sta ENEMY_4_Y_ADDRESS
+        jmp @move_hori
+
+@move_astroid_up
+        clc
+        lda ENEMY_4_Y_ADDRESS
+        sbc ASTROID_Y_SPEED_ADDRESS
+        sta ENEMY_4_Y_ADDRESS
+        rts      
+
+@move_hori
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #32,  @right        
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #64,  @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #96,  @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #128, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #160, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #192, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #224, @right
+        
+@left
+        lda ENEMY_4_X_ADDRESS
+        sbc ROBOT_X_SPEED_ADDRESS
+        sta ENEMY_4_X_ADDRESS
+        rts
+        
+@right
+        lda ENEMY_4_X_ADDRESS
+        adc ROBOT_X_SPEED_ADDRESS
+        sta ENEMY_4_X_ADDRESS
+        rts
+
+
+
 ; =========================
 ;      Enemy Animation
 ; =========================      
@@ -454,4 +583,13 @@ animate_sprite_3
 
 set_sprite_3_animation_to_astroid
         ANIMATE_ENEMY ENEMY_3_CURRENT_FRAME_ADDRESS, ENEMY3_HIT, #ASTROID_ENEMY_F1_SPRITE_VALUE, reset_enemy_3_sprites, #ASTROID_ENEMY_RESET_FRAME, ENEMY_3_SPRITE_ADDRESS     
-        rts          
+        rts   
+
+animate_sprite_4
+        IF_EQUEL ENEMY_4_VARIATION, #0, set_sprite_4_animation_to_astroid
+        ANIMATE_ENEMY ENEMY_4_CURRENT_FRAME_ADDRESS, ENEMY4_HIT, #ANDROID_ENEMY_F1_SPRITE_VALUE, reset_enemy_4_sprites, #ANDROID_ENEMY_RESET_FRAME, ENEMY_4_SPRITE_ADDRESS
+        rts
+
+set_sprite_4_animation_to_astroid
+        ANIMATE_ENEMY ENEMY_4_CURRENT_FRAME_ADDRESS, ENEMY4_HIT, #ASTROID_ENEMY_F1_SPRITE_VALUE, reset_enemy_4_sprites, #ASTROID_ENEMY_RESET_FRAME, ENEMY_4_SPRITE_ADDRESS     
+        rts   

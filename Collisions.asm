@@ -52,7 +52,7 @@ check_bullet_collision
         CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY3_HIT, ENEMY_3_X_ADDRESS, ENEMY_3_CURRENT_FRAME_ADDRESS        
 
         cpx #TRUE ;Check if collision took place. Result should still be in the x register
-        bne @check_enemy_2_collision ; Skip variation change if not been hit
+        bne @check_enemy_4_collision ; Skip variation change if not been hit
         
         lda #TRUE
         sta TEMP3
@@ -61,11 +61,34 @@ check_bullet_collision
         IF_LESS_THAN TEMP1, #145, @setEnemy3ToVar1
         lda #0        
         sta ENEMY_3_VARIATION
-        jmp @check_enemy_2_collision
+        jmp @check_enemy_4_collision
 
 @setEnemy3ToVar1
         lda #1        
         sta ENEMY_3_VARIATION
+
+
+;-
+@check_enemy_4_collision
+        CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ENEMY4_HIT, ENEMY_4_X_ADDRESS, ENEMY_4_CURRENT_FRAME_ADDRESS        
+
+        cpx #TRUE ;Check if collision took place. Result should still be in the x register
+        bne @check_enemy_2_collision ; Skip variation change if not been hit
+        
+        lda #TRUE
+        sta TEMP3
+
+        jsr random ; Temp 1 and accumulator will store respose of the random function
+        IF_LESS_THAN TEMP1, #145, @setEnemy4ToVar1
+        lda #0        
+        sta ENEMY_4_VARIATION
+        jmp @check_enemy_2_collision
+
+@setEnemy4ToVar1
+        lda #1        
+        sta ENEMY_4_VARIATION
+;-
+
 
 
 @check_enemy_2_collision
