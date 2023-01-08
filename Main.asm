@@ -33,8 +33,8 @@ gameplay_loop
         
         jsr handle_player_input
         jsr update_enemies
-        jsr run_script
         jsr run_collision_checks        
+        jsr run_script ; Run script should be the last thing run
 
         jmp gameplay_loop
 

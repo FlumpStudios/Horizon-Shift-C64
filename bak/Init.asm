@@ -33,6 +33,9 @@ run_menu_init
         lda #$06
         sta $d02D
 
+        lda #$06
+        sta $d02E
+
         ; positioning sprites
         
         lda #125        ; Muncher
@@ -47,7 +50,7 @@ run_menu_init
 
         
         ; set multicolor flags
-        lda #$7B
+        lda #%11111011
         sta $d01c
 
         ; set screen-sprite priority flags
@@ -157,13 +160,16 @@ run_game_initiation
         sta ENEMY_1_CURRENT_FRAME_ADDRESS       
         sta ENEMY_1_SPRITE_ADDRESS
         
+        lda #ANDROID_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_3_CURRENT_FRAME_ADDRESS               
         sta ENEMY_3_SPRITE_ADDRESS
+        sta ENEMY_4_CURRENT_FRAME_ADDRESS               
+        sta ENEMY_4_SPRITE_ADDRESS
+       
         
         lda #MUNCHER_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_2_CURRENT_FRAME_ADDRESS               
         sta ENEMY_2_SPRITE_ADDRESS
-
 
         ;================================
         ;       MEMORY INITIALISATION
@@ -178,7 +184,6 @@ run_game_initiation
         lda #0
         sta SCORE_ADDRESS_LOW   
         sta SCORE_ADDRESS_HIGH
-        sta ENEMY_3_VARIATION
         sta ENEMIES_KILLED_LOW
         sta ENEMIES_KILLED_HIGH                
         sta CHAIN_ADDRESS        
@@ -189,6 +194,7 @@ run_game_initiation
         sta ENEMY_1_VARIATION
         sta ENEMY_2_VARIATION
         sta ENEMY_3_VARIATION
+        sta ENEMY_4_VARIATION
         sta ROBOT_X_SPEED_ADDRESS 
         sta MUNCHER_X_SPEED_ADDRESS
         sta ASTROID_Y_SPEED_ADDRESS        

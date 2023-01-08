@@ -23,6 +23,11 @@ defm SET_TEXT_COLOUR
 endm
 
 
+defm SET_PLAYER_TO_DEATH_STATE
+        lda #TRUE
+        sta PLAYER_IN_DEATH_STATE
+endm    
+
 
 ;----------------------------------------
 ;               CLEAR SCREEN            
@@ -288,6 +293,10 @@ endm
 ; =======================
 
 defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAME )
+        ldx #0 
+        stx TEMP1
+        stx TEMP2
+
         lda /1
         cmp #TRUE
         beq @has_not_collided
@@ -461,8 +470,7 @@ defm IF_ENEMY_BULLET_COLLIDED_WITH_PLAYER ;(Label to jump to)
         
 
 @has_collided        
-        ldx #TRUE
-        jmp /1
+        ldx #TRUE        
 
 @done_check
         

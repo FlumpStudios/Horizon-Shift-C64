@@ -73,7 +73,6 @@ run_menu_init
         rts
 
 run_game_initiation
-       
         ;================================
         ;       DRAW THE PLAY AREA
         ;================================                
@@ -125,24 +124,21 @@ run_game_initiation
         sta $d004       
         lda #$0A        ; Player_bullet_Y
         sta $d005       
-        lda #150        ; Enemy_Robot_F1_X
+        
+        lda #0        
         sta ENEMY_1_X_ADDRESS       
-        lda #50        ; Enemy_Robot_F1_Y
-        sta ENEMY_1_Y_ADDRESS      
-
-        lda #100        ; Muncher
         sta ENEMY_2_X_ADDRESS       
-        lda #75        ; Muncher
-        sta ENEMY_2_Y_ADDRESS     
-
-        lda #100
         sta ENEMY_3_X_ADDRESS
-        sta ENEMY_3_Y_ADDRESS
+        sta ENEMY_4_X_ADDRESS
         sta ENEMY_BULLET_X
+        
+        lda #250
+        sta ENEMY_1_Y_ADDRESS      
+        sta ENEMY_2_Y_ADDRESS     
+        sta ENEMY_3_Y_ADDRESS
+        sta ENEMY_4_Y_ADDRESS
         sta ENEMY_BULLET_Y
 
-
-        
 
         ;================================
         ;      SPRITE POINTERS
@@ -156,13 +152,15 @@ run_game_initiation
         sta ENEMY_BULLET_SPRITE_ADDRESS
 
         ; Enemy frames
-        lda #ROBOT_ENEMY_F1_SPRITE_VALUE
+        ;lda #ROBOT_ENEMY_F1_SPRITE_VALUE
+        
+        lda #ASTROID_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_1_CURRENT_FRAME_ADDRESS       
         sta ENEMY_1_SPRITE_ADDRESS
         
-        lda #ANDROID_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_3_CURRENT_FRAME_ADDRESS               
         sta ENEMY_3_SPRITE_ADDRESS
+
         sta ENEMY_4_CURRENT_FRAME_ADDRESS               
         sta ENEMY_4_SPRITE_ADDRESS
        
@@ -180,25 +178,38 @@ run_game_initiation
         sta PLAYER_FLIPPED_LOCATION
         sta MUNCHER_1_HAS_BOUNCED_ADDRESS
         sta ENEMY_BULLET_IS_FIRING_ADDRESS
+        sta ENEMY1_HIT
+        sta ENEMY2_HIT
+        sta ENEMY3_HIT
+        sta ENEMY4_HIT
+        sta TEMP1
+        sta TEMP2
+        sta TEMP3
 
         lda #0
         sta SCORE_ADDRESS_LOW   
         sta SCORE_ADDRESS_HIGH
-        sta ENEMIES_KILLED_LOW
-        sta ENEMIES_KILLED_HIGH                
         sta CHAIN_ADDRESS        
         sta ENEMY_BULLET_X_SPEED_ADDRESS
-        
-        lda #1
-        sta MUNCHER_Y_SPEED_ADDRESS
         sta ENEMY_1_VARIATION
         sta ENEMY_2_VARIATION
         sta ENEMY_3_VARIATION
         sta ENEMY_4_VARIATION
+        sta ENEMIES_KILLED_LOW
+        sta ENEMIES_KILLED_HIGH                
+        sta DEATH_TIMER_LOW
+        sta ANIMATION_TIMER_ADDRESS
+        sta GAMEPLAY_TIMER_ADDRESS
+        sta BULLET_DIRECTION_LOCATION
+
+        lda #1
+        sta MUNCHER_Y_SPEED_ADDRESS
         sta ROBOT_X_SPEED_ADDRESS 
         sta MUNCHER_X_SPEED_ADDRESS
         sta ASTROID_Y_SPEED_ADDRESS        
         sta ROBOT_Y_SPEED_ADDRESS
+        sta ANDROID_X_SPEED_ADDRESS
+        sta ANDROID_Y_SPEED_ADDRESS
         
 
         lda #2        
