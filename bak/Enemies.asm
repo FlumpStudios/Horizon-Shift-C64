@@ -10,7 +10,7 @@ reset_all_enemies
         rts
 
 reset_enemy_bullet
-        lda #250
+        lda #RESET_BOTTOM_POSITION
         sta ENEMY_BULLET_Y
         
         lda #FALSE
@@ -24,12 +24,12 @@ reset_enemy_1_sprites
         AND #$01 ; If result of random is even set enemy to top of screen, else bottom
         BEQ @set_enemy_to_top
 
-        lda #25
+        lda #RESET_BOTTOM_POSITION
         sta ENEMY_1_Y_ADDRESS
         rts
 
 @set_enemy_to_top
-        lda #250
+        lda #RESET_TOP_POSITION
         sta ENEMY_1_Y_ADDRESS
         rts
 
@@ -41,12 +41,12 @@ reset_enemy_2_sprites
         AND #$01 ; If result of random is even set enemy to top of screen, else bottom
         BEQ @set_enemy_to_top
 
-        lda #25
+        lda #RESET_BOTTOM_POSITION
         sta ENEMY_2_Y_ADDRESS
         rts
 
 @set_enemy_to_top
-        lda #250
+        lda #RESET_TOP_POSITION
         sta ENEMY_2_Y_ADDRESS
         rts
 
@@ -57,12 +57,12 @@ reset_enemy_3_sprites
         AND #$01 ; If result of random is even set enemy to top of screen, else bottom
         BEQ @set_enemy_to_top
 
-        lda #25
+        lda #RESET_BOTTOM_POSITION
         sta ENEMY_3_Y_ADDRESS
         rts
 
 @set_enemy_to_top
-        lda #250
+        lda #RESET_TOP_POSITION
         sta ENEMY_3_Y_ADDRESS
         rts
 
@@ -72,12 +72,12 @@ reset_enemy_4_sprites
         AND #$01 ; If result of random is even set enemy to top of screen, else bottom
         BEQ @set_enemy_to_top
 
-        lda #25
+        lda #RESET_BOTTOM_POSITION
         sta ENEMY_4_Y_ADDRESS
         rts
 
 @set_enemy_to_top
-        lda #250
+        lda #RESET_TOP_POSITION
         sta ENEMY_4_Y_ADDRESS
         rts
 

@@ -28,7 +28,6 @@ defm SET_PLAYER_TO_DEATH_STATE
         sta PLAYER_IN_DEATH_STATE
 endm    
 
-
 ;----------------------------------------
 ;               CLEAR SCREEN            
 ;----------------------------------------

@@ -1,17 +1,14 @@
 
-******* 102 Label(s) *******
+******* 96 Label(s) *******
 ~~~done_check{00003} = $1098 
 ~~~done_check{00005} = $1149 
 ~~~done_check{00007} = $1209 
 ~~~done_check{00009} = $12CA 
 ~~~done_check{00011} = $138A 
-~~~done{00033} = $14F3 
-~~~done{00034} = $1501 
-~~~done{00035} = $150F 
-~~~done{00039} = $153B 
-~~~done{00040} = $154C 
-~~~done{00075} = $1A34 
-~~~done{00076} = $1A61 
+~~~done{00035} = $150E 
+~~~done{00036} = $151F 
+~~~done{00071} = $1A41 
+~~~done{00072} = $1A6E 
 ~~~has_collided{00003} = $1096 
 ~~~has_collided{00005} = $1103 
 ~~~has_collided{00007} = $11C4 
@@ -22,88 +19,85 @@
 ~~~has_not_collided{00007} = $11BF 
 ~~~has_not_collided{00009} = $127F 
 ~~~has_not_collided{00011} = $1340 
-~~~read_char_loop{00033} = $14E7 
-~~~read_char_loop{00034} = $14F5 
-~~~read_char_loop{00035} = $1503 
-~~~read_char_loop{00039} = $152F 
-~~~read_char_loop{00040} = $1540 
-~~~skip_death_animations{00139} = $1DA3 
-~~~skip_death_animations{00140} = $1DD5 
-~~~skip_death_animations{00142} = $1E0B 
-~~~skip_death_animations{00143} = $1E37 
-~~~skip_death_animations{00145} = $1E6A 
-~~~skip_death_animations{00146} = $1E96 
-~~~skip_death_animations{00148} = $1ECC 
-~~~skip_death_animations{00149} = $1EFE 
-~~~update_pointer{00139} = $1DAF 
-~~~update_pointer{00140} = $1DE1 
-~~~update_pointer{00142} = $1E15 
-~~~update_pointer{00143} = $1E41 
-~~~update_pointer{00145} = $1E74 
-~~~update_pointer{00146} = $1EA0 
-~~~update_pointer{00148} = $1ED8 
-~~~update_pointer{00149} = $1F0A 
+~~~read_char_loop{00035} = $1502 
+~~~read_char_loop{00036} = $1513 
+~~~skip_death_animations{00135} = $1DB0 
+~~~skip_death_animations{00136} = $1DE2 
+~~~skip_death_animations{00138} = $1E18 
+~~~skip_death_animations{00139} = $1E44 
+~~~skip_death_animations{00141} = $1E77 
+~~~skip_death_animations{00142} = $1EA3 
+~~~skip_death_animations{00144} = $1ED9 
+~~~skip_death_animations{00145} = $1F0B 
+~~~update_pointer{00135} = $1DBC 
+~~~update_pointer{00136} = $1DEE 
+~~~update_pointer{00138} = $1E22 
+~~~update_pointer{00139} = $1E4E 
+~~~update_pointer{00141} = $1E81 
+~~~update_pointer{00142} = $1EAD 
+~~~update_pointer{00144} = $1EE5 
+~~~update_pointer{00145} = $1F17 
 ~~~update_score{00005} = $1134 
 ~~~update_score{00007} = $11F4 
 ~~~update_score{00009} = $12B5 
 ~~~update_score{00011} = $1375 
 4 = $0801 
-animate_sprite_1 = $1D7D 
-animate_sprite_2 = $1DE8 
-animate_sprite_3 = $1E47 
-animate_sprite_4 = $1EA6 
-base_score = $301C 
+animate_sprite_1 = $1D8A 
+animate_sprite_2 = $1DF5 
+animate_sprite_3 = $1E54 
+animate_sprite_4 = $1EB3 
+base_score = $3BD4 
 check_bullet_collision = $10A3 
-check_joystick_input = $1886 
+check_joystick_input = $1893 
 check_player_collided_with_bullet = $1049 
-clear = $3021 
-clear_print_press = $153E 
-copyright = $3047 
-die_message = $2FF4 
-fire_bullets = $19F8 
-fire_from_robot = $1A09 
-fire_from_UFO = $1A36 
+clear = $3BD9 
+clear_print_press = $1511 
+copyright = $3BFF 
+die_message = $3BAC 
+fire_bullets = $1A05 
+fire_from_robot = $1A16 
+fire_from_UFO = $1A43 
 gameplay_loop = $101A 
-handle_player_input = $181D 
+handle_player_input = $182A 
 initiate_game = $1017 
-is_off_screen = $1645 
+is_off_screen = $1618 
 main = $1014 
 main_menu_loop = $1469 
-move_enemy = $1A8C 
-move_enemy_3 = $1C3F 
-move_enemy_4 = $1CDE 
-move_enemy_bullet = $1A64 
-move_enemy2_hori = $1BD1 
-move_enemy2_vert = $1B3A 
-press_to_continue = $3003 
-print_key_press = $152D 
-random = $155D 
-reset_all_enemies = $1916 
-reset_background_border_colour = $1552 
-reset_enemy_1_sprites = $1930 
-reset_enemy_2_sprites = $1946 
-reset_enemy_3_sprites = $195B 
-reset_enemy_4_sprites = $1971 
-reset_enemy_bullet = $1926 
-return = $1A63 
+move_enemy = $1A99 
+move_enemy_3 = $1C4C 
+move_enemy_4 = $1CEB 
+move_enemy_bullet = $1A71 
+move_enemy2_hori = $1BDE 
+move_enemy2_vert = $1B47 
+press_to_continue = $3BBB 
+print_key_press = $1500 
+random = $1530 
+reset_all_enemies = $1923 
+reset_background_border_colour = $1525 
+reset_enemy_1_sprites = $193D 
+reset_enemy_2_sprites = $1953 
+reset_enemy_3_sprites = $1968 
+reset_enemy_4_sprites = $197E 
+reset_enemy_bullet = $1933 
+return = $1A70 
 run_collision_checks = $103C 
 run_death = $13DB 
-run_game_initiation = $16BD 
+run_game_initiation = $16CA 
 run_menu = $1452 
-run_menu_init = $165B 
-run_script = $1580 
-score_label = $2FD0 
-set_sprite_1_animation_to_astroid = $1DB6 
-set_sprite_2_animation_to_ufo = $1E1B 
-set_sprite_3_animation_to_astroid = $1E7A 
-set_sprite_4_animation_to_astroid = $1EDF 
-update_colour = $154F 
-update_enemies = $1987 
-W = $1526 
-welcome_message = $2FD7 
-x = $1523 
+run_menu_init = $162E 
+run_script = $1553 
+score_label = $3B88 
+set_sprite_1_animation_to_astroid = $1DC3 
+set_sprite_2_animation_to_ufo = $1E28 
+set_sprite_3_animation_to_astroid = $1E87 
+set_sprite_4_animation_to_astroid = $1EEC 
+update_colour = $1522 
+update_enemies = $1994 
+W = $14F9 
+welcome_message = $3B8F 
+x = $14F6 
 
-******* 51 Unused label(s) *******
+******* 48 Unused label(s) *******
 @call_enemy2_vert
 @call_move_enemy_3
 @call_move_enemy_4
@@ -219,13 +213,10 @@ x = $1523
 ~~~done_check{00007}
 ~~~done_check{00009}
 ~~~done_check{00011}
-~~~done{00033}
-~~~done{00034}
 ~~~done{00035}
-~~~done{00039}
-~~~done{00040}
-~~~done{00075}
-~~~done{00076}
+~~~done{00036}
+~~~done{00071}
+~~~done{00072}
 ~~~has_collided{00003}
 ~~~has_collided{00005}
 ~~~has_collided{00007}
@@ -236,27 +227,24 @@ x = $1523
 ~~~has_not_collided{00007}
 ~~~has_not_collided{00009}
 ~~~has_not_collided{00011}
-~~~read_char_loop{00033}
-~~~read_char_loop{00034}
 ~~~read_char_loop{00035}
-~~~read_char_loop{00039}
-~~~read_char_loop{00040}
+~~~read_char_loop{00036}
+~~~skip_death_animations{00135}
+~~~skip_death_animations{00136}
+~~~skip_death_animations{00138}
 ~~~skip_death_animations{00139}
-~~~skip_death_animations{00140}
+~~~skip_death_animations{00141}
 ~~~skip_death_animations{00142}
-~~~skip_death_animations{00143}
+~~~skip_death_animations{00144}
 ~~~skip_death_animations{00145}
-~~~skip_death_animations{00146}
-~~~skip_death_animations{00148}
-~~~skip_death_animations{00149}
+~~~update_pointer{00135}
+~~~update_pointer{00136}
+~~~update_pointer{00138}
 ~~~update_pointer{00139}
-~~~update_pointer{00140}
+~~~update_pointer{00141}
 ~~~update_pointer{00142}
-~~~update_pointer{00143}
+~~~update_pointer{00144}
 ~~~update_pointer{00145}
-~~~update_pointer{00146}
-~~~update_pointer{00148}
-~~~update_pointer{00149}
 ~~~update_score{00005}
 ~~~update_score{00007}
 ~~~update_score{00009}
@@ -264,7 +252,10 @@ x = $1523
 4
 base_score
 check_joystick_input
+copyright
+die_message
 score_label
+welcome_message
 
 ******* 121 Variable(s) *******
 ANDROID_ENEMY_F1_SPRITE_VALUE  = $003B
