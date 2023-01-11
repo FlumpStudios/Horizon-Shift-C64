@@ -185,6 +185,39 @@ endm
 
 
 
+defm FLASH_STARS
+
+        ldx #$0
+@loop
+        lda /1,x
+        cmp #$60        
+        beq @set_to_off
+
+        cmp #$5E        
+        beq @set_to_on    
+        
+        jmp @skip
+
+@set_to_off     
+        lda #$5E
+        sta /1,x
+        jmp @skip
+
+@set_to_on
+        lda #$60
+        sta /1,x        
+        
+@skip
+        inx
+        cpx #254
+        beq @exit
+        jmp @loop
+
+
+@exit
+endm
+
+
 ;----------------------------------------
 ;    PRINT NULL TERMINATING STRING            
 ;----------------------------------------

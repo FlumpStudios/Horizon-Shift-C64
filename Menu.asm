@@ -41,7 +41,7 @@ main_menu_loop
 
 @move_menu_sprite
         IF_MORE_THAN ENEMY_2_X_ADDRESS, #250, @set_bounced
-        IF_LESS_THAN ENEMY_2_X_ADDRESS, #95, @set_not_bounced
+        IF_LESS_THAN ENEMY_2_X_ADDRESS, #65, @set_not_bounced
         jmp @move
         
 @set_bounced
@@ -91,11 +91,11 @@ W
         jmp initiate_game ;load the game if a key is pressed
 
 print_key_press
-        PRINT press_to_continue,  VRAM_START_ADDRESS + 888        
+        PRINT press_to_continue,  VRAM_START_ADDRESS + 968
         jmp w
 
 clear_print_press
-        PRINT clear, VRAM_START_ADDRESS + 888
+        PRINT clear, VRAM_START_ADDRESS + 968
         jmp w
 
 update_colour

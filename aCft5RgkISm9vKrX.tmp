@@ -30,16 +30,33 @@ initiate_game
 gameplay_loop               
         IF_NOT_EQUEL $d012, #$ff, gameplay_loop ; Raster line check
         inc GAMEPLAY_TIMER_ADDRESS        
-        IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, @jmp_to_death
+        IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, @jmp_to_death       
         jsr handle_player_input
         jsr update_enemies
         jsr run_collision_checks        
         jsr run_script ; Run script should be the last thing run
 
+        IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #50, flash_stars
+        IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #100, flash_stars
+        IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #150, flash_stars
+        IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #200, flash_stars
+        IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #250, flash_stars
+
+
         jmp gameplay_loop
 
 @jmp_to_death ; HACK: run_death sbr too far away
         jmp run_death
+
+
+flash_stars
+        FLASH_STARS $0400
+        FLASH_STARS $0400 + 254
+        FLASH_STARS $0400 + 508
+        FLASH_STARS $0400 + 762
+        jmp gameplay_loop
+
+        
 
 
 Incasm "Collisions.asm"

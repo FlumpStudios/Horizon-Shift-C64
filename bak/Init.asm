@@ -40,7 +40,7 @@ run_menu_init
         
         lda #125        ; Muncher
         sta ENEMY_2_X_ADDRESS       
-        lda #110        ; Muncher
+        lda #200         ; Muncher
         sta ENEMY_2_Y_ADDRESS     
 
 
@@ -57,7 +57,52 @@ run_menu_init
         lda #$00
         sta $d01b
 
-        
+             
+
+        ;================================
+        ;     DRAW TITLE
+        ;================================                
+        lda #$D0
+        sta $fb
+
+        lda #$00
+        sta $fd
+        sta $f7
+
+
+        lda #$2F
+        sta $fc
+
+        lda #$04
+        sta $fe
+
+        lda #$B8
+        sta $f9
+        lda #$33
+        sta $fa
+
+        lda #$d8
+        sta $f8
+
+        ldx #$00
+        ldy #$00
+        lda ($fb),y
+        sta ($fd),y
+        lda ($f9),y
+        sta ($f7),y
+        iny
+        bne *-9
+
+        inc $fc
+        inc $fe
+        inc $fa
+        inc $f8
+
+        inx
+        cpx #$04
+        bne *-24
+
+
         
         ; Enemy frames
         
@@ -76,7 +121,7 @@ run_game_initiation
         ;================================
         ;       DRAW THE PLAY AREA
         ;================================                
-        lda #$00
+        lda #$0
         sta $fb
         sta $fd
         sta $f7

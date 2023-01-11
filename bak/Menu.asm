@@ -22,7 +22,7 @@ main_menu_loop
         lda $0286
         cmp #Black
         beq @skip_clear_screen
-        CLEAR_SCREEN
+        ;CLEAR_SCREEN
 
 @skip_clear_screen
         inc ENEMY_2_CURRENT_FRAME_ADDRESS
@@ -41,7 +41,7 @@ main_menu_loop
 
 @move_menu_sprite
         IF_MORE_THAN ENEMY_2_X_ADDRESS, #250, @set_bounced
-        IF_LESS_THAN ENEMY_2_X_ADDRESS, #70, @set_not_bounced
+        IF_LESS_THAN ENEMY_2_X_ADDRESS, #95, @set_not_bounced
         jmp @move
         
 @set_bounced
@@ -76,12 +76,8 @@ main_menu_loop
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS
         inc GAMEPLAY_TIMER_ADDRESS        
-        inc GAMEPLAY_TIMER_ADDRESS
+        inc GAMEPLAY_TIMER_ADDRESS        
         
-        PRINT welcome_message, VRAM_START_ADDRESS + 5
-        PRINT die_message, VRAM_START_ADDRESS + 132
-        PRINT copyright, VRAM_END_ADDRESS -57
-
         IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #128, update_colour
         IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #127, print_key_press
         IF_MORE_THAN GAMEPLAY_TIMER_ADDRESS, #127, clear_print_press
@@ -95,11 +91,11 @@ W
         jmp initiate_game ;load the game if a key is pressed
 
 print_key_press
-        PRINT press_to_continue,  VRAM_START_ADDRESS + 567        
+        PRINT press_to_continue,  VRAM_START_ADDRESS + 888        
         jmp w
 
 clear_print_press
-        PRINT clear, VRAM_START_ADDRESS + 567
+        PRINT clear, VRAM_START_ADDRESS + 888
         jmp w
 
 update_colour

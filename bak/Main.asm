@@ -27,10 +27,8 @@ initiate_game
 
 gameplay_loop               
         IF_NOT_EQUEL $d012, #$ff, gameplay_loop ; Raster line check
-        inc GAMEPLAY_TIMER_ADDRESS
-        
-        IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, @jmp_to_death
-        
+        inc GAMEPLAY_TIMER_ADDRESS        
+        IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, @jmp_to_death       
         jsr handle_player_input
         jsr update_enemies
         jsr run_collision_checks        

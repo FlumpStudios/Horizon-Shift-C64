@@ -1,103 +1,124 @@
 
-******* 96 Label(s) *******
-~~~done_check{00003} = $1098 
-~~~done_check{00005} = $1149 
-~~~done_check{00007} = $1209 
-~~~done_check{00009} = $12CA 
-~~~done_check{00011} = $138A 
-~~~done{00035} = $150E 
-~~~done{00036} = $151F 
-~~~done{00071} = $1A41 
-~~~done{00072} = $1A6E 
-~~~has_collided{00003} = $1096 
-~~~has_collided{00005} = $1103 
-~~~has_collided{00007} = $11C4 
-~~~has_collided{00009} = $1284 
-~~~has_collided{00011} = $1345 
-~~~has_not_collided{00003} = $1091 
-~~~has_not_collided{00005} = $10FE 
-~~~has_not_collided{00007} = $11BF 
-~~~has_not_collided{00009} = $127F 
-~~~has_not_collided{00011} = $1340 
-~~~read_char_loop{00035} = $1502 
-~~~read_char_loop{00036} = $1513 
-~~~skip_death_animations{00135} = $1DB0 
-~~~skip_death_animations{00136} = $1DE2 
-~~~skip_death_animations{00138} = $1E18 
-~~~skip_death_animations{00139} = $1E44 
-~~~skip_death_animations{00141} = $1E77 
-~~~skip_death_animations{00142} = $1EA3 
-~~~skip_death_animations{00144} = $1ED9 
-~~~skip_death_animations{00145} = $1F0B 
-~~~update_pointer{00135} = $1DBC 
-~~~update_pointer{00136} = $1DEE 
-~~~update_pointer{00138} = $1E22 
-~~~update_pointer{00139} = $1E4E 
-~~~update_pointer{00141} = $1E81 
-~~~update_pointer{00142} = $1EAD 
-~~~update_pointer{00144} = $1EE5 
-~~~update_pointer{00145} = $1F17 
-~~~update_score{00005} = $1134 
-~~~update_score{00007} = $11F4 
-~~~update_score{00009} = $12B5 
-~~~update_score{00011} = $1375 
+******* 117 Label(s) *******
+~~~done_check{00012} = $114D 
+~~~done_check{00014} = $11FE 
+~~~done_check{00016} = $12BE 
+~~~done_check{00018} = $137F 
+~~~done_check{00020} = $143F 
+~~~done{00044} = $15C3 
+~~~done{00045} = $15D4 
+~~~done{00080} = $1B06 
+~~~done{00081} = $1B33 
+~~~exit{00007} = $107F 
+~~~exit{00008} = $10A4 
+~~~exit{00009} = $10C9 
+~~~exit{00010} = $10EE 
+~~~has_collided{00012} = $114B 
+~~~has_collided{00014} = $11B8 
+~~~has_collided{00016} = $1279 
+~~~has_collided{00018} = $1339 
+~~~has_collided{00020} = $13FA 
+~~~has_not_collided{00012} = $1146 
+~~~has_not_collided{00014} = $11B3 
+~~~has_not_collided{00016} = $1274 
+~~~has_not_collided{00018} = $1334 
+~~~has_not_collided{00020} = $13F5 
+~~~loop{00007} = $105C 
+~~~loop{00008} = $1081 
+~~~loop{00009} = $10A6 
+~~~loop{00010} = $10CB 
+~~~read_char_loop{00044} = $15B7 
+~~~read_char_loop{00045} = $15C8 
+~~~set_to_off{00007} = $106A 
+~~~set_to_off{00008} = $108F 
+~~~set_to_off{00009} = $10B4 
+~~~set_to_off{00010} = $10D9 
+~~~set_to_on{00007} = $1072 
+~~~set_to_on{00008} = $1097 
+~~~set_to_on{00009} = $10BC 
+~~~set_to_on{00010} = $10E1 
+~~~skip_death_animations{00144} = $1E75 
+~~~skip_death_animations{00145} = $1EA7 
+~~~skip_death_animations{00147} = $1EDD 
+~~~skip_death_animations{00148} = $1F09 
+~~~skip_death_animations{00150} = $1F3C 
+~~~skip_death_animations{00151} = $1F68 
+~~~skip_death_animations{00153} = $1F9E 
+~~~skip_death_animations{00154} = $1FD0 
+~~~skip{00007} = $1077 
+~~~skip{00008} = $109C 
+~~~skip{00009} = $10C1 
+~~~skip{00010} = $10E6 
+~~~update_pointer{00144} = $1E81 
+~~~update_pointer{00145} = $1EB3 
+~~~update_pointer{00147} = $1EE7 
+~~~update_pointer{00148} = $1F13 
+~~~update_pointer{00150} = $1F46 
+~~~update_pointer{00151} = $1F72 
+~~~update_pointer{00153} = $1FAA 
+~~~update_pointer{00154} = $1FDC 
+~~~update_score{00014} = $11E9 
+~~~update_score{00016} = $12A9 
+~~~update_score{00018} = $136A 
+~~~update_score{00020} = $142A 
 4 = $0801 
-animate_sprite_1 = $1D8A 
-animate_sprite_2 = $1DF5 
-animate_sprite_3 = $1E54 
-animate_sprite_4 = $1EB3 
-base_score = $3BD4 
-check_bullet_collision = $10A3 
-check_joystick_input = $1893 
-check_player_collided_with_bullet = $1049 
-clear = $3BD9 
-clear_print_press = $1511 
-copyright = $3BFF 
-die_message = $3BAC 
-fire_bullets = $1A05 
-fire_from_robot = $1A16 
-fire_from_UFO = $1A43 
+animate_sprite_1 = $1E4F 
+animate_sprite_2 = $1EBA 
+animate_sprite_3 = $1F19 
+animate_sprite_4 = $1F78 
+base_score = $37EC 
+check_bullet_collision = $1158 
+check_joystick_input = $1958 
+check_player_collided_with_bullet = $10FE 
+clear = $37F1 
+clear_print_press = $15C6 
+copyright = $3817 
+die_message = $37C4 
+fire_bullets = $1ACA 
+fire_from_robot = $1ADB 
+fire_from_UFO = $1B08 
+flash_stars = $105A 
 gameplay_loop = $101A 
-handle_player_input = $182A 
+handle_player_input = $18EF 
 initiate_game = $1017 
-is_off_screen = $1618 
+is_off_screen = $16CD 
 main = $1014 
-main_menu_loop = $1469 
-move_enemy = $1A99 
-move_enemy_3 = $1C4C 
-move_enemy_4 = $1CEB 
-move_enemy_bullet = $1A71 
-move_enemy2_hori = $1BDE 
-move_enemy2_vert = $1B47 
-press_to_continue = $3BBB 
-print_key_press = $1500 
-random = $1530 
-reset_all_enemies = $1923 
-reset_background_border_colour = $1525 
-reset_enemy_1_sprites = $193D 
-reset_enemy_2_sprites = $1953 
-reset_enemy_3_sprites = $1968 
-reset_enemy_4_sprites = $197E 
-reset_enemy_bullet = $1933 
-return = $1A70 
-run_collision_checks = $103C 
-run_death = $13DB 
-run_game_initiation = $16CA 
-run_menu = $1452 
-run_menu_init = $162E 
-run_script = $1553 
-score_label = $3B88 
-set_sprite_1_animation_to_astroid = $1DC3 
-set_sprite_2_animation_to_ufo = $1E28 
-set_sprite_3_animation_to_astroid = $1E87 
-set_sprite_4_animation_to_astroid = $1EEC 
-update_colour = $1522 
-update_enemies = $1994 
-W = $14F9 
-welcome_message = $3B8F 
-x = $14F6 
+main_menu_loop = $151E 
+move_enemy = $1B5E 
+move_enemy_3 = $1D11 
+move_enemy_4 = $1DB0 
+move_enemy_bullet = $1B36 
+move_enemy2_hori = $1CA3 
+move_enemy2_vert = $1C0C 
+press_to_continue = $37D3 
+print_key_press = $15B5 
+random = $15E5 
+reset_all_enemies = $19E8 
+reset_background_border_colour = $15DA 
+reset_enemy_1_sprites = $1A02 
+reset_enemy_2_sprites = $1A18 
+reset_enemy_3_sprites = $1A2D 
+reset_enemy_4_sprites = $1A43 
+reset_enemy_bullet = $19F8 
+return = $1B35 
+run_collision_checks = $10F1 
+run_death = $1490 
+run_game_initiation = $1787 
+run_menu = $1507 
+run_menu_init = $16E3 
+run_script = $1608 
+score_label = $37A0 
+set_sprite_1_animation_to_astroid = $1E88 
+set_sprite_2_animation_to_ufo = $1EED 
+set_sprite_3_animation_to_astroid = $1F4C 
+set_sprite_4_animation_to_astroid = $1FB1 
+update_colour = $15D7 
+update_enemies = $1A59 
+W = $15AE 
+welcome_message = $37A7 
+x = $15AB 
 
-******* 48 Unused label(s) *******
+******* 68 Unused label(s) *******
 @call_enemy2_vert
 @call_move_enemy_3
 @call_move_enemy_4
@@ -208,47 +229,67 @@ x = $14F6
 @update_display
 @update_hi_score
 @update_pointer
-~~~done_check{00003}
-~~~done_check{00005}
-~~~done_check{00007}
-~~~done_check{00009}
-~~~done_check{00011}
-~~~done{00035}
-~~~done{00036}
-~~~done{00071}
-~~~done{00072}
-~~~has_collided{00003}
-~~~has_collided{00005}
-~~~has_collided{00007}
-~~~has_collided{00009}
-~~~has_collided{00011}
-~~~has_not_collided{00003}
-~~~has_not_collided{00005}
-~~~has_not_collided{00007}
-~~~has_not_collided{00009}
-~~~has_not_collided{00011}
-~~~read_char_loop{00035}
-~~~read_char_loop{00036}
-~~~skip_death_animations{00135}
-~~~skip_death_animations{00136}
-~~~skip_death_animations{00138}
-~~~skip_death_animations{00139}
-~~~skip_death_animations{00141}
-~~~skip_death_animations{00142}
+~~~done_check{00012}
+~~~done_check{00014}
+~~~done_check{00016}
+~~~done_check{00018}
+~~~done_check{00020}
+~~~done{00044}
+~~~done{00045}
+~~~done{00080}
+~~~done{00081}
+~~~exit{00007}
+~~~exit{00008}
+~~~exit{00009}
+~~~exit{00010}
+~~~has_collided{00012}
+~~~has_collided{00014}
+~~~has_collided{00016}
+~~~has_collided{00018}
+~~~has_collided{00020}
+~~~has_not_collided{00012}
+~~~has_not_collided{00014}
+~~~has_not_collided{00016}
+~~~has_not_collided{00018}
+~~~has_not_collided{00020}
+~~~loop{00007}
+~~~loop{00008}
+~~~loop{00009}
+~~~loop{00010}
+~~~read_char_loop{00044}
+~~~read_char_loop{00045}
+~~~set_to_off{00007}
+~~~set_to_off{00008}
+~~~set_to_off{00009}
+~~~set_to_off{00010}
+~~~set_to_on{00007}
+~~~set_to_on{00008}
+~~~set_to_on{00009}
+~~~set_to_on{00010}
 ~~~skip_death_animations{00144}
 ~~~skip_death_animations{00145}
-~~~update_pointer{00135}
-~~~update_pointer{00136}
-~~~update_pointer{00138}
-~~~update_pointer{00139}
-~~~update_pointer{00141}
-~~~update_pointer{00142}
+~~~skip_death_animations{00147}
+~~~skip_death_animations{00148}
+~~~skip_death_animations{00150}
+~~~skip_death_animations{00151}
+~~~skip_death_animations{00153}
+~~~skip_death_animations{00154}
+~~~skip{00007}
+~~~skip{00008}
+~~~skip{00009}
+~~~skip{00010}
 ~~~update_pointer{00144}
 ~~~update_pointer{00145}
-~~~update_score{00005}
-~~~update_score{00007}
-~~~update_score{00009}
-~~~update_score{00011}
+~~~update_pointer{00147}
+~~~update_pointer{00148}
+~~~update_pointer{00150}
+~~~update_pointer{00151}
+~~~update_pointer{00153}
+~~~update_pointer{00154}
+~~~update_score{00014}
+~~~update_score{00016}
+~~~update_score{00018}
+~~~update_score{00020}
 4
 base_score
 check_joystick_input
