@@ -55,6 +55,7 @@
         <FileName>Collisions.asm</FileName>
         <FileName>Menu.asm</FileName>
         <FileName>Death.asm</FileName>
+        <FileName>Audio.asm</FileName>
     </BuildList>
     <DetermineBuildOrder>1</DetermineBuildOrder>
     <PaddingByte>234</PaddingByte>
@@ -64,6 +65,17 @@
     <RawExportList />
     <!--End of screen designer settings-->
     <SourceFiles>
+        <SourceFile>
+            <Name>Audio.asm</Name>
+            <PrgName />
+            <FileType>2</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
         <SourceFile>
             <Name>Collisions.asm</Name>
             <PrgName />
@@ -93,7 +105,7 @@
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
-            <Bookmarks />
+            <Bookmarks>126,</Bookmarks>
             <Topmost>False</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
@@ -170,7 +182,7 @@
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
-            <Bookmarks>10,21,</Bookmarks>
+            <Bookmarks>13,24,</Bookmarks>
             <Topmost>True</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
@@ -205,7 +217,7 @@
             <Breakpoints />
             <Bookmarks />
             <Topmost>False</Topmost>
-            <FileOpen>False</FileOpen>
+            <FileOpen>True</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>Utils.asm</Name>

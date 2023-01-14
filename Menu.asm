@@ -70,13 +70,9 @@ main_menu_loop
         
 
 ; TODO: Do this properly :)
-        inc GAMEPLAY_TIMER_ADDRESS
-        inc GAMEPLAY_TIMER_ADDRESS
-        inc GAMEPLAY_TIMER_ADDRESS
-        inc GAMEPLAY_TIMER_ADDRESS
-        inc GAMEPLAY_TIMER_ADDRESS
-        inc GAMEPLAY_TIMER_ADDRESS        
-        inc GAMEPLAY_TIMER_ADDRESS        
+        lda GAMEPLAY_TIMER_ADDRESS
+        adc #6
+        sta GAMEPLAY_TIMER_ADDRESS
         
         IF_EQUEL GAMEPLAY_TIMER_ADDRESS, #128, update_colour
         IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #127, print_key_press

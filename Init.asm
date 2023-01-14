@@ -173,13 +173,18 @@ run_game_initiation
         lda #$0A        ; Player_bullet_Y
         sta $d005       
         
+        
         lda #0        
         sta ENEMY_1_X_ADDRESS       
         sta ENEMY_2_X_ADDRESS       
         sta ENEMY_3_X_ADDRESS
         sta ENEMY_4_X_ADDRESS
         sta ENEMY_BULLET_X
+        sta EXPLOSION_COUNTER
         
+        RESET_DEATH_SOUND_PITCH
+        
+
         lda #250
         sta ENEMY_1_Y_ADDRESS      
         sta ENEMY_2_Y_ADDRESS     
@@ -218,7 +223,7 @@ run_game_initiation
         ;================================
         ;       MEMORY INITIALISATION
         ;================================
-        lda #FALSE
+        lda #0
         sta PLAYER_IN_DEATH_STATE        
         sta BULLET_IS_FIRING_LOCATION
         sta PLAYER_FLIPPED_LOCATION
@@ -231,8 +236,6 @@ run_game_initiation
         sta TEMP1
         sta TEMP2
         sta TEMP3
-
-        lda #0
         sta SCORE_ADDRESS_LOW   
         sta SCORE_ADDRESS_HIGH
         sta CHAIN_ADDRESS        

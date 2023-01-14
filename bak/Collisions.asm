@@ -87,7 +87,7 @@ check_bullet_collision
 @setEnemy4ToVar1
         lda #1        
         sta ENEMY_4_VARIATION
-;-
+
 
 
 
@@ -123,7 +123,7 @@ check_bullet_collision
         ldx #0 ; Reset the x register
         lda #FALSE
         sta TEMP3 ; Reset temp 3 that we used to see if any collisions happened
-
+        jsr play_explosion_sound
 @exit
         rts
 

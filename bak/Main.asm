@@ -2,13 +2,15 @@
 ; NOTES
 ; SCreen editor http://petscii.krissz.hu/
 
-; 10 SYS (4096)
+
 
 *=$0801
-4
+
         BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $34, $30, $39, $36, $29, $00, $00, $00
 
-*=$100C
+
+
+*=$1000
 
 Incasm "Memory.asm"
 Incasm "Constants.asm"
@@ -34,12 +36,29 @@ gameplay_loop
         jsr run_collision_checks        
         jsr run_script ; Run script should be the last thing run
 
+        ; If the gameplay timer is divisible by 10, flash the stars
+        lda GAMEPLAY_TIMER_ADDRESS
+        and #$0F        
+        beq flash_stars
         jmp gameplay_loop
 
 @jmp_to_death ; HACK: run_death sbr too far away
         jmp run_death
 
 
+flash_stars
+        lda ANIMATION_TIMER_ADDRESS ; Bit of a hack to use the anim timer to make the star bliking feel more random
+        and #$01
+        beq odd
+        FLASH_STARS $0400
+        FLASH_STARS $0400 + 510
+        jmp gameplay_loop
+odd
+        FLASH_STARS $0400 + 255
+        FLASH_STARS $0400 + 765
+        jmp gameplay_loop
+
+Incasm "Audio.asm"
 Incasm "Collisions.asm"
 Incasm "Death.asm"
 Incasm "Menu.asm"

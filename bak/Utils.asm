@@ -19,3 +19,44 @@ random
         IF_LESS_THAN TEMP1, RANDOMISER_LOW, random
         IF_MORE_THAN TEMP1, RANDOMISER_HIGH, random
         rts
+
+handle_enemy_hit_by_bullet 
+        clc
+        lda ENEMIES_KILLED_LOW
+        adc #1
+        sta ENEMIES_KILLED_LOW
+        lda ENEMIES_KILLED_HIGH
+        adc #0
+        sta ENEMIES_KILLED_HIGH
+
+        
+        lda #FALSE
+        sta BULLET_IS_FIRING_LOCATION 
+
+        ; Move the bullet off screen so the reset code can run
+        ; Don't move it past 250, otherwise the chain will reset
+        lda #249
+        sta BULLET_Y_ADDRESS        
+        rts
+
+
+add_to_score
+        clc
+        lda SCORE_ADDRESS_LOW 
+        adc CHAIN_ADDRESS
+        sta SCORE_ADDRESS_LOW
+        lda SCORE_ADDRESS_HIGH
+        adc #$00
+        sta SCORE_ADDRESS_HIGH  
+        rts
+        
+inc_chain        
+        lda CHAIN_ADDRESS
+        cmp #MAX_CHAIN
+        beq @done
+        clc
+        inc CHAIN_ADDRESS
+@done        
+        rts
+        
+        

@@ -98,58 +98,6 @@ endm
 ;            MATHS
 ;-----------------------------
 
-defm MULTIPLY; (1st number, 2nd number)
-        ldx #0
-        lda #0
-@multiply_loop
-        adc /1
-        inx
-        cpx /2
-        bne @multiply_loop
-endm
-
-
-defm IS_DIVISIBLE_POW_2        
-    lda /1
-    and /2
-    beq divisible
-    jmp not_divisible
-    
-divisible
-    jmp /3
-not_divisible
-
-endm
-
-defm IS_NOT_DIVISIBLE        
-    lda /1
-    and /2
-    beq not_divisible
-    jmp divisible
-    
-divisible
-    jmp /3
-not_divisible
-
-endm
-        
-
-
-;----------------------------------------
-;      LOAD SPRITE DATA INTO MEMORY            
-;----------------------------------------
-defm LOAD_SPRITE_INTO_MEMORY ;(Current sprite date, New Sprite Date)
-        ldx #0
-@read_byte_loop
-        lda /1,x
-        sta /2,x
-        cpx #63
-        beq @done
-        inx
-        jmp @read_byte_loop
-@done
-endm
-
 
 ;----------------------------------------
 ;               COMPARISSION            
@@ -183,6 +131,37 @@ defm IF_MORE_THAN ;(value, value to compare to, location to jump to if true)
         bcs /3 ;If carry flag has been set after comparison then branch
 endm
 
+
+
+defm FLASH_STARS
+
+        ldx #$0
+@loop
+        lda /1,x
+        cmp #$60        
+        beq @set_to_off
+
+        cmp #$5E        
+        beq @set_to_on    
+        
+        jmp @skip
+
+@set_to_off     
+        lda #$5E
+        sta /1,x
+        jmp @skip
+
+@set_to_on
+        lda #$60
+        sta /1,x        
+        
+@skip
+        inx
+        cpx #254
+        beq @exit
+        jmp @loop
+@exit
+endm
 
 
 ;----------------------------------------
@@ -253,7 +232,6 @@ endm
 ;=========================
 defm ANIMATE_ENEMY ;(1/ CURRENT FRAME ADDRESS 2/ ENEMY HIT  3/ FIRST FRAME SPRITE VALUE 4/ RESET LABEL 5/ RESET FRAME 6/ POINTER)
         inc /1 
-
         ; Check if enemy hit
         lda /2
         cmp #true
@@ -317,7 +295,6 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         lda /2
         adc #24
         sta TEMP2
-
         
         ; If temp 1 is more than temp2 
         clc
@@ -345,7 +322,6 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         sta TEMP1
         lda BULLET_Y_ADDRESS
         sta TEMP2
-        
 
         clc
         lda TEMP2
@@ -360,48 +336,20 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         
 
 @has_collided        
-        clc
-        lda ENEMIES_KILLED_LOW
-        adc #1
-        sta ENEMIES_KILLED_LOW
-
-        lda ENEMIES_KILLED_HIGH
-        adc #0
-        sta ENEMIES_KILLED_HIGH
-
         ldx #TRUE ; Response
-        lda #TRUE        
-        sta /1
+        stx /1
         
-        lda #FALSE
-        sta BULLET_IS_FIRING_LOCATION 
-
-        ; Move the bullet off screen so the reset code can run
-        ; Don't move it past 250, otherwise the chain will reset
-        lda #249
-        sta BULLET_Y_ADDRESS
+        jsr handle_enemy_hit_by_bullet
         
         ; set robot frame to explosion
         lda #EXPLOSION_F1_SPRITE_VALUE
         sta /3
         
         ; Skip chain increase if at max chain
-        lda CHAIN_ADDRESS
-        cmp #MAX_CHAIN
-        beq @update_score
-        clc
-        inc CHAIN_ADDRESS
+        jsr inc_chain
         
 @update_score
-        clc
-        lda SCORE_ADDRESS_LOW 
-        adc CHAIN_ADDRESS
-        sta SCORE_ADDRESS_LOW
-        lda SCORE_ADDRESS_HIGH
-        adc #$00
-        sta SCORE_ADDRESS_HIGH  
-        
-        jmp @done_check
+        jsr add_to_score
 
 
 @done_check

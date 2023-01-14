@@ -1,124 +1,128 @@
 
-******* 117 Label(s) *******
-~~~done_check{00012} = $114D 
-~~~done_check{00014} = $11FE 
-~~~done_check{00016} = $12BE 
-~~~done_check{00018} = $137F 
-~~~done_check{00020} = $143F 
-~~~done{00044} = $15C3 
-~~~done{00045} = $15D4 
-~~~done{00080} = $1B06 
-~~~done{00081} = $1B33 
-~~~exit{00007} = $107F 
-~~~exit{00008} = $10A4 
-~~~exit{00009} = $10C9 
-~~~exit{00010} = $10EE 
-~~~has_collided{00012} = $114B 
-~~~has_collided{00014} = $11B8 
-~~~has_collided{00016} = $1279 
-~~~has_collided{00018} = $1339 
-~~~has_collided{00020} = $13FA 
-~~~has_not_collided{00012} = $1146 
-~~~has_not_collided{00014} = $11B3 
-~~~has_not_collided{00016} = $1274 
-~~~has_not_collided{00018} = $1334 
-~~~has_not_collided{00020} = $13F5 
-~~~loop{00007} = $105C 
-~~~loop{00008} = $1081 
-~~~loop{00009} = $10A6 
-~~~loop{00010} = $10CB 
-~~~read_char_loop{00044} = $15B7 
-~~~read_char_loop{00045} = $15C8 
-~~~set_to_off{00007} = $106A 
-~~~set_to_off{00008} = $108F 
-~~~set_to_off{00009} = $10B4 
-~~~set_to_off{00010} = $10D9 
-~~~set_to_on{00007} = $1072 
-~~~set_to_on{00008} = $1097 
-~~~set_to_on{00009} = $10BC 
-~~~set_to_on{00010} = $10E1 
-~~~skip_death_animations{00144} = $1E75 
-~~~skip_death_animations{00145} = $1EA7 
-~~~skip_death_animations{00147} = $1EDD 
-~~~skip_death_animations{00148} = $1F09 
-~~~skip_death_animations{00150} = $1F3C 
-~~~skip_death_animations{00151} = $1F68 
-~~~skip_death_animations{00153} = $1F9E 
-~~~skip_death_animations{00154} = $1FD0 
-~~~skip{00007} = $1077 
-~~~skip{00008} = $109C 
-~~~skip{00009} = $10C1 
-~~~skip{00010} = $10E6 
-~~~update_pointer{00144} = $1E81 
-~~~update_pointer{00145} = $1EB3 
-~~~update_pointer{00147} = $1EE7 
-~~~update_pointer{00148} = $1F13 
-~~~update_pointer{00150} = $1F46 
-~~~update_pointer{00151} = $1F72 
-~~~update_pointer{00153} = $1FAA 
-~~~update_pointer{00154} = $1FDC 
-~~~update_score{00014} = $11E9 
-~~~update_score{00016} = $12A9 
-~~~update_score{00018} = $136A 
-~~~update_score{00020} = $142A 
-4 = $0801 
-animate_sprite_1 = $1E4F 
-animate_sprite_2 = $1EBA 
-animate_sprite_3 = $1F19 
-animate_sprite_4 = $1F78 
-base_score = $37EC 
-check_bullet_collision = $1158 
-check_joystick_input = $1958 
-check_player_collided_with_bullet = $10FE 
-clear = $37F1 
-clear_print_press = $15C6 
-copyright = $3817 
-die_message = $37C4 
-fire_bullets = $1ACA 
-fire_from_robot = $1ADB 
-fire_from_UFO = $1B08 
-flash_stars = $105A 
+******* 121 Label(s) *******
+~~~done_check{00008} = $11B0 
+~~~done_check{00010} = $122E 
+~~~done_check{00012} = $12BB 
+~~~done_check{00014} = $1349 
+~~~done_check{00016} = $13D6 
+~~~done{00042} = $1567 
+~~~done{00043} = $1578 
+~~~done{00079} = $1AE7 
+~~~done{00080} = $1B14 
+~~~exit{00002} = $107E 
+~~~exit{00003} = $10A3 
+~~~exit{00004} = $10CB 
+~~~exit{00005} = $10F0 
+~~~has_collided{00008} = $11AE 
+~~~has_collided{00010} = $121B 
+~~~has_collided{00012} = $12A9 
+~~~has_collided{00014} = $1336 
+~~~has_collided{00016} = $13C4 
+~~~has_not_collided{00008} = $11A9 
+~~~has_not_collided{00010} = $1216 
+~~~has_not_collided{00012} = $12A4 
+~~~has_not_collided{00014} = $1331 
+~~~has_not_collided{00016} = $13BF 
+~~~loop{00002} = $105B 
+~~~loop{00003} = $1080 
+~~~loop{00004} = $10A8 
+~~~loop{00005} = $10CD 
+~~~read_char_loop{00042} = $155B 
+~~~read_char_loop{00043} = $156C 
+~~~set_to_off{00002} = $1069 
+~~~set_to_off{00003} = $108E 
+~~~set_to_off{00004} = $10B6 
+~~~set_to_off{00005} = $10DB 
+~~~set_to_on{00002} = $1071 
+~~~set_to_on{00003} = $1096 
+~~~set_to_on{00004} = $10BE 
+~~~set_to_on{00005} = $10E3 
+~~~skip_death_animations{00143} = $1E56 
+~~~skip_death_animations{00144} = $1E88 
+~~~skip_death_animations{00146} = $1EBE 
+~~~skip_death_animations{00147} = $1EEA 
+~~~skip_death_animations{00149} = $1F1D 
+~~~skip_death_animations{00150} = $1F49 
+~~~skip_death_animations{00152} = $1F7F 
+~~~skip_death_animations{00153} = $1FB1 
+~~~skip{00002} = $1076 
+~~~skip{00003} = $109B 
+~~~skip{00004} = $10C3 
+~~~skip{00005} = $10E8 
+~~~update_pointer{00143} = $1E62 
+~~~update_pointer{00144} = $1E94 
+~~~update_pointer{00146} = $1EC8 
+~~~update_pointer{00147} = $1EF4 
+~~~update_pointer{00149} = $1F27 
+~~~update_pointer{00150} = $1F53 
+~~~update_pointer{00152} = $1F8B 
+~~~update_pointer{00153} = $1FBD 
+~~~update_score{00010} = $122B 
+~~~update_score{00012} = $12B8 
+~~~update_score{00014} = $1346 
+~~~update_score{00016} = $13D3 
+add_to_score = $15C7 
+animate_sprite_1 = $1E30 
+animate_sprite_2 = $1E9B 
+animate_sprite_3 = $1EFA 
+animate_sprite_4 = $1F59 
+base_score = $37E5 
+check_bullet_collision = $11BB 
+check_joystick_input = $1939 
+check_player_collided_with_bullet = $1161 
+clear = $37EA 
+clear_print_press = $156A 
+die_message = $37BD 
+fire_bullets = $1AAB 
+fire_from_robot = $1ABC 
+fire_from_UFO = $1AE9 
+flash_stars = $1053 
 gameplay_loop = $101A 
-handle_player_input = $18EF 
+handle_enemy_hit_by_bullet = $15AC 
+handle_player_input = $18D0 
+handle_sounds = $1045 
+inc_chain = $15DA 
 initiate_game = $1017 
-is_off_screen = $16CD 
+is_off_screen = $16A8 
 main = $1014 
-main_menu_loop = $151E 
-move_enemy = $1B5E 
-move_enemy_3 = $1D11 
-move_enemy_4 = $1DB0 
-move_enemy_bullet = $1B36 
-move_enemy2_hori = $1CA3 
-move_enemy2_vert = $1C0C 
-press_to_continue = $37D3 
-print_key_press = $15B5 
-random = $15E5 
-reset_all_enemies = $19E8 
-reset_background_border_colour = $15DA 
-reset_enemy_1_sprites = $1A02 
-reset_enemy_2_sprites = $1A18 
-reset_enemy_3_sprites = $1A2D 
-reset_enemy_4_sprites = $1A43 
-reset_enemy_bullet = $19F8 
-return = $1B35 
-run_collision_checks = $10F1 
-run_death = $1490 
-run_game_initiation = $1787 
-run_menu = $1507 
-run_menu_init = $16E3 
-run_script = $1608 
-score_label = $37A0 
-set_sprite_1_animation_to_astroid = $1E88 
-set_sprite_2_animation_to_ufo = $1EED 
-set_sprite_3_animation_to_astroid = $1F4C 
-set_sprite_4_animation_to_astroid = $1FB1 
-update_colour = $15D7 
-update_enemies = $1A59 
-W = $15AE 
-welcome_message = $37A7 
-x = $15AB 
+main_menu_loop = $14CA 
+move_enemy = $1B3F 
+move_enemy_3 = $1CF2 
+move_enemy_4 = $1D91 
+move_enemy_bullet = $1B17 
+move_enemy2_hori = $1C84 
+move_enemy2_vert = $1BED 
+odd = $10A6 
+play_death_sound = $112C 
+play_explosion_sound = $10F3 
+press_to_continue = $37CC 
+print_key_press = $1559 
+random = $1589 
+reset_all_enemies = $19C9 
+reset_background_border_colour = $157E 
+reset_enemy_1_sprites = $19E3 
+reset_enemy_2_sprites = $19F9 
+reset_enemy_3_sprites = $1A0E 
+reset_enemy_4_sprites = $1A24 
+reset_enemy_bullet = $19D9 
+return = $1B16 
+run_collision_checks = $1154 
+run_death = $1431 
+run_game_initiation = $1762 
+run_menu = $14B3 
+run_menu_init = $16BE 
+run_script = $15E6 
+set_sprite_1_animation_to_astroid = $1E69 
+set_sprite_2_animation_to_ufo = $1ECE 
+set_sprite_3_animation_to_astroid = $1F2D 
+set_sprite_4_animation_to_astroid = $1F92 
+update_colour = $157B 
+update_enemies = $1A3A 
+W = $1552 
+welcome_message = $37A0 
+x = $154F 
 
-******* 68 Unused label(s) *******
+******* 65 Unused label(s) *******
 @call_enemy2_vert
 @call_move_enemy_3
 @call_move_enemy_4
@@ -129,11 +133,16 @@ x = $15AB
 @check_high
 @complete_joy_check
 @complete_update
+@decs
+@done
+@done
+@done
 @done
 @done
 @done
 @draw_menu
 @end_game
+@exit
 @exit
 @exit
 @exit
@@ -152,6 +161,7 @@ x = $15AB
 @input_up_check
 @jmp_to_death
 @kill_player
+@kill_sound
 @left
 @left
 @left
@@ -198,7 +208,6 @@ x = $15AB
 @move_up
 @move_up
 @move_up
-@over_255
 @reset_chain
 @reset_death
 @ret
@@ -229,76 +238,73 @@ x = $15AB
 @update_display
 @update_hi_score
 @update_pointer
+~~~done_check{00008}
+~~~done_check{00010}
 ~~~done_check{00012}
 ~~~done_check{00014}
 ~~~done_check{00016}
-~~~done_check{00018}
-~~~done_check{00020}
-~~~done{00044}
-~~~done{00045}
+~~~done{00042}
+~~~done{00043}
+~~~done{00079}
 ~~~done{00080}
-~~~done{00081}
-~~~exit{00007}
-~~~exit{00008}
-~~~exit{00009}
-~~~exit{00010}
+~~~exit{00002}
+~~~exit{00003}
+~~~exit{00004}
+~~~exit{00005}
+~~~has_collided{00008}
+~~~has_collided{00010}
 ~~~has_collided{00012}
 ~~~has_collided{00014}
 ~~~has_collided{00016}
-~~~has_collided{00018}
-~~~has_collided{00020}
+~~~has_not_collided{00008}
+~~~has_not_collided{00010}
 ~~~has_not_collided{00012}
 ~~~has_not_collided{00014}
 ~~~has_not_collided{00016}
-~~~has_not_collided{00018}
-~~~has_not_collided{00020}
-~~~loop{00007}
-~~~loop{00008}
-~~~loop{00009}
-~~~loop{00010}
-~~~read_char_loop{00044}
-~~~read_char_loop{00045}
-~~~set_to_off{00007}
-~~~set_to_off{00008}
-~~~set_to_off{00009}
-~~~set_to_off{00010}
-~~~set_to_on{00007}
-~~~set_to_on{00008}
-~~~set_to_on{00009}
-~~~set_to_on{00010}
+~~~loop{00002}
+~~~loop{00003}
+~~~loop{00004}
+~~~loop{00005}
+~~~read_char_loop{00042}
+~~~read_char_loop{00043}
+~~~set_to_off{00002}
+~~~set_to_off{00003}
+~~~set_to_off{00004}
+~~~set_to_off{00005}
+~~~set_to_on{00002}
+~~~set_to_on{00003}
+~~~set_to_on{00004}
+~~~set_to_on{00005}
+~~~skip_death_animations{00143}
 ~~~skip_death_animations{00144}
-~~~skip_death_animations{00145}
+~~~skip_death_animations{00146}
 ~~~skip_death_animations{00147}
-~~~skip_death_animations{00148}
+~~~skip_death_animations{00149}
 ~~~skip_death_animations{00150}
-~~~skip_death_animations{00151}
+~~~skip_death_animations{00152}
 ~~~skip_death_animations{00153}
-~~~skip_death_animations{00154}
-~~~skip{00007}
-~~~skip{00008}
-~~~skip{00009}
-~~~skip{00010}
+~~~skip{00002}
+~~~skip{00003}
+~~~skip{00004}
+~~~skip{00005}
+~~~update_pointer{00143}
 ~~~update_pointer{00144}
-~~~update_pointer{00145}
+~~~update_pointer{00146}
 ~~~update_pointer{00147}
-~~~update_pointer{00148}
+~~~update_pointer{00149}
 ~~~update_pointer{00150}
-~~~update_pointer{00151}
+~~~update_pointer{00152}
 ~~~update_pointer{00153}
-~~~update_pointer{00154}
+~~~update_score{00010}
+~~~update_score{00012}
 ~~~update_score{00014}
 ~~~update_score{00016}
-~~~update_score{00018}
-~~~update_score{00020}
-4
 base_score
 check_joystick_input
-copyright
 die_message
-score_label
 welcome_message
 
-******* 121 Variable(s) *******
+******* 129 Variable(s) *******
 ANDROID_ENEMY_F1_SPRITE_VALUE  = $003B
 ANDROID_ENEMY_RESET_FRAME  = $003E
 ANDROID_X_SPEED_ADDRESS  = $C035
@@ -320,6 +326,7 @@ BULLET_Y_ADDRESS  = $D005
 CHAIN_ADDRESS  = $C004
 Cyan  = $0003
 DarkGray  = $000B
+DEATH_SOUND_PITCH  = $C04A
 DEATH_TIMER_LOW  = $C006
 DOWN  = $0001
 ENEMIES_KILLED_HIGH  = $C029
@@ -356,11 +363,16 @@ ENEMY_BULLET_X  = $D00C
 ENEMY_BULLET_X_SPEED_ADDRESS  = $C031
 ENEMY_BULLET_Y  = $D00D
 ENEMY_BULLET_Y_SPEED_ADDRESS  = $C033
+ENEMY_FRAME_COLLISION_PARAM  = $007C
+ENEMY_HIT_COLLISION_PARAM  = $007A
+ENEMY_X_ADDRESS_COLLISION_PARAM  = $007B
 ENEMY1_HIT  = $C008
 ENEMY2_HIT  = $C00A
 ENEMY3_HIT  = $C00C
 ENEMY4_HIT  = $C03B
+EXPLOSION_COUNTER  = $C03D
 EXPLOSION_F1_SPRITE_VALUE  = $002F
+EXPLOSION_PITCH  = $C03E
 EXPLOSION_RESET_FRAME  = $0032
 FALSE  = $0000
 GAMEPLAY_TIMER_ADDRESS  = $0077
@@ -403,8 +415,10 @@ ROBOT_ENEMY_F1_SPRITE_VALUE  = $002B
 ROBOT_ENEMY_RESET_FRAME  = $002F
 ROBOT_X_SPEED_ADDRESS  = $C024
 ROBOT_Y_SPEED_ADDRESS  = $C026
+SB  = $D418
 SCORE_ADDRESS_HIGH  = $C001
 SCORE_ADDRESS_LOW  = $C000
+SND  = $D400
 SPRITE_ENABLED_ADDRESS  = $D015
 TEMP1  = $0073
 TEMP2  = $0074
@@ -420,13 +434,16 @@ VRAM_END_ADDRESS  = $0800
 VRAM_START_ADDRESS  = $0400
 White  = $0001
 Yellow  = $0007
-******* -86 Unused variables(s) *******
+******* -87 Unused variables(s) *******
 Blue
 Brown
 Cyan
 DarkGray
 ENEMY_BULLET_ENABLED_MASK
 ENEMY_BULLET_SPEED
+ENEMY_FRAME_COLLISION_PARAM
+ENEMY_HIT_COLLISION_PARAM
+ENEMY_X_ADDRESS_COLLISION_PARAM
 EXPLOSION_F1_SPRITE_VALUE
 EXPLOSION_RESET_FRAME
 Green
@@ -434,12 +451,13 @@ LightBlue
 LightGray
 LightGreen
 LightRed
-MAX_CHAIN
 MediumGray
 MENU_FLASH
 Orange
 Purple
 Red
+SB
+SND
 tgt_c64
 VRAM_END_ADDRESS
 VRAM_START_ADDRESS

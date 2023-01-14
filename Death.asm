@@ -1,12 +1,17 @@
 run_death
-        IF_MORE_THAN DEATH_TIMER_LOW, #175, @reset_death
+        IF_MORE_THAN DEATH_TIMER_LOW, #115, @reset_death
+        jsr play_death_sound
         inc DEATH_TIMER_LOW
 
         inc BORDER_COLOUR_LOCATION
         dec BACKGROUND_COLOUR_LOCATION
         jmp gameplay_loop
 @reset_death
+        RESET_DEATH_SOUND_PITCH
+
         lda #0
+        sta SND+1
+
         sta DEATH_TIMER_LOW
 
         lda #FALSE

@@ -40,7 +40,7 @@ run_menu_init
         
         lda #125        ; Muncher
         sta ENEMY_2_X_ADDRESS       
-        lda #200         ; Muncher
+        lda #197         ; Muncher
         sta ENEMY_2_Y_ADDRESS     
 
 
@@ -115,6 +115,9 @@ run_menu_init
         sta $d01b
         
         TURN_ON_INTRO_SPRITES
+        lda #%11111111
+        sta $D017 ; Double sprite height
+        sta $D01D ; Double sprite width
         rts
 
 run_game_initiation
@@ -139,7 +142,7 @@ run_game_initiation
 
         lda #$d8
         sta $f8
-
+        
         ldx #$00
         ldy #$00
         lda ($fb),y
@@ -196,9 +199,7 @@ run_game_initiation
         sta PLAYER_BULLET_SPRITE_ADDRESS
         sta ENEMY_BULLET_SPRITE_ADDRESS
 
-        ; Enemy frames
-        ;lda #ROBOT_ENEMY_F1_SPRITE_VALUE
-        
+        ; Enemy frames        
         lda #ASTROID_ENEMY_F1_SPRITE_VALUE
         sta ENEMY_1_CURRENT_FRAME_ADDRESS       
         sta ENEMY_1_SPRITE_ADDRESS
@@ -217,7 +218,7 @@ run_game_initiation
         ;================================
         ;       MEMORY INITIALISATION
         ;================================
-        lda #FALSE
+        lda #0
         sta PLAYER_IN_DEATH_STATE        
         sta BULLET_IS_FIRING_LOCATION
         sta PLAYER_FLIPPED_LOCATION
@@ -230,8 +231,6 @@ run_game_initiation
         sta TEMP1
         sta TEMP2
         sta TEMP3
-
-        lda #0
         sta SCORE_ADDRESS_LOW   
         sta SCORE_ADDRESS_HIGH
         sta CHAIN_ADDRESS        
@@ -274,6 +273,12 @@ run_game_initiation
         TURN_ON_INITAL_SPRITES
         SET_TEXT_COLOUR #white
         jsr reset_all_enemies
+        
+        
+        lda #$00
+        sta $D017 ; Double sprite height
+        sta $D01D ; Double sprite width
+        
         
         ;================================
         ;       SETUP HUD TEXT

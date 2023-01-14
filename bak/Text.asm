@@ -1,6 +1,5 @@
 
-score_label     text 'SCORE:'
-                byte 0
+
 
 
 welcome_message         text 'WELCOME TO HORIZON SHIFT 64!'
@@ -17,7 +16,4 @@ base_score              text '0000'
                         byte 0
 
 clear                   text '                                     '
-                        byte 0
-
-copyright               text 'Written by Paul Marrable'
                         byte 0

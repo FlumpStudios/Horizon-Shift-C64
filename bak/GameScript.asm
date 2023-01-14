@@ -100,10 +100,6 @@ run_script
         sta SPRITE_ENABLED_ADDRESS
         jmp @done
 
-
-@over_255        
-        jmp @done
-
 @done
         rts
 

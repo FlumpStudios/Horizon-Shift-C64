@@ -123,8 +123,8 @@ check_joystick_input
         sta BULLET_X_ADDRESS_LOW
 
         lda PLAYER_FLIPPED_LOCATION
-        sta BULLET_DIRECTION_LOCATION
-
+        sta BULLET_DIRECTION_LOCATION        
+        ;jsr play_laser_sound
         lda #TRUE
         sta BULLET_IS_FIRING_LOCATION    
     
