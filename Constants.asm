@@ -16,10 +16,10 @@ LightBlue       = 14
 LightGray       = 15
 
 
-PLAYER_MOVE_SPEED = 4
+PLAYER_MOVE_SPEED = 5
 UP = 0
 DOWN = 1
-BULLET_MOVE_SPEED = 4
+BULLET_MOVE_SPEED = 5
 
 ; Types
 TRUE = 1

@@ -1,4 +1,3 @@
-
 defm MAKE_EXPLOSION_SOUND
         lda #30
         sta EXPLOSION_PITCH
@@ -104,11 +103,6 @@ endm
 
 
 
-;-----------------------------
-;            MATHS
-;-----------------------------
-
-
 ;----------------------------------------
 ;               COMPARISSION            
 ;----------------------------------------
@@ -119,7 +113,7 @@ defm IF_EQUEL; (value, value to compare to, location to jump to if true)
 endm
 
 
-defm IF_NOT_EQUEL; (value, value to compare to, location to jump to if true)
+defm IF_NOT_EQUEL; (value, value to compare to, location to jump to if true)               
         lda /1
         cmp /2
         bne /3

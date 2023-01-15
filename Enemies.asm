@@ -1,3 +1,18 @@
+
+;=========================
+; TODO:
+; There's a big hack in this module where enemy vert movements are being
+; Calld twice in some instances. So asteroids are moving up twice as fast as 
+; they've moving down. For now I've just hacked a fix and doubled the speed
+; for when they're traveling down.
+; The oppersite applies to the robot enemies, as they are moving down faster 
+; than up.
+; It's Sunday afternoon and I need to go for a run, so I'm just leaving this 
+; hack in for now.
+;=========================
+
+
+
 ;=========================
 ;      reset code
 ;=========================
@@ -17,8 +32,7 @@ reset_enemy_bullet
         sta ENEMY_BULLET_IS_FIRING_ADDRESS
         rts
 
-reset_enemy_1_sprites
-        
+reset_enemy_1_sprites        
         jsr random
         sta ENEMY_1_X_ADDRESS
         AND #$01 ; If result of random is even set enemy to top of screen, else bottom
@@ -261,7 +275,7 @@ move_enemy
 @move_astroid_down
         clc
         lda ENEMY_1_Y_ADDRESS
-        adc ASTROID_Y_SPEED_ADDRESS
+        adc #2
         sta ENEMY_1_Y_ADDRESS
         rts
 
@@ -272,7 +286,7 @@ move_enemy
         IF_NOT_EQUEL ANIMATION_TIMER_ADDRESS, #2, @skip_u
 
         lda ENEMY_1_Y_ADDRESS
-        sbc ROBOT_Y_SPEED_ADDRESS
+        sbc #2
         sta ENEMY_1_Y_ADDRESS
         jmp @move_hori
 
@@ -287,13 +301,14 @@ move_enemy
         rts      
 
 @move_hori
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #32,  @right        
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #64,  @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #96,  @right
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #128, @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #160, @right
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #192, @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #224, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #33,  @right        
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #65,  @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #97,  @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #129, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #161, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #193, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #225, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #255, @left
         
 @left
         lda ENEMY_1_X_ADDRESS
@@ -444,7 +459,7 @@ move_enemy_3
 @move_astroid_down
         clc
         lda ENEMY_3_Y_ADDRESS
-        adc ASTROID_Y_SPEED_ADDRESS
+        adc #2
         sta ENEMY_3_Y_ADDRESS
         rts
 
@@ -453,7 +468,7 @@ move_enemy_3
         IF_EQUEL ENEMY_3_VARIATION, #0,  @move_astroid_up
         
         lda ENEMY_3_Y_ADDRESS
-        sbc ROBOT_Y_SPEED_ADDRESS
+        sbc #2
         sta ENEMY_3_Y_ADDRESS
         jmp @move_hori
 
@@ -465,13 +480,14 @@ move_enemy_3
         rts      
 
 @move_hori
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #32,  @right        
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #64,  @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #96,  @right
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #128, @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #160, @right
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #192, @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #224, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #33,  @right        
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #65,  @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #97,  @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #129, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #161, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #193, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #225, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #255, @left
         
 @left
         lda ENEMY_3_X_ADDRESS
@@ -484,7 +500,7 @@ move_enemy_3
         adc ROBOT_X_SPEED_ADDRESS
         sta ENEMY_3_X_ADDRESS
         rts
-
+@done 
 
 
 
@@ -512,7 +528,7 @@ move_enemy_4
 @move_astroid_down
         clc
         lda ENEMY_4_Y_ADDRESS
-        adc ASTROID_Y_SPEED_ADDRESS
+        adc #2
         sta ENEMY_4_Y_ADDRESS
         rts
 
@@ -521,7 +537,7 @@ move_enemy_4
         IF_EQUEL ENEMY_4_VARIATION, #0,  @move_astroid_up
         
         lda ENEMY_4_Y_ADDRESS
-        sbc ROBOT_Y_SPEED_ADDRESS
+        sbc #2
         sta ENEMY_4_Y_ADDRESS
         jmp @move_hori
 
@@ -533,13 +549,14 @@ move_enemy_4
         rts      
 
 @move_hori
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #32,  @right        
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #64,  @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #96,  @right
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #128, @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #160, @right
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #192, @left
-        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #224, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #33,  @right        
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #65,  @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #97,  @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #129, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #161, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #193, @left
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #225, @right
+        IF_LESS_THAN GAMEPLAY_TIMER_ADDRESS, #255, @left
         
 @left
         lda ENEMY_4_X_ADDRESS

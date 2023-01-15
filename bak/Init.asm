@@ -173,13 +173,22 @@ run_game_initiation
         lda #$0A        ; Player_bullet_Y
         sta $d005       
         
+        
         lda #0        
         sta ENEMY_1_X_ADDRESS       
         sta ENEMY_2_X_ADDRESS       
         sta ENEMY_3_X_ADDRESS
         sta ENEMY_4_X_ADDRESS
         sta ENEMY_BULLET_X
+        sta EXPLOSION_COUNTER
+        sta EXPLOSION_PITCH
+        sta FIRE_SOUND_PITCH    
+        sta EXTRA_LIFE_AWARDED
+        sta FIRE_SOUND_COUNTER ; Nice side effect of setting this to zero is a nice lifting intro sounds
+
+        RESET_DEATH_SOUND_PITCH
         
+
         lda #250
         sta ENEMY_1_Y_ADDRESS      
         sta ENEMY_2_Y_ADDRESS     

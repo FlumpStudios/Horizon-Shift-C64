@@ -1,4 +1,16 @@
 
+defm MAKE_EXPLOSION_SOUND
+        lda #30
+        sta EXPLOSION_PITCH
+        lda #15
+        sta EXPLOSION_COUNTER
+endm
+
+defm RESET_DEATH_SOUND_PITCH
+        lda #175
+        sta DEATH_SOUND_PITCH
+endm
+
 defm FIRE_ENEMY_BULLET
         lda ENEMY_BULLET_IS_FIRING_ADDRESS
         cmp #TRUE
@@ -37,13 +49,11 @@ endm
 ;-----------------------------------------
 
 
-
 ;----------------------------------------
 ;         SET BACKGROUND COLOUR            
 ;----------------------------------------
 defm SET_BACKGROUND_COLOUR ;(New background colour)
-        lda /1        defm SET_BACKGROUND_COLOUR ;(New background colour)
-        
+        lda /1        
         ; border colour address
         sta BACKGROUND_COLOUR_LOCATION        
 
@@ -116,16 +126,14 @@ defm IF_NOT_EQUEL; (value, value to compare to, location to jump to if true)
 endm
 
 ; These comparisons are just for unsigned values 
-defm IF_LESS_THAN; (value, value to compare to, location to jump to if true)
-        clc
+defm IF_LESS_THAN; (value, value to compare to, location to jump to if true)        
         lda /1
         cmp /2
         bcc /3 ;If carry flag is clear after comparison then branch
 endm
 
 
-defm IF_MORE_THAN ;(value, value to compare to, location to jump to if true)
-        clc
+defm IF_MORE_THAN ;(value, value to compare to, location to jump to if true)       
         lda /1
         cmp /2
         bcs /3 ;If carry flag has been set after comparison then branch
@@ -283,8 +291,7 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         adc #15 ; Takes you to the end of the bullet
         sta TEMP1
 
-        ; temp less than x address
-        clc
+        ; temp less than x address        
         lda TEMP1
         cmp /2
         bcc @has_not_collided
@@ -296,8 +303,7 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         adc #24
         sta TEMP2
         
-        ; If temp 1 is more than temp2 
-        clc
+        ; If temp 1 is more than temp2         
         lda TEMP1
         cmp TEMP2
         bcs @has_not_collided
@@ -309,8 +315,7 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         lda BULLET_Y_ADDRESS
         sta TEMP2
         
-        ; If temp 2 is more than temp 1 
-        clc
+        ; If temp 2 is more than temp 1         
         lda TEMP2
         cmp TEMP1
         bcs @has_not_collided
@@ -322,8 +327,7 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         sta TEMP1
         lda BULLET_Y_ADDRESS
         sta TEMP2
-
-        clc
+        
         lda TEMP2
         cmp TEMP1
         bcc @has_not_collided
@@ -350,7 +354,6 @@ defm CHECK_IF_ENEMY_HAS_COLLIDED_WITH_BULLET ; (ENEMY_HIT, ENEMY X ADDRESS, FRAM
         
 @update_score
         jsr add_to_score
-
 
 @done_check
         

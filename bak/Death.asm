@@ -1,21 +1,19 @@
 run_death
-        IF_MORE_THAN DEATH_TIMER_LOW, #175, @reset_death
+        IF_MORE_THAN DEATH_TIMER_LOW, #115, @reset_death
+        jsr play_death_sound
         inc DEATH_TIMER_LOW
 
         inc BORDER_COLOUR_LOCATION
         dec BACKGROUND_COLOUR_LOCATION
         jmp gameplay_loop
 @reset_death
-        lda #0
+        RESET_DEATH_SOUND_PITCH
+        jsr kill_sound        
         sta DEATH_TIMER_LOW
-
         lda #FALSE
-        sta PLAYER_IN_DEATH_STATE
-        
-        IF_EQUEL LIVES_ADDRESS, #0, @end_game
-        
-        dec LIVES_ADDRESS
-        
+        sta PLAYER_IN_DEATH_STATE        
+        IF_EQUEL LIVES_ADDRESS, #0, @end_game        
+        dec LIVES_ADDRESS        
         PRINT_DEBUG #33,#23, LIVES_ADDRESS
         jsr reset_all_enemies
         jsr reset_background_border_colour
