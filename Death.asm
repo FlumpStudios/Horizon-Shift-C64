@@ -8,19 +8,12 @@ run_death
         jmp gameplay_loop
 @reset_death
         RESET_DEATH_SOUND_PITCH
-
-        lda #0
-        sta SND+1
-
+        jsr kill_sound        
         sta DEATH_TIMER_LOW
-
         lda #FALSE
-        sta PLAYER_IN_DEATH_STATE
-        
-        IF_EQUEL LIVES_ADDRESS, #0, @end_game
-        
-        dec LIVES_ADDRESS
-        
+        sta PLAYER_IN_DEATH_STATE        
+        IF_EQUEL LIVES_ADDRESS, #0, @end_game        
+        dec LIVES_ADDRESS        
         PRINT_DEBUG #33,#23, LIVES_ADDRESS
         jsr reset_all_enemies
         jsr reset_background_border_colour

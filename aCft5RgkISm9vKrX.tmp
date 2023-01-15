@@ -33,12 +33,14 @@ initiate_game
 gameplay_loop               
         IF_NOT_EQUEL $d012, #$ff, gameplay_loop ; Raster line check
         inc GAMEPLAY_TIMER_ADDRESS        
-        IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, @jmp_to_death       
+        IF_EQUEL PLAYER_IN_DEATH_STATE, #TRUE, @jmp_to_death
+        
         jsr handle_player_input
         jsr update_enemies
         jsr run_collision_checks  
-        jsr handle_sounds
-        jsr run_script ; Run script should be the last thing run
+        jsr run_sounds        
+        jsr run_script
+
 
         ; If the gameplay timer is divisible by 10, flash the stars
         lda GAMEPLAY_TIMER_ADDRESS
@@ -48,16 +50,6 @@ gameplay_loop
 
 @jmp_to_death ; HACK: run_death sbr too far away
         jmp run_death
-
-
-handle_sounds
-        lda EXPLOSION_COUNTER
-        cmp #0
-        beq @exit
-        dec EXPLOSION_COUNTER
-        jsr play_explosion_sound
-@exit
-        rts
 
 
 

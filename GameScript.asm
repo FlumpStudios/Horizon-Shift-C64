@@ -90,15 +90,14 @@ run_script
         jmp @done
 
 @level8
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #90, @level8
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #90, @level9
         lda #%01111111 ;Turn enemy 4 off and 1 and bullet on
         sta SPRITE_ENABLED_ADDRESS
         jmp @done
 
 @level9
         lda #%11111111 ;Turn enemy 4 off and 1 and bullet on
-        sta SPRITE_ENABLED_ADDRESS
-        jmp @done
+        sta SPRITE_ENABLED_ADDRESS       
 
 @done
         rts
