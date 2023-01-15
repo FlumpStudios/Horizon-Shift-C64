@@ -119,11 +119,10 @@ check_bullet_collision
         lda #FALSE
         sta TEMP3 ; Reset temp 3 that we used to see if any collisions happened
         MAKE_EXPLOSION_SOUND
-        IF_LESS_THAN SCORE_ADDRESS_HIGH, #1, @exit
-        IF_LESS_THAN SCORE_ADDRESS_LOW, 244, @exit
+        IF_LESS_THAN SCORE_ADDRESS_LOW, 250, @exit
         IF_EQUEL EXTRA_LIFE_AWARDED, #TRUE, @exit
         inc LIVES_ADDRESS
-        lda #0
+        lda #0 ; Little hack to generate a sound when extra life gained
         sta FIRE_SOUND_COUNTER
         lda #TRUE
         sta EXTRA_LIFE_AWARDED
