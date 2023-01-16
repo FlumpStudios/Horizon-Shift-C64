@@ -21,11 +21,13 @@ run_death
 
 @end_game
         IF_NOT_EQUEL SCORE_ADDRESS_HIGH, #0, @check_high ; If high is 0, don't bother checking it       
-        IF_MORE_THAN SCORE_ADDRESS_LOW, HI_SCORE_ADDRESS_LOW, @update_hi_score
-        jmp main        
-
+        jmp @checkLow       
+        
 @check_high
+        IF_EQUEL SCORE_ADDRESS_HIGH, HI_SCORE_ADDRESS_HIGH, @checkLow ; If high byte the same as hi score hi byte check lowbyte
         IF_MORE_THAN SCORE_ADDRESS_HIGH, HI_SCORE_ADDRESS_HIGH, @update_hi_score
+
+@checkLow
         IF_MORE_THAN SCORE_ADDRESS_LOW, HI_SCORE_ADDRESS_LOW, @update_hi_score
         jmp main
 

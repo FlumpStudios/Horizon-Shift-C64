@@ -1,15 +1,13 @@
-
 ; NOTES
 ; SCreen editor http://petscii.krissz.hu/
 
-
-; 10 SYS (4108):REM 100c
+; 10 SYS (4096)
 
 *=$0801
 
-        BYTE    $15, $08, $0A, $00, $9E, $20, $28,  $34, $31, $30, $38, $29, $3a, $8f, $20, $31, $30, $30, $43, $00, $00, $00
+        BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $34, $30, $39, $36, $29, $00, $00, $00
 
-*=$100C
+*=$1000
 
 Incasm "Memory.asm"
 Incasm "Constants.asm"
@@ -36,7 +34,6 @@ gameplay_loop
         jsr run_collision_checks  
         jsr run_sounds        
         jsr run_script
-
 
         ; If the gameplay timer is divisible by 10, flash the stars
         lda GAMEPLAY_TIMER_ADDRESS

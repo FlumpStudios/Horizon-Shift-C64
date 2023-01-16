@@ -11,7 +11,7 @@ run_script
 
 @level1
         IF_MORE_THAN ENEMIES_KILLED_HIGH, #1, @exit
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #5, @level2
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #7, @level2
         
         ldx #0
         stx ENEMY_3_VARIATION ; Force enemy 1 to astroid variation
@@ -23,7 +23,7 @@ run_script
         rts
 
 @level2
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #15, @level3
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #17, @level3
  
         lda #%10100111 ;Turn enemy 4 on
         sta SPRITE_ENABLED_ADDRESS
@@ -35,7 +35,7 @@ run_script
         jmp @done
 
 @level3
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #25, @level4
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #30, @level4
 
         lda #%10100111
         sta SPRITE_ENABLED_ADDRESS
@@ -46,7 +46,7 @@ run_script
 
 
 @level4
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #30, @level5
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #35, @level5
         
         lda #%10100111 ;Turn enemy 4 on
         sta SPRITE_ENABLED_ADDRESS
@@ -54,7 +54,7 @@ run_script
         jmp @done
 
 @level5
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #40, @level6
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #45, @level6
 
         ldy ENEMY_4_Y_ADDRESS
         jsr is_off_screen 
@@ -66,7 +66,7 @@ run_script
 
 
 @level6
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #55, @level7
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #60, @level7
         lda #%11101111
         sta SPRITE_ENABLED_ADDRESS
 
@@ -76,7 +76,7 @@ run_script
         jmp @done
 
 @level7
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #70, @level8
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #80, @level8
         ldy ENEMY_1_Y_ADDRESS
         jsr is_off_screen 
         cpx #TRUE
@@ -90,7 +90,7 @@ run_script
         jmp @done
 
 @level8
-        IF_MORE_THAN ENEMIES_KILLED_LOW, #90, @level9
+        IF_MORE_THAN ENEMIES_KILLED_LOW, #100, @level9
         lda #%01111111 ;Turn enemy 4 off and 1 and bullet on
         sta SPRITE_ENABLED_ADDRESS
         jmp @done

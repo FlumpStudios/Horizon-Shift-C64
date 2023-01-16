@@ -240,7 +240,6 @@ run_game_initiation
         sta TEMP1
         sta TEMP2
         sta TEMP3
-        sta SCORE_ADDRESS_LOW   
         sta SCORE_ADDRESS_HIGH
         sta CHAIN_ADDRESS        
         sta ENEMY_BULLET_X_SPEED_ADDRESS
@@ -254,6 +253,7 @@ run_game_initiation
         sta ANIMATION_TIMER_ADDRESS
         sta GAMEPLAY_TIMER_ADDRESS
         sta BULLET_DIRECTION_LOCATION
+        sta SCORE_ADDRESS_LOW   
 
         lda #1
         sta MUNCHER_Y_SPEED_ADDRESS
