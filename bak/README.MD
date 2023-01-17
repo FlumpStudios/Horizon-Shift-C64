@@ -10,8 +10,6 @@ Move along your horizon, blasting enemies as they encroach, don't let any of the
 
 Accuracy is key to a high score, missing enemies will reset your chain and lower your scoring potential.
 
-Note: This uses joystick port 1.
-
 
 ## Caring is sharing
 Horizon Shift 64 was a fun hobby project for me over the Christmas period, so if you enjoy my little game, please feel free to share, hack and crack away! 
