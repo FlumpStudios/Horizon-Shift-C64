@@ -27,6 +27,7 @@ run_death
         sta HI_SCORE_ADDRESS_HIGH
 
 @checkLow
+        IF_LESS_THAN SCORE_ADDRESS_HIGH, HI_SCORE_ADDRESS_HIGH, @exit
         IF_LESS_THAN SCORE_ADDRESS_LOW, HI_SCORE_ADDRESS_LOW, @exit        
         lda SCORE_ADDRESS_LOW
         sta HI_SCORE_ADDRESS_LOW
